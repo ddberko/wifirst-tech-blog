@@ -8,6 +8,8 @@ import { Post } from "@/lib/types";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import CategoryBadge from "@/components/CategoryBadge";
 import PostCard from "@/components/PostCard";
+import ClientDate from "@/components/ClientDate";
+/* eslint-disable @next/next/no-img-element */
 
 function ReadingProgress() {
   const [progress, setProgress] = useState(0);
@@ -31,18 +33,32 @@ function PostContent() {
   const [post, setPost] = useState<Post | null>(null);
   const [related, setRelated] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!slug) { setLoading(false); return; }
+    if (!slug) {
+      console.log("[PostPage] No slug provided");
+      setLoading(false);
+      return;
+    }
     async function load() {
+      console.log("[PostPage] Loading slug:", slug);
+      setError(null);
       try {
         const p = await getPostBySlug(slug);
+        console.log("[PostPage] Post result:", p ? p.title : "null");
         setPost(p);
         if (p) {
           const all = await getPosts({ category: p.category, max: 4 });
           setRelated(all.filter((r) => r.slug !== p.slug).slice(0, 3));
         }
-      } catch { /* */ } finally { setLoading(false); }
+      } catch (err) {
+        console.error("[PostPage] Error loading post:", err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        setError(`Failed to load article: ${errorMessage}`);
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, [slug]);
@@ -59,6 +75,19 @@ function PostContent() {
     </div>
   );
 
+  if (error) return (
+    <div className="max-w-3xl mx-auto px-4 py-24 text-center">
+      <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Article</h1>
+      <p className="text-red-600 font-mono text-sm bg-red-50 px-4 py-3 rounded-lg inline-block mb-4">{error}</p>
+      <p className="text-gray-500 text-sm">Slug: <code className="bg-gray-100 px-2 py-1 rounded">{slug}</code></p>
+    </div>
+  );
+
   if (!post) return (
     <div className="max-w-3xl mx-auto px-4 py-24 text-center">
       <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -67,7 +96,8 @@ function PostContent() {
         </svg>
       </div>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Post not found</h1>
-      <p className="text-gray-500">The article you&apos;re looking for doesn&apos;t exist.</p>
+      <p className="text-gray-500 mb-2">The article you&apos;re looking for doesn&apos;t exist.</p>
+      <p className="text-gray-400 text-sm">Slug: <code className="bg-gray-100 px-2 py-1 rounded">{slug}</code></p>
     </div>
   );
 
@@ -84,7 +114,7 @@ function PostContent() {
         </div>
       )}
 
-      <article className="max-w-prose mx-auto px-4 py-12">
+      <article className="max-w-5xl mx-auto px-4 py-12">
         {/* Meta */}
         <div className="flex items-center gap-3 mb-6">
           <CategoryBadge category={post.category} />
@@ -100,13 +130,22 @@ function PostContent() {
 
         {/* Author bar */}
         <div className="flex items-center gap-4 mb-10 pb-10 border-b border-gray-100">
-          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#0066CC] to-[#3399FF] flex items-center justify-center text-white font-semibold text-sm shadow-md shadow-blue-200/50">
-            {post.author?.charAt(0)?.toUpperCase() || "W"}
-          </div>
+          {post.author.avatar ? (
+            <img 
+              src={post.author.avatar} 
+              alt={post.author.name}
+              className="w-11 h-11 rounded-full object-cover shadow-md shadow-gray-200/50"
+            />
+          ) : (
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#0066CC] to-[#3399FF] flex items-center justify-center text-white font-semibold text-sm shadow-md shadow-blue-200/50">
+              {post.author.name.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div>
-            <p className="text-sm font-semibold text-gray-900">{post.author}</p>
-            <p className="text-sm text-gray-400">
-              {new Date(post.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            <p className="text-sm font-semibold text-gray-900">{post.author.name}</p>
+            <p className="text-sm text-gray-500">{post.author.role}</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              <ClientDate date={post.publishedAt} format="long" />
             </p>
           </div>
         </div>

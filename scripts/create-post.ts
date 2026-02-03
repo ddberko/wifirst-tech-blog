@@ -10,6 +10,7 @@ const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 if (serviceAccount) {
   initializeApp({ credential: cert(JSON.parse(serviceAccount)) });
 } else {
+  // Use ADC or project default
   initializeApp({ projectId: "wifirst-tech-blog" });
 }
 
@@ -26,7 +27,23 @@ async function main() {
   const excerpt = arg("excerpt");
   const content = arg("content");
   const category = arg("category");
-  const author = arg("author");
+  let authorRaw = arg("author");
+  let author: any = authorRaw;
+  
+  try {
+    if (authorRaw?.startsWith("{")) {
+      author = JSON.parse(authorRaw);
+    } else {
+      author = {
+        name: authorRaw || "David Berkowicz",
+        role: "CTO",
+        avatar: "https://media.licdn.com/dms/image/v2/D4E03AQGv2040i66u9A/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1715502476573?e=1743638400&v=beta&t=GqFp08L7V8eN1v-S3E8y8Z0nE19U5WfW-P2-U1Y-Z7k"
+      };
+    }
+  } catch (e) {
+    author = { name: authorRaw, role: "Author", avatar: "" };
+  }
+
   const tags = arg("tags")?.split(",").map((t) => t.trim()) || [];
   const featured = process.argv.includes("--featured");
 
@@ -36,7 +53,7 @@ async function main() {
   }
 
   const now = Timestamp.now();
-  await db.collection("posts").doc(slug).set({
+  await db.collection("articles").doc(slug).set({
     slug, title, excerpt, content, coverImage: arg("coverImage") || "",
     category, tags, author, featured, publishedAt: now, updatedAt: now,
   });

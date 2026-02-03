@@ -1,42 +1,17 @@
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
-  Timestamp,
-} from "firebase/firestore";
-import { db } from "./firebase";
+import postsData from "@/data/posts.json";
 import { Post } from "./types";
 
-const COLLECTION = "posts";
-
-function docToPost(data: Record<string, unknown>): Post {
-  return {
-    slug: data.slug as string,
-    title: data.title as string,
-    excerpt: data.excerpt as string,
-    content: data.content as string,
-    coverImage: (data.coverImage as string) || "",
-    category: data.category as string,
-    tags: (data.tags as string[]) || [],
-    author: data.author as string,
-    featured: (data.featured as boolean) || false,
-    publishedAt: data.publishedAt instanceof Timestamp
-      ? data.publishedAt.toDate()
-      : new Date(data.publishedAt as string),
-    updatedAt: data.updatedAt instanceof Timestamp
-      ? data.updatedAt.toDate()
-      : new Date(data.updatedAt as string),
-  };
-}
+// Static posts loaded at build time - no Firestore client needed!
+const posts: Post[] = postsData.map((p) => ({
+  ...p,
+  publishedAt: new Date(p.publishedAt),
+  updatedAt: new Date(p.updatedAt),
+}));
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const q = query(collection(db, COLLECTION), where("slug", "==", slug), limit(1));
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) return null;
-  return docToPost(snapshot.docs[0].data());
+  const cleanSlug = slug.trim();
+  if (!cleanSlug) return null;
+  return posts.find((p) => p.slug === cleanSlug) || null;
 }
 
 export async function getPosts(options?: {
@@ -44,40 +19,32 @@ export async function getPosts(options?: {
   featured?: boolean;
   max?: number;
 }): Promise<Post[]> {
-  const constraints = [];
+  let result = [...posts];
+  
   if (options?.category) {
-    constraints.push(where("category", "==", options.category));
+    result = result.filter((p) => p.category === options.category);
   }
   if (options?.featured !== undefined) {
-    constraints.push(where("featured", "==", options.featured));
+    result = result.filter((p) => p.featured === options.featured);
   }
-  constraints.push(orderBy("publishedAt", "desc"));
   if (options?.max) {
-    constraints.push(limit(options.max));
+    result = result.slice(0, options.max);
   }
-
-  const q = query(collection(db, COLLECTION), ...constraints);
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => docToPost(d.data()));
+  
+  return result;
 }
 
 export async function searchPosts(searchTerm: string): Promise<Post[]> {
-  // Firestore prefix match on title
-  const end = searchTerm.slice(0, -1) + String.fromCharCode(searchTerm.charCodeAt(searchTerm.length - 1) + 1);
-  const q = query(
-    collection(db, COLLECTION),
-    where("title", ">=", searchTerm),
-    where("title", "<", end),
-    orderBy("title"),
-    limit(20)
+  const term = searchTerm.toLowerCase();
+  return posts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(term) ||
+      p.excerpt.toLowerCase().includes(term) ||
+      p.content.toLowerCase().includes(term)
   );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => docToPost(d.data()));
 }
 
 export async function getCategories(): Promise<string[]> {
-  const snapshot = await getDocs(collection(db, COLLECTION));
-  const cats = new Set<string>();
-  snapshot.docs.forEach((d) => cats.add(d.data().category));
+  const cats = new Set(posts.map((p) => p.category));
   return Array.from(cats).sort();
 }

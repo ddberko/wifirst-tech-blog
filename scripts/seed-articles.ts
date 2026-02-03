@@ -915,4 +915,248 @@ const article4Content = [
   "```",
   "Timeline de perte de connectivité :",
   "────────────────────────────────────────────────",
-  "[10:00
+  "[10:00] WAN Link Down",
+  "        → Collector detecte l'échec d'envoi",
+  "        → Switch mode BUFFER (stockage RAM + disk si besoin)",
+  "",
+  "[10:45] WAN Link Up",
+  "        → Collector detecte la connectivité",
+  "        → Flush du buffer (priorité FIFO)",
+  "        → Envoi des métriques temps réel en parallèle",
+  "",
+  "[10:46] Ingestion Kafka",
+  "        → TimescaleDB insère les données avec timestamp 10:00-10:45",
+  "        → Grafana affiche les données rétroactivement",
+  "────────────────────────────────────────────────",
+  "```",
+  "",
+  "## Alerting intelligent avec Flink",
+  "",
+  "Avoir des graphes, c'est bien. Avoir des alertes exploitables, c'est mieux. Notre moteur d'alerting basé sur Flink traite les flux en temps réel pour détecter des **patterns complexes**, pas juste des seuils.",
+  "",
+  "### Exemple : Détection de flapping Wi-Fi",
+  "",
+  "Une alerte classique \"AP Down\" est inutile si l'AP redémarre toutes les 2 minutes. Flink nous permet de définir des fenêtres temporelles :",
+  "",
+  "```java",
+  "// Logique Flink CEP (Complex Event Processing)",
+  "Pattern<Event, ?> flappingPattern = Pattern.<Event>begin(\"first_down\")",
+  "    .where(evt -> evt.type == AP_STATUS_DOWN)",
+  "    .next(\"recovery\")",
+  "    .where(evt -> evt.type == AP_STATUS_UP)",
+  "    .within(Time.minutes(5))",
+  "    .times(3); // 3 redémarrages en 5 minutes",
+  "",
+  "// Si pattern matché → Alerte critique \"AP Flapping\" + Ticket Jira auto",
+  "```",
+  "",
+  "## Conclusion",
+  "",
+  "Spot traite aujourd'hui plus de **3 milliards de points de données par jour**. C'est un avantage concurrentiel majeur qui nous permet d'être proactifs plutôt que réactifs.",
+  "",
+  "Prochaine étape pour Spot : l'intégration de modèles ML pour la **prédiction de pannes** avant qu'elles n'arrivent (AIOps).",
+  "",
+  "---",
+  "",
+  "*Article rédigé par l'équipe Platform de Wifirst — Juillet 2025*",
+].join("\n");
+
+// ─────────────────────────────────────────────────
+// Article 5: NetDevOps
+// ─────────────────────────────────────────────────
+const article5Content = [
+  "# NetDevOps : Automatiser 50 000 équipements sans tout casser",
+  "",
+  "## L'ère du CLI artisanal est révolue",
+  "",
+  "Il fut un temps où gérer un réseau signifiait se connecter en SSH sur chaque switch, taper quelques commandes Cisco IOS, sauvegarder (`wr mem`), et passer au suivant. À l'échelle de Wifirst (15 000 sites), cette approche est impossible. Elle est lente, source d'erreurs, et non reproductible.",
+  "",
+  "Nous avons basculé vers une approche **NetDevOps** : traiter notre infrastructure réseau comme du code logiciel.",
+  "",
+  "## La stack d'automatisation",
+  "",
+  "Notre pipeline d'automatisation repose sur 3 piliers :",
+  "",
+  "1.  **Source of Truth (SoT)** : Netbox",
+  "2.  **Orchestrateur** : AWX (Ansible Tower open source)",
+  "3.  **Exécution** : Ansible + Python",
+  "",
+  "### 1. Netbox : La vérité, toute la vérité",
+  "",
+  "Rien n'existe dans le réseau si ce n'est pas dans Netbox. C'est notre base de données de référence pour :",
+  "- Les sites et leur adresse",
+  "- Les équipements (modèle, serial, IP de management)",
+  "- Les connexions (câblage, ports)",
+  "- Les préfixes IP et VLANs",
+  "",
+  "Nos scripts Ansible ne contiennent **aucune variable en dur**. Tout est dynamique, tiré de l'API Netbox via un inventaire dynamique.",
+  "",
+  "### 2. Ansible : L'ouvrier incatigable",
+  "",
+  "Nous gérons des équipements hétérogènes : Cisco, Aruba, Ruckus, Mikrotik, Dell. Ansible nous permet d'abstraire cette complexité grâce aux collections.",
+  "",
+  "#### Structure d'un rôle Ansible typique",
+  "",
+  "```yaml",
+  "# roles/switch_configure/tasks/main.yml",
+  "---",
+  "- name: Render switch configuration",
+  "  template:",
+  "    src: \"{{ device_manufacturer }}.j2\"",
+  "    dest: \"/tmp/configs/{{ inventory_hostname }}.conf\"",
+  "",
+  "- name: Push config to device (idempotent)",
+  "  network_cli:",
+  "    host: \"{{ ansible_host }}\"",
+  "    config: \"{{ lookup('file', '/tmp/configs/' + inventory_hostname + '.conf') }}\"",
+  "    diff: yes",
+  "  notify: save_config",
+  "```",
+  "",
+  "### Le défi de l'idempotence réseau",
+  "",
+  "En gestion de serveurs, `apt install nginx` est idempotent : si c'est déjà là, il ne fait rien. En réseau, c'est plus dur. Pousser une config peut couper votre propre accès SSH !",
+  "",
+  "Nous utilisons une stratégie de **\"config replacement\"** ou de **\"declarative state\"** quand c'est possible, plutôt que d'envoyer des commandes ligne à ligne.",
+  "",
+  "## CI/CD pour le réseau",
+  "",
+  "Avant de pousser une config sur 5000 switchs, on veut être sûr qu'elle marche. Voici notre pipeline GitLab CI :",
+  "",
+  "```",
+  "┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐",
+  "│  Lint    │───►│  Test    │───►│  Dry-Run │───►│  Deploy  │",
+  "│ (Yamllint│    │ (GNS3 /  │    │ (Check   │    │ (Prod)   │",
+  "│  Ansible-│    │  Batfish)│    │  mode)   │    │          │",
+  "│  lint)   │    │          │    │          │    │          │",
+  "└──────────┘    └──────────┘    └──────────┘    └──────────┘",
+  "```",
+  "",
+  "### Batfish : Valider avant de déployer",
+  "",
+  "Nous utilisons **Batfish** pour simuler l'impact d'un changement de config (ACL, routage) sans toucher au matériel réel. C'est un \"jumeau numérique\" du réseau.",
+  "",
+  "```python",
+  "# Test Batfish dans la CI",
+  "def test_acl_permits_dns(snap):",
+  "    result = bfq.testFilters(",
+  "        headers=HeaderConstraints(dstPort=53, protocol='udp'),",
+  "        action='deny'",
+  "    ).answer(snap)",
+  "    assert len(result.frame()) == 0, \"DNS traffic is blocked!\"",
+  "```",
+  "",
+  "## Cas d'usage : La campagne de mise à jour firmware",
+  "",
+  "Mettre à jour 12 000 APs manuellement prendrait des mois. Avec notre playbook Ansible `firmware_upgrade.yml` :",
+  "",
+  "1.  **Pre-check** : Vérifie l'espace disque, la charge CPU, les clients connectés.",
+  "2.  **Drain** : Migre les clients vers les APs voisins (802.11v).",
+  "3.  **Upgrade** : Upload image + reboot (rolling update, max 10% du site à la fois).",
+  "4.  **Post-check** : Vérifie la version, les associations OSPF, le nombre de clients.",
+  "5.  **Rollback** : Si le post-check échoue, retour automatique à l'ancienne version.",
+  "",
+  "Résultat : **99.8% de succès** sur 12 000 APs en 3 nuits, zéro intervention humaine.",
+  "",
+  "## Conclusion",
+  "",
+  "Le NetDevOps n'est pas magique, c'est de la rigueur. Mais une fois en place, il transforme l'équipe réseau : moins de \"pompiers\", plus d'architectes.",
+  "",
+  "---",
+  "",
+  "*Article rédigé par l'équipe NetDev de Wifirst — Août 2025*",
+].join("\n");
+
+// ─────────────────────────────────────────────────
+// Seed Logic
+// ─────────────────────────────────────────────────
+
+const articles = [
+  {
+    slug: "bienvenue-sur-le-blog-tech-wifirst",
+    title: "Bienvenue sur le blog tech Wifirst",
+    content: article1Content,
+    excerpt: "Pourquoi nous lançons ce blog, qui nous sommes, et ce que vous allez y trouver. Plongée dans les coulisses de l'ingénierie Wifirst.",
+    category: "Culture",
+    tags: ["Wifirst", "Engineering", "Culture", "Recrutement"],
+    coverImage: "/images/blog/article1-stack.png",
+    featured: true,
+    author: {
+      name: "David Berkowicz",
+      role: "CTO",
+      avatar: "https://ui-avatars.com/api/?name=David+Berkowicz&background=0D8ABC&color=fff"
+    },
+    readTime: 5,
+    publishedAt: Timestamp.fromDate(new Date("2025-09-01T10:00:00Z"))
+  },
+  {
+    slug: "wifi-6e-retour-experience",
+    title: "Wi-Fi 6E : retour d'expérience sur un déploiement à grande échelle",
+    content: article2Content,
+    excerpt: "Comment nous avons migré 500+ sites vers le Wi-Fi 6E. Analyse de performance, challenges techniques et impact sur l'expérience utilisateur.",
+    category: "Wi-Fi",
+    tags: ["Wi-Fi 6E", "Radio", "6GHz", "Engineering"],
+    coverImage: "/images/blog/article2-spectrum.png",
+    featured: false,
+    author: {
+      name: "Équipe Radio",
+      role: "NetDev Squad",
+      avatar: "https://ui-avatars.com/api/?name=Radio+Team&background=6B21A8&color=fff"
+    },
+    readTime: 8,
+    publishedAt: Timestamp.fromDate(new Date("2025-09-15T14:30:00Z"))
+  },
+  {
+    slug: "zero-trust-network-architecture",
+    title: "Sécuriser un réseau d'entreprise : notre approche Zero Trust",
+    content: article3Content,
+    excerpt: "Fini le château fort. Découvrez comment nous implémentons le Zero Trust (802.1X, micro-segmentation, NAC) sur des milliers de sites.",
+    category: "Security",
+    tags: ["Zero Trust", "Security", "Network", "802.1X", "PCI-DSS"],
+    coverImage: "/images/blog/article3-zerotrust.png",
+    featured: false,
+    author: {
+      name: "Équipe Sécurité",
+      role: "SecOps Squad",
+      avatar: "https://ui-avatars.com/api/?name=Security+Team&background=DC2626&color=fff"
+    },
+    readTime: 10,
+    publishedAt: Timestamp.fromDate(new Date("2025-10-02T09:15:00Z"))
+  },
+  {
+    slug: "spot-monitoring-at-scale",
+    title: "Comment nous monitorons 15 000 sites en temps réel avec Spot",
+    content: article4Content,
+    excerpt: "Architecture de Spot, notre plateforme d'observabilité maison : Go, Kafka, Flink et TimescaleDB pour ingérer 2 millions de métriques par minute.",
+    category: "Observability",
+    tags: ["Monitoring", "Go", "Kafka", "Flink", "TimescaleDB"],
+    coverImage: "/images/blog/article4-spot.png",
+    featured: true,
+    author: {
+      name: "Équipe Platform",
+      role: "Core Infra Squad",
+      avatar: "https://ui-avatars.com/api/?name=Platform+Team&background=059669&color=fff"
+    },
+    readTime: 12,
+    publishedAt: Timestamp.fromDate(new Date("2025-10-20T11:00:00Z"))
+  }
+];
+
+async function seed() {
+  console.log("🚀 Starting seed...");
+  
+  for (const article of articles) {
+    try {
+      console.log(`Writing article: ${article.title}`);
+      await setDoc(doc(db, "articles", article.slug), article);
+      console.log(`✅ Success: ${article.slug}`);
+    } catch (error) {
+      console.error(`❌ Error writing ${article.slug}:`, error);
+    }
+  }
+
+  console.log("✨ Seed complete!");
+  process.exit(0);
+}
+
+seed();

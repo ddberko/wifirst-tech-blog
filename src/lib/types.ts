@@ -1,3 +1,9 @@
+export interface Author {
+  name: string;
+  role: string;
+  avatar: string;
+}
+
 export interface Post {
   slug: string;
   title: string;
@@ -6,7 +12,7 @@ export interface Post {
   coverImage: string;
   category: string;
   tags: string[];
-  author: string;
+  author: Author;
   featured: boolean;
   publishedAt: Date;
   updatedAt: Date;
@@ -20,6 +26,6 @@ export interface PostInput {
   coverImage?: string;
   category: string;
   tags?: string[];
-  author: string;
+  author: Author;
   featured?: boolean;
 }

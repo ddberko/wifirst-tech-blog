@@ -1,36 +1,13 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { getPosts, getCategories } from "@/lib/posts";
-import { Post } from "@/lib/types";
 import FeaturedPost from "@/components/FeaturedPost";
 import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
 
-export default function HomePage() {
-  const [featured, setFeatured] = useState<Post | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const allPosts = await getPosts({ max: 20 });
-        const feat = allPosts.find((p) => p.featured) || null;
-        setFeatured(feat);
-        setPosts(feat ? allPosts.filter((p) => p.slug !== feat.slug) : allPosts);
-
-        const cats = await getCategories();
-        setCategories(cats);
-      } catch (err) {
-        console.error("Failed to load posts:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
+export default async function HomePage() {
+  const allPosts = await getPosts({ max: 20 });
+  const featured = allPosts.find((p) => p.featured) || null;
+  const posts = featured ? allPosts.filter((p) => p.slug !== featured.slug) : allPosts;
+  const categories = await getCategories();
 
   return (
     <>
@@ -45,8 +22,9 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/10">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Engineering Blog
+              Engineering Blog v1.1.0
             </div>
+            
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight leading-[1.1]">
               Wifirst<br />
               <span className="text-blue-200">Tech Blog</span>
@@ -61,21 +39,8 @@ export default function HomePage() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Loading */}
-        {loading && (
-          <div className="py-20 text-center">
-            <div className="inline-flex items-center gap-3 text-gray-400">
-              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              Loading articles...
-            </div>
-          </div>
-        )}
-
         {/* Empty state */}
-        {!loading && !featured && posts.length === 0 && (
+        {posts.length === 0 && !featured && (
           <div className="text-center py-24">
             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

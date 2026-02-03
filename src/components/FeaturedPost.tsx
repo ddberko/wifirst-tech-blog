@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Post } from "@/lib/types";
+import ClientDate from "./ClientDate";
 
 export default function FeaturedPost({ post }: { post: Post }) {
   return (
@@ -7,10 +9,12 @@ export default function FeaturedPost({ post }: { post: Post }) {
       <Link href={`/post?slug=${post.slug}`} className="block">
         <div className="relative aspect-[21/9] min-h-[360px]">
           {post.coverImage ? (
-            <img
+            <Image
               src={post.coverImage}
               alt={post.title}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              priority
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-[#0066CC] via-[#004C99] to-[#003366]" />
@@ -37,18 +41,24 @@ export default function FeaturedPost({ post }: { post: Post }) {
               </p>
               <div className="flex items-center gap-3 text-sm text-gray-300">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-xs font-medium">
-                    {post.author?.charAt(0)?.toUpperCase() || "W"}
-                  </div>
-                  <span>{post.author}</span>
+                  {post.author.avatar ? (
+                     <Image 
+                       src={post.author.avatar} 
+                       alt={post.author.name}
+                       width={28}
+                       height={28}
+                       className="rounded-full bg-white/20 backdrop-blur-sm object-cover"
+                     />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-xs font-medium">
+                      {post.author.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span>{post.author.name}</span>
                 </div>
                 <span className="text-gray-500">&middot;</span>
                 <span>
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  <ClientDate date={post.publishedAt} format="long" />
                 </span>
               </div>
             </div>
