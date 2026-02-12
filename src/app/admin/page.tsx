@@ -77,12 +77,20 @@ function AdminContent() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
           <p className="text-gray-500 mt-1 text-sm sm:text-base">Manage your blog articles</p>
         </div>
-        <Link
-          href="/"
-          className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors self-start sm:self-auto"
-        >
-          View Blog
-        </Link>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <Link
+            href="/admin/analytics"
+            className="px-4 py-2 text-sm font-medium text-white bg-[#0066CC] rounded-lg hover:bg-[#0052a3] transition-colors"
+          >
+            Analytics
+          </Link>
+          <Link
+            href="/"
+            className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            View Blog
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}

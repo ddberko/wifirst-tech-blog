@@ -11,6 +11,7 @@ import CategoryBadge from "@/components/CategoryBadge";
 import PostCard from "@/components/PostCard";
 import ClientDate from "@/components/ClientDate";
 import AuthGuard from "@/components/AuthGuard";
+import NewsletterButton from "@/components/NewsletterButton";
 /* eslint-disable @next/next/no-img-element */
 
 function ReadingProgress() {
@@ -169,6 +170,11 @@ function PostContent() {
 
         {/* Content */}
         <MarkdownRenderer content={post.content} />
+
+        {/* Newsletter CTA */}
+        <div className="mt-16">
+          <NewsletterButton variant="full" />
+        </div>
 
         {/* Related */}
         {related.length > 0 && (

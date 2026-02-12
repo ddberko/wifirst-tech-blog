@@ -386,4 +386,5 @@ fs.writeFileSync(outPath, buffer);
 console.log(`✅ Schéma généré : ${outPath} (${(buffer.length / 1024).toFixed(1)} KB)`);
 
 // Also export for programmatic use
-export { renderDiagram, DiagramConfig, DiagramNode, DiagramArrow };
+export { renderDiagram };
+export type { DiagramConfig, DiagramNode, DiagramArrow };

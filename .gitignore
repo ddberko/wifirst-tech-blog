@@ -36,3 +36,7 @@ yarn-error.log*
 next-env.d.ts
 service-account.json
 .firebase/
+
+# cloud functions
+functions/node_modules/
+functions/lib/

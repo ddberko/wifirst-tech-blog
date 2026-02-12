@@ -33,3 +33,44 @@ export interface PostInput {
   featured?: boolean;
   status?: PostStatus;
 }
+
+export interface Subscriber {
+  uid: string;
+  email: string;
+  displayName: string;
+  subscribedAt: Date;
+  active: boolean;
+  categories: string[];
+  unsubscribeToken: string;
+}
+
+export interface AnalyticsEvent {
+  type: 'page_view' | 'article_read';
+  path: string;
+  slug?: string;
+  sessionId: string;
+  userId?: string;
+  timestamp: Date;
+  date: string;
+}
+
+export interface DailyViewData {
+  date: string;
+  views: number;
+  reads: number;
+}
+
+export interface TopArticle {
+  slug: string;
+  title: string;
+  views: number;
+}
+
+export interface AnalyticsData {
+  dailyViews: DailyViewData[];
+  topArticles: TopArticle[];
+  totalViews: number;
+  totalReads: number;
+  totalSubscribers: number;
+  activeSubscribers: number;
+}

@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Suspense } from 'react';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,6 +42,9 @@ export default function RootLayout({
         style={{ fontFamily: 'var(--font-geist-sans), system-ui, -apple-system, sans-serif' }}
       >
         <Header />
+        <Suspense fallback={null}>
+          <AnalyticsTracker />
+        </Suspense>
         <main className="min-h-screen">{children}</main>
         <Footer />
       </body>
