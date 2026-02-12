@@ -22,28 +22,53 @@ function SearchResults() {
     setError(null);
     try {
       const snap = await getDocs(collection(db, "articles"));
-      const lowerTerm = term.toLowerCase();
-      const results = snap.docs
+      const terms = term.toLowerCase().split(/\s+/).filter(Boolean);
+
+      // Normalize text: remove accents for fuzzy matching
+      const normalize = (s: string) =>
+        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+      const normalizedTerms = terms.map(normalize);
+
+      const scored = snap.docs
         .map((doc) => {
           const data = doc.data();
-          return {
+          const post = {
             ...data,
             status: data.status || "published",
             publishedAt: data.publishedAt?.toDate?.() || new Date(),
             updatedAt: data.updatedAt?.toDate?.() || new Date(),
           } as Post;
+          return post;
         })
         .filter((p) => p.status === "published")
-        .filter(
-          (p) =>
-            p.title?.toLowerCase().includes(lowerTerm) ||
-            p.excerpt?.toLowerCase().includes(lowerTerm) ||
-            p.tags?.some((t: string) => t.toLowerCase().includes(lowerTerm)) ||
-            p.category?.toLowerCase().includes(lowerTerm)
-        )
-        .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+        .map((p) => {
+          const title = normalize(p.title || "");
+          const excerpt = normalize(p.excerpt || "");
+          const tags = (p.tags || []).map((t: string) => normalize(t)).join(" ");
+          const category = normalize(p.category || "");
+          const content = normalize(p.content || "").slice(0, 2000); // first 2000 chars
+          const allText = `${title} ${excerpt} ${tags} ${category} ${content}`;
 
-      setPosts(results);
+          let score = 0;
+          for (const t of normalizedTerms) {
+            if (title.includes(t)) score += 10;
+            if (tags.includes(t)) score += 5;
+            if (category.includes(t)) score += 5;
+            if (excerpt.includes(t)) score += 3;
+            if (content.includes(t)) score += 1;
+          }
+
+          // Bonus: all terms present
+          if (normalizedTerms.every((t) => allText.includes(t))) score += 5;
+
+          return { post: p, score };
+        })
+        .filter(({ score }) => score > 0)
+        .sort((a, b) => b.score - a.score || new Date(b.post.publishedAt).getTime() - new Date(a.post.publishedAt).getTime())
+        .map(({ post }) => post);
+
+      setPosts(scored);
     } catch (err) {
       console.error("Search error:", err);
       setError(`Erreur de recherche : ${err instanceof Error ? err.message : String(err)}`);
