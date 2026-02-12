@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Link from "next/link";
 import { getPostBySlug, getPosts } from "@/lib/posts";
 import { Post } from "@/lib/types";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import CategoryBadge from "@/components/CategoryBadge";
 import PostCard from "@/components/PostCard";
 import ClientDate from "@/components/ClientDate";
+import AuthGuard from "@/components/AuthGuard";
 /* eslint-disable @next/next/no-img-element */
 
 function ReadingProgress() {
@@ -116,11 +118,26 @@ function PostContent() {
 
       <article className="max-w-5xl mx-auto px-4 py-12">
         {/* Meta */}
-        <div className="flex items-center gap-3 mb-6">
-          <CategoryBadge category={post.category} />
-          {post.tags?.map((tag) => (
-            <span key={tag} className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">#{tag}</span>
-          ))}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <CategoryBadge category={post.category} />
+            {post.tags?.slice(0, 5).map((tag) => (
+              <span key={tag} className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full whitespace-nowrap">#{tag}</span>
+            ))}
+            {post.tags && post.tags.length > 5 && (
+              <span className="text-xs text-gray-300">+{post.tags.length - 5}</span>
+            )}
+          </div>
+          {/* Edit button - visible for authenticated users */}
+          <Link
+            href={`/post/edit?slug=${slug}`}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0066CC] bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors self-start sm:self-auto"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit
+          </Link>
         </div>
 
         {/* Title */}
@@ -169,10 +186,12 @@ function PostContent() {
 
 export default function PostPage() {
   return (
-    <Suspense fallback={
-      <div className="max-w-3xl mx-auto px-4 py-24 text-center text-gray-400">Loading...</div>
-    }>
-      <PostContent />
-    </Suspense>
+    <AuthGuard>
+      <Suspense fallback={
+        <div className="max-w-3xl mx-auto px-4 py-24 text-center text-gray-400">Loading...</div>
+      }>
+        <PostContent />
+      </Suspense>
+    </AuthGuard>
   );
 }

@@ -1,25 +1,30 @@
-#!/usr/bin/env npx tsx
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+/**
+ * Liste tous les articles publiés sur Firestore
+ * Usage: cd /Users/davidberkowicz/Projects/wifirst-tech-blog && NODE_PATH=./node_modules npx tsx scripts/list-articles.ts
+ */
 
-const app = initializeApp({
-  apiKey: "AIzaSyDF7sggsBkCZxl_9IcZP_K7thbsymcqGfE",
-  authDomain: "wifirst-tech-blog.firebaseapp.com",
-  projectId: "wifirst-tech-blog",
-  storageBucket: "wifirst-tech-blog.firebasestorage.app",
-  messagingSenderId: "859792971226",
-  appId: "1:859792971226:web:18e02c03db7d00c5e95ce3",
-});
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-const db = getFirestore(app);
+const PROJECT_ROOT = '/Users/davidberkowicz/Projects/wifirst-tech-blog';
+const SERVICE_ACCOUNT_PATH = join(PROJECT_ROOT, 'service-account.json');
 
-async function list() {
-  const snapshot = await getDocs(collection(db, "articles"));
-  console.log(`Found ${snapshot.size} articles:`);
-  snapshot.forEach(doc => {
-    console.log(`- ID: ${doc.id} | Slug field: ${doc.data().slug} | Title: ${doc.data().title}`);
+async function main() {
+  const serviceAccount = JSON.parse(readFileSync(SERVICE_ACCOUNT_PATH, 'utf8'));
+  initializeApp({ credential: cert(serviceAccount) });
+  const db = getFirestore();
+
+  const snapshot = await db.collection('articles').orderBy('publishedAt', 'desc').get();
+
+  console.log(`📰 ${snapshot.size} articles publiés sur Firestore:\n`);
+  snapshot.docs.forEach((doc, i) => {
+    const d = doc.data();
+    const date = d.publishedAt?.toDate?.()?.toISOString?.()?.slice(0, 10) ?? '?';
+    console.log(`${i + 1}. [${date}] ${d.title}`);
+    console.log(`   slug: ${d.slug} | cat: ${d.category} | tags: ${(d.tags || []).join(', ')}`);
   });
-  process.exit(0);
 }
 
-list();
+main().catch(console.error);

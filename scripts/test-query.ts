@@ -28,7 +28,10 @@ async function test() {
     if (snapshot.empty) {
       console.log(`❌ NOT FOUND: ${slug}`);
     } else {
-      console.log(`✅ FOUND: ${slug} - Title: ${snapshot.docs[0].data().title}`);
+      const data = snapshot.docs[0].data();
+      console.log(`✅ FOUND: ${slug} - Title: ${data.title}`);
+      console.log(`   Cover: ${data.coverImage}`);
+      console.log(`   Author Avatar: ${data.author?.avatar}`);
     }
   }
   process.exit(0);

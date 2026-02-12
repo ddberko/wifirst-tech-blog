@@ -4,6 +4,8 @@ export interface Author {
   avatar: string;
 }
 
+export type PostStatus = 'draft' | 'published';
+
 export interface Post {
   slug: string;
   title: string;
@@ -14,6 +16,7 @@ export interface Post {
   tags: string[];
   author: Author;
   featured: boolean;
+  status: PostStatus;
   publishedAt: Date;
   updatedAt: Date;
 }
@@ -28,4 +31,5 @@ export interface PostInput {
   tags?: string[];
   author: Author;
   featured?: boolean;
+  status?: PostStatus;
 }

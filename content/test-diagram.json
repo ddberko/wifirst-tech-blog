@@ -1,0 +1,26 @@
+{
+  "title": "Architecture Zero Trust — Flux d'authentification",
+  "subtitle": "802.1X → RADIUS → Policy Engine → Accès réseau",
+  "width": 1200,
+  "height": 600,
+  "nodes": [
+    { "id": "user", "label": "Utilisateur", "sublabel": "Supplicant 802.1X", "x": 150, "y": 200, "color": "orange", "emoji": "👤", "width": 180, "height": 70 },
+    { "id": "ap", "label": "Point d'Accès", "sublabel": "Authenticator", "x": 400, "y": 200, "color": "blue", "emoji": "📡", "width": 180, "height": 70 },
+    { "id": "radius", "label": "RADIUS", "sublabel": "FreeRADIUS / NPS", "x": 650, "y": 200, "color": "green", "shape": "cylinder", "width": 160, "height": 80 },
+    { "id": "policy", "label": "Policy Engine", "sublabel": "Règles d'accès dynamiques", "x": 900, "y": 200, "color": "purple", "shape": "diamond", "width": 180, "height": 90 },
+    { "id": "vlan_corp", "label": "VLAN Corporate", "sublabel": "Full access", "x": 300, "y": 450, "color": "green", "width": 180, "height": 60 },
+    { "id": "vlan_guest", "label": "VLAN Guest", "sublabel": "Internet only", "x": 600, "y": 450, "color": "orange", "width": 180, "height": 60 },
+    { "id": "vlan_iot", "label": "VLAN IoT", "sublabel": "Micro-segmenté", "x": 900, "y": 450, "color": "red", "width": 180, "height": 60 },
+    { "id": "internet", "label": "Internet", "x": 600, "y": 100, "color": "blue", "shape": "cloud" }
+  ],
+  "arrows": [
+    { "from": "user", "to": "ap", "label": "EAP-TLS", "color": "blue" },
+    { "from": "ap", "to": "radius", "label": "RADIUS (UDP/1812)", "color": "green" },
+    { "from": "radius", "to": "policy", "label": "Access-Request", "color": "purple" },
+    { "from": "policy", "to": "vlan_corp", "label": "Accept → VLAN 10", "color": "green", "dashed": true },
+    { "from": "policy", "to": "vlan_guest", "label": "Accept → VLAN 20", "color": "orange", "dashed": true },
+    { "from": "policy", "to": "vlan_iot", "label": "Accept → VLAN 30", "color": "red", "dashed": true },
+    { "from": "ap", "to": "internet", "color": "gray" }
+  ],
+  "legend": "🔒 Authentification 802.1X avec assignation VLAN dynamique basée sur le profil utilisateur"
+}

@@ -7,10 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync": "npx tsx scripts/sync-to-firestore.ts"
+    "sync": "npx tsx scripts/sync-to-firestore.ts",
+    "upload-image": "npx tsx scripts/upload-image.ts",
+    "migrate-images": "npx tsx scripts/migrate-images-to-storage.ts",
+    "migrate-images:dry": "npx tsx scripts/migrate-images-to-storage.ts --dry-run",
+    "coding": "openclaw exec --workdir . --pty -- 'claudecode'"
   },
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.18.0",
+    "@google-cloud/storage": "^7.18.0",
     "@tailwindcss/typography": "^0.5.19",
+    "canvas": "^3.2.1",
     "firebase": "^12.8.0",
     "firebase-admin": "^12.7.0",
     "firebase-tools": "^15.5.1",
@@ -20,7 +27,8 @@
     "react-dom": "^18",
     "react-markdown": "^10.1.0",
     "remark-frontmatter": "^5.0.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "roughjs": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^20",

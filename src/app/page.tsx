@@ -1,13 +1,57 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { getPosts, getCategories } from "@/lib/posts";
 import FeaturedPost from "@/components/FeaturedPost";
 import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
+import AuthGuard from "@/components/AuthGuard";
+import { Post } from "@/lib/types";
 
-export default async function HomePage() {
-  const allPosts = await getPosts({ max: 20 });
-  const featured = allPosts.find((p) => p.featured) || null;
-  const posts = featured ? allPosts.filter((p) => p.slug !== featured.slug) : allPosts;
-  const categories = await getCategories();
+function HomeContent() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [featured, setFeatured] = useState<Post | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        console.log("[Home] Starting to load posts...");
+        const allPosts = await getPosts({ max: 20 });
+        console.log("[Home] Raw posts fetched:", allPosts);
+        
+        if (!allPosts || allPosts.length === 0) {
+          console.warn("[Home] No posts returned from getPosts()");
+        }
+
+        const feat = allPosts.find((p) => p.featured) || null;
+        console.log("[Home] Featured post found:", feat?.title || "None");
+        setFeatured(feat);
+        
+        const otherPosts = feat ? allPosts.filter((p) => p.slug !== feat.slug) : allPosts;
+        console.log("[Home] Setting posts to state, count:", otherPosts.length);
+        setPosts(otherPosts);
+        
+        const cats = await getCategories();
+        setCategories(cats);
+      } catch (err) {
+        console.error("Failed to load home data:", err);
+        setError(String(err));
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  if (loading) return (
+    <div className="max-w-7xl mx-auto px-4 py-24 text-center text-gray-400">
+      <div className="animate-pulse mb-4 text-2xl font-bold">Wifirst Tech</div>
+      Loading engineering insights...
+    </div>
+  );
 
   return (
     <>
@@ -18,13 +62,8 @@ export default async function HomePage() {
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
           <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full -translate-x-1/2 -translate-y-1/2" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium px-4 py-2 rounded-full mb-6 border border-white/10">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Engineering Blog v1.1.0
-            </div>
-            
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight leading-[1.1]">
               Wifirst<br />
               <span className="text-blue-200">Tech Blog</span>
@@ -88,5 +127,13 @@ export default async function HomePage() {
         )}
       </div>
     </>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <AuthGuard>
+      <HomeContent />
+    </AuthGuard>
   );
 }

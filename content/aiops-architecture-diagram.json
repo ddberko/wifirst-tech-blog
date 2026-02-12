@@ -1,0 +1,21 @@
+{
+  "title": "Architecture AIOps Réseau — 5 couches",
+  "width": 900,
+  "height": 600,
+  "nodes": [
+    { "id": "collect", "label": "Collecte\n(gNMI, SNMP, Syslog,\nNetFlow, RADIUS)", "x": 450, "y": 50, "shape": "box", "color": "cyan", "width": 220, "height": 70 },
+    { "id": "datalake", "label": "Data Lake\n(TimescaleDB, Elastic,\nFeature Store)", "x": 450, "y": 170, "shape": "cylinder", "color": "blue", "width": 220, "height": 70 },
+    { "id": "ml", "label": "ML Pipeline\n(Anomaly Detection, RCA,\nForecasting, NLP)", "x": 450, "y": 290, "shape": "ellipse", "color": "purple", "width": 240, "height": 70 },
+    { "id": "policy", "label": "Policy Engine\n(Runbooks, Guardrails,\nConfidence Scores)", "x": 450, "y": 410, "shape": "diamond", "color": "orange", "width": 240, "height": 80 },
+    { "id": "action", "label": "Actionnement\n(NETCONF, REST API,\nClosed-Loop)", "x": 450, "y": 530, "shape": "box", "color": "green", "width": 220, "height": 70 },
+    { "id": "feedback", "label": "Feedback\nLoop", "x": 750, "y": 290, "shape": "ellipse", "color": "teal", "width": 120, "height": 50 }
+  ],
+  "arrows": [
+    { "from": "collect", "to": "datalake", "label": "Ingestion" },
+    { "from": "datalake", "to": "ml", "label": "Features" },
+    { "from": "ml", "to": "policy", "label": "Insights" },
+    { "from": "policy", "to": "action", "label": "Décision" },
+    { "from": "action", "to": "feedback", "label": "Résultat" },
+    { "from": "feedback", "to": "ml", "label": "Apprentissage" }
+  ]
+}

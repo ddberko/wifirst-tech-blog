@@ -2,11 +2,11 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /articles/{articleId} {
+    match /posts/{postId} {
       allow read: if true;
       allow write: if false;
     }
-    match /posts/{postId} {
+    match /articles/{articleId} {
       allow read: if true;
       allow write: if false;
     }
