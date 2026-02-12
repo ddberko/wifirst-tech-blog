@@ -277,6 +277,16 @@ export default function Header() {
             <Link href="/search" className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0066CC] rounded-lg hover:bg-blue-50" onClick={() => setMobileMenuOpen(false)}>
               Search
             </Link>
+            {user && (
+              <Link href="/admin" className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0066CC] rounded-lg hover:bg-blue-50" onClick={() => setMobileMenuOpen(false)}>
+                Admin
+              </Link>
+            )}
+            {user && (
+              <Link href="/profile" className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0066CC] rounded-lg hover:bg-blue-50" onClick={() => setMobileMenuOpen(false)}>
+                Profile
+              </Link>
+            )}
             {categories.length > 0 && (
               <div className="pt-2 border-t border-gray-100 mt-2">
                 <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Categories</p>
@@ -292,6 +302,9 @@ export default function Header() {
                 ))}
               </div>
             )}
+            <div className="pt-2 border-t border-gray-100 mt-2 px-4 py-2">
+              <NewsletterButton variant="compact" />
+            </div>
           </nav>
         )}
       </div>

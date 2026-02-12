@@ -160,7 +160,7 @@ function ProfileContent() {
           <p className="text-sm text-gray-500 mb-4">
             Select categories to filter notifications. Leave all unchecked to receive all articles.
           </p>
-          <div className="grid grid-cols-2 gap-2 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
             {allCategories.map(cat => (
               <label key={cat} className="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                 <input
