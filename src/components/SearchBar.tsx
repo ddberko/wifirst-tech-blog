@@ -25,7 +25,7 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
           placeholder="Search articles, topics, authors..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0066CC]/20 focus:border-[#0066CC] shadow-sm transition-all"
+          className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-[#0066CC]/20 focus:border-[#0066CC] shadow-sm transition-all"
         />
       </div>
       <button
