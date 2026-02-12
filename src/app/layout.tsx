@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Suspense } from 'react';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
+import NewsletterConsent from '@/components/NewsletterConsent';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <Header />
         <Suspense fallback={null}>
           <AnalyticsTracker />
+          <NewsletterConsent />
         </Suspense>
         <main className="min-h-screen">{children}</main>
         <Footer />
