@@ -21,7 +21,7 @@ export default function AnalyticsTracker() {
 
     // If on a post page, also track article_read
     const slug = searchParams.get('slug');
-    if (pathname === '/post' && slug) {
+    if ((pathname === '/post' || pathname === '/post/') && slug) {
       trackArticleRead(slug, fullPath);
     }
   }, [pathname, searchParams]);
