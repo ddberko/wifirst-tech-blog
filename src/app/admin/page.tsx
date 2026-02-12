@@ -79,6 +79,12 @@ function AdminContent() {
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <Link
+            href="/admin/subscribers"
+            className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Abonnés
+          </Link>
+          <Link
             href="/admin/analytics"
             className="px-4 py-2 text-sm font-medium text-white bg-[#0066CC] rounded-lg hover:bg-[#0052a3] transition-colors"
           >

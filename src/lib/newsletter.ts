@@ -3,7 +3,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { getApp } from 'firebase/app';
 
-const functions = getFunctions(getApp());
+const functions = getFunctions(getApp(), 'us-central1');
 
 export async function subscribeToNewsletter(categories: string[] = []): Promise<{ success: boolean; message: string }> {
   const user = auth.currentUser;

@@ -1,7 +1,7 @@
-import { getFunctions, httpsCallable } from 'firebase/functions';
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'firebase/functions';
 import { getApp } from 'firebase/app';
 
-const functions = getFunctions(getApp());
+const functions = getFunctions(getApp(), 'us-central1');
 
 function getSessionId(): string {
   if (typeof window === 'undefined') return '';

@@ -74,7 +74,7 @@ function buildArticleEmail(
   unsubscribeToken: string,
   siteUrl: string
 ): string {
-  const postUrl = `${siteUrl}/articles/${article.slug ?? ""}`;
+  const postUrl = `${siteUrl}/post?slug=${article.slug ?? ""}`;
   const unsubscribeUrl = `${siteUrl}/api/unsubscribe?token=${unsubscribeToken}`;
 
   const coverHtml = article.coverImage
@@ -167,10 +167,18 @@ export const onArticlePublished = onDocumentUpdated(
     const beforeData = event.data?.before.data() as ArticleData | undefined;
     const afterData = event.data?.after.data() as ArticleData | undefined;
 
-    if (!beforeData || !afterData) return;
+    if (!beforeData || !afterData) {
+      console.log("[onArticlePublished] No before/after data, skipping.");
+      return;
+    }
 
-    // Only fire when status transitions from "draft" to "published"
-    if (beforeData.status === "draft" && afterData.status === "published") {
+    console.log("[onArticlePublished] Before status:", beforeData.status, "After status:", afterData.status);
+
+    // Fire when status transitions to "published" (from draft, undefined, or any non-published state)
+    const wasDraft = !beforeData.status || beforeData.status !== "published";
+    const isNowPublished = afterData.status === "published";
+
+    if (wasDraft && isNowPublished) {
       const siteUrl =
         SITE_URL.value() ||
         process.env.SITE_URL ||
@@ -182,6 +190,7 @@ export const onArticlePublished = onDocumentUpdated(
         .where("active", "==", true)
         .get();
 
+      console.log(`[onArticlePublished] Found ${subscribersSnap.size} active subscribers.`);
       if (subscribersSnap.empty) return;
 
       const transporter = createTransporter();
@@ -210,15 +219,17 @@ export const onArticlePublished = onDocumentUpdated(
           );
 
           try {
+            console.log(`[onArticlePublished] Sending email to ${subscriber.email}...`);
             await transporter.sendMail({
               from: fromAddress,
               to: subscriber.email,
               subject: `Nouvel article : ${afterData.title ?? "Sans titre"}`,
               html,
             });
+            console.log(`[onArticlePublished] Email sent to ${subscriber.email} ✅`);
           } catch (err) {
             console.error(
-              `Failed to send email to ${subscriber.email}:`,
+              `[onArticlePublished] Failed to send email to ${subscriber.email}:`,
               err
             );
           }
@@ -379,6 +390,37 @@ export const trackEvent = onCall(async (request) => {
   await db.collection("analytics").add(eventData);
 
   return { success: true };
+});
+
+// ---------------------------------------------------------------------------
+// e-bis) getSubscribers -- HTTPS callable (admin only)
+// ---------------------------------------------------------------------------
+export const getSubscribers = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "You must be signed in.");
+  }
+  if (request.auth.token.email !== ADMIN_EMAIL) {
+    throw new HttpsError("permission-denied", "Only the admin can access subscribers.");
+  }
+
+  const subscribersSnap = await db.collection("subscribers").get();
+  const subscribers = subscribersSnap.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      uid: data.uid || doc.id,
+      email: data.email,
+      displayName: data.displayName || "",
+      active: data.active ?? false,
+      subscribedAt: data.subscribedAt?.toDate?.()?.toISOString() || null,
+      categories: data.categories || data.preferences?.categories || [],
+    };
+  });
+
+  return {
+    total: subscribers.length,
+    active: subscribers.filter((s) => s.active).length,
+    subscribers,
+  };
 });
 
 // ---------------------------------------------------------------------------
