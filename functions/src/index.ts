@@ -327,7 +327,7 @@ export const unsubscribe = onRequest(async (req, res) => {
 // ---------------------------------------------------------------------------
 // d) trackEvent -- HTTPS callable
 // ---------------------------------------------------------------------------
-export const trackEvent = onCall(async (request) => {
+export const trackEvent = onCall({ invoker: "public" }, async (request) => {
   const { type, path, slug, sessionId } = request.data as {
     type?: string;
     path?: string;
