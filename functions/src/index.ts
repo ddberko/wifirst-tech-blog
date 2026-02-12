@@ -327,69 +327,67 @@ export const unsubscribe = onRequest(async (req, res) => {
 // ---------------------------------------------------------------------------
 // d) trackEvent -- HTTPS callable
 // ---------------------------------------------------------------------------
-export const trackEvent = onCall({ invoker: "public" }, async (request) => {
-  const { type, path, slug, sessionId } = request.data as {
-    type?: string;
-    path?: string;
-    slug?: string;
-    sessionId?: string;
-  };
+export const trackEvent = onRequest({ invoker: "public" }, async (req, res) => {
+  corsMiddleware(req, res, async () => {
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
 
-  // Validate input
-  const allowedTypes = ["page_view", "article_read"];
-  if (!type || !allowedTypes.includes(type)) {
-    throw new HttpsError(
-      "invalid-argument",
-      "type must be 'page_view' or 'article_read'."
-    );
-  }
-  if (!path) {
-    throw new HttpsError("invalid-argument", "path is required.");
-  }
-  if (!sessionId) {
-    throw new HttpsError("invalid-argument", "sessionId is required.");
-  }
+    try {
+      const { type, path, slug, sessionId } = req.body as {
+        type?: string;
+        path?: string;
+        slug?: string;
+        sessionId?: string;
+      };
 
-  // Deduplication: check for same sessionId + type + path in the last 30 min
-  const thirtyMinAgo = admin.firestore.Timestamp.fromDate(
-    new Date(Date.now() - 30 * 60 * 1000)
-  );
+      // Validate input
+      const allowedTypes = ["page_view", "article_read"];
+      if (!type || !allowedTypes.includes(type)) {
+        res.status(400).json({ error: "type must be 'page_view' or 'article_read'" });
+        return;
+      }
+      if (!path) {
+        res.status(400).json({ error: "path is required" });
+        return;
+      }
+      if (!sessionId) {
+        res.status(400).json({ error: "sessionId is required" });
+        return;
+      }
 
-  const dupeCheck = await db
-    .collection("analytics")
-    .where("sessionId", "==", sessionId)
-    .where("type", "==", type)
-    .where("path", "==", path)
-    .where("timestamp", ">=", thirtyMinAgo)
-    .limit(1)
-    .get();
+      // Simple deduplication via document ID (sessionId_type_path_dateHour)
+      const currentTime = new Date();
+      const hourKey = currentTime.toISOString().slice(0, 13); // YYYY-MM-DDTHH
+      const dedupeId = `${sessionId}_${type}_${path.replace(/\//g, "_")}_${hourKey}`;
+      const dedupeRef = db.collection("analytics").doc(dedupeId);
+      const existing = await dedupeRef.get();
 
-  if (!dupeCheck.empty) {
-    return { success: true };
-  }
+      if (existing.exists) {
+        res.status(200).json({ success: true });
+        return;
+      }
 
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0, 10); // YYYY-MM-DD
+      const dateStr = currentTime.toISOString().slice(0, 10);
 
-  const eventData: AnalyticsEvent = {
-    type,
-    path,
-    sessionId,
-    timestamp: admin.firestore.Timestamp.now(),
-    date: dateStr,
-  };
+      const eventData: AnalyticsEvent = {
+        type,
+        path,
+        sessionId,
+        timestamp: admin.firestore.Timestamp.now(),
+        date: dateStr,
+      };
 
-  if (slug) {
-    eventData.slug = slug;
-  }
+      if (slug) eventData.slug = slug;
 
-  if (request.auth?.uid) {
-    eventData.userId = request.auth.uid;
-  }
-
-  await db.collection("analytics").add(eventData);
-
-  return { success: true };
+      await dedupeRef.set(eventData);
+      res.status(200).json({ success: true });
+    } catch (err) {
+      console.error("trackEvent error:", err);
+      res.status(500).json({ error: "Internal error" });
+    }
+  });
 });
 
 // ---------------------------------------------------------------------------
