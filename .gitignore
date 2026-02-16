@@ -40,3 +40,7 @@ service-account.json
 # cloud functions
 functions/node_modules/
 functions/lib/
+
+# content drafts & generated assets (published via Firestore, not git)
+content/
+diagrams/

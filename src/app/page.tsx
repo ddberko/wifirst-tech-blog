@@ -69,7 +69,7 @@ function HomeContent() {
               <span className="text-blue-200">Tech Blog</span>
             </h1>
             <p className="text-lg md:text-xl text-blue-100/80 max-w-xl leading-relaxed">
-              Engineering insights, technical deep-dives, and innovations from the team building Europe&apos;s leading WiFi infrastructure.
+              Engineering insights, technical deep-dives, and innovations in networking, AI, and software engineering.
             </p>
           </div>
         </div>

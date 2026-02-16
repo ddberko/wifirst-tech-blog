@@ -19,14 +19,14 @@ import { join, basename } from 'path';
 // ============================================================================
 
 const ARTICLE = {
-  slug: 'cisco-live-emea-2026-ai-native-infrastructure',
-  title: 'Cisco Live EMEA 2026 : les 5 annonces qui redéfinissent l\'infrastructure réseau',
-  excerpt: 'Silicon One G300 à 102,4 Tbps, AgenticOps, AI Defense, cryptographie post-quantique, Nexus One unifié : décryptage des 5 annonces majeures de Cisco Live Amsterdam et ce qu\'elles changent pour les opérateurs.',
+  slug: 'agentic-sre-agents-ia-self-healing-reseau',
+  title: 'Agentic SRE : quand les agents IA prennent les commandes du réseau',
+  excerpt: 'HPE unifie Aruba et Juniper sous un AIOps agentique, Cisco lance le Silicon One G300, Dynatrace déploie des agents autonomes. L\'Agentic SRE transforme la gestion réseau : des agents LLM-driven qui détectent, diagnostiquent et corrigent en temps réel. Décryptage d\'un changement de paradigme.',
   category: 'Infrastructure',
-  tags: ['cisco', 'ai', 'networking', 'silicon-one', 'agenticops', 'pqc', 'liquid-cooling', 'datacenter', 'cisco-live'],
-  readTime: 12,
-  coverImage: 'https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/covers/cisco-live-emea-2026-ai-native.png',
-  contentFile: 'content/cisco-live-emea-2026-ai-native.md',
+  tags: ['agentic-ai', 'sre', 'aiops', 'self-healing', 'hpe', 'cisco', 'dynatrace', 'networking', 'automation', 'llm'],
+  readTime: 15,
+  coverImage: 'https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/covers/2026-02-16-agentic-sre-cover-v4.png',
+  contentFile: 'content/agentic-sre-self-healing-networks.md',
 };
 
 const AUTHOR = {
@@ -124,6 +124,7 @@ async function main() {
     author: AUTHOR,
     publishedAt: now,
     updatedAt: now,
+    status: 'published', // Nécessaire pour déclencher le Cloud Function newsletter
   };
   
   // Publier sur Firestore (utilise merge: true pour ne pas écraser les champs non définis)

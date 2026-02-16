@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { onDocumentUpdated } from "firebase-functions/v2/firestore";
+import { onDocumentUpdated, onDocumentCreated } from "firebase-functions/v2/firestore";
 import { onCall, onRequest, HttpsError } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import * as nodemailer from "nodemailer";
@@ -159,7 +159,109 @@ function createTransporter(): nodemailer.Transporter {
 }
 
 // ---------------------------------------------------------------------------
-// a) onArticlePublished -- Firestore trigger
+// a) Newsletter sending logic (shared between create & update triggers)
+// ---------------------------------------------------------------------------
+
+/**
+ * Send newsletter emails for a published article.
+ * Uses `newsletterSentAt` field to guarantee emails are sent only ONCE per article.
+ */
+async function sendNewsletterForArticle(
+  articleRef: admin.firestore.DocumentReference,
+  articleData: ArticleData
+): Promise<void> {
+  const siteUrl =
+    SITE_URL.value() ||
+    process.env.SITE_URL ||
+    "https://wifirst-tech-blog.web.app";
+
+  // Guard: only send for published articles
+  if (articleData.status !== "published") {
+    console.log("[newsletter] Article not published, skipping.");
+    return;
+  }
+
+  // Guard: check newsletterSentAt to prevent duplicate sends
+  const currentDoc = await articleRef.get();
+  const currentData = currentDoc.data();
+  if (currentData?.newsletterSentAt) {
+    console.log("[newsletter] Newsletter already sent for this article, skipping.");
+    return;
+  }
+
+  // Mark as sent FIRST (optimistic lock to prevent race conditions)
+  await articleRef.update({ newsletterSentAt: admin.firestore.Timestamp.now() });
+
+  // Fetch active subscribers
+  const subscribersSnap = await db
+    .collection("subscribers")
+    .where("active", "==", true)
+    .get();
+
+  console.log(`[newsletter] Found ${subscribersSnap.size} active subscribers.`);
+  if (subscribersSnap.empty) return;
+
+  const transporter = createTransporter();
+  const fromAddress =
+    SMTP_FROM.value() || process.env.SMTP_FROM || "noreply@wifirst.fr";
+
+  const sendPromises = subscribersSnap.docs
+    .map((doc) => doc.data() as Subscriber)
+    .filter((subscriber) => {
+      if (
+        subscriber.categories &&
+        subscriber.categories.length > 0 &&
+        articleData.category
+      ) {
+        return subscriber.categories.includes(articleData.category);
+      }
+      return true;
+    })
+    .map(async (subscriber) => {
+      const html = buildArticleEmail(
+        articleData,
+        subscriber.unsubscribeToken,
+        siteUrl
+      );
+
+      try {
+        console.log(`[newsletter] Sending email to ${subscriber.email}...`);
+        await transporter.sendMail({
+          from: fromAddress,
+          to: subscriber.email,
+          subject: `Nouvel article : ${articleData.title ?? "Sans titre"}`,
+          html,
+        });
+        console.log(`[newsletter] Email sent to ${subscriber.email} ✅`);
+      } catch (err) {
+        console.error(
+          `[newsletter] Failed to send email to ${subscriber.email}:`,
+          err
+        );
+      }
+    });
+
+  await Promise.all(sendPromises);
+}
+
+// ---------------------------------------------------------------------------
+// a1) onArticleCreated -- Firestore trigger (new articles)
+// ---------------------------------------------------------------------------
+export const onArticleCreated = onDocumentCreated(
+  "articles/{articleId}",
+  async (event) => {
+    const articleData = event.data?.data() as ArticleData | undefined;
+    if (!articleData) {
+      console.log("[onArticleCreated] No data, skipping.");
+      return;
+    }
+    console.log("[onArticleCreated] New article status:", articleData.status);
+    await sendNewsletterForArticle(event.data!.ref, articleData);
+  }
+);
+
+// ---------------------------------------------------------------------------
+// a2) onArticlePublished -- Firestore trigger (draft → published updates)
 // ---------------------------------------------------------------------------
 export const onArticlePublished = onDocumentUpdated(
   "articles/{articleId}",
@@ -174,68 +276,12 @@ export const onArticlePublished = onDocumentUpdated(
 
     console.log("[onArticlePublished] Before status:", beforeData.status, "After status:", afterData.status);
 
-    // Fire when status transitions to "published" (from draft, undefined, or any non-published state)
+    // Only fire on status transition to "published"
     const wasDraft = !beforeData.status || beforeData.status !== "published";
     const isNowPublished = afterData.status === "published";
 
     if (wasDraft && isNowPublished) {
-      const siteUrl =
-        SITE_URL.value() ||
-        process.env.SITE_URL ||
-        "https://wifirst-tech-blog.web.app";
-
-      // Fetch active subscribers
-      const subscribersSnap = await db
-        .collection("subscribers")
-        .where("active", "==", true)
-        .get();
-
-      console.log(`[onArticlePublished] Found ${subscribersSnap.size} active subscribers.`);
-      if (subscribersSnap.empty) return;
-
-      const transporter = createTransporter();
-      const fromAddress =
-        SMTP_FROM.value() || process.env.SMTP_FROM || "noreply@wifirst.fr";
-
-      const sendPromises = subscribersSnap.docs
-        .map((doc) => doc.data() as Subscriber)
-        .filter((subscriber) => {
-          // If subscriber has category preferences, check match
-          if (
-            subscriber.categories &&
-            subscriber.categories.length > 0 &&
-            afterData.category
-          ) {
-            return subscriber.categories.includes(afterData.category);
-          }
-          // No preferences means subscribed to all categories
-          return true;
-        })
-        .map(async (subscriber) => {
-          const html = buildArticleEmail(
-            afterData,
-            subscriber.unsubscribeToken,
-            siteUrl
-          );
-
-          try {
-            console.log(`[onArticlePublished] Sending email to ${subscriber.email}...`);
-            await transporter.sendMail({
-              from: fromAddress,
-              to: subscriber.email,
-              subject: `Nouvel article : ${afterData.title ?? "Sans titre"}`,
-              html,
-            });
-            console.log(`[onArticlePublished] Email sent to ${subscriber.email} ✅`);
-          } catch (err) {
-            console.error(
-              `[onArticlePublished] Failed to send email to ${subscriber.email}:`,
-              err
-            );
-          }
-        });
-
-      await Promise.all(sendPromises);
+      await sendNewsletterForArticle(event.data!.after.ref, afterData);
     }
   }
 );

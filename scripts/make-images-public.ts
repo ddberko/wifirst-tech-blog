@@ -14,11 +14,9 @@ async function main() {
   const bucket = storage.bucket(BUCKET_NAME);
   
   const imagesToPublish = [
-    'images/covers/cisco-live-emea-2026-ai-native.png',
-    'images/images/cisco-silicon-one-g300.png',
-    'images/images/cisco-liquid-cooling.png',
-    'images/images/cisco-agenticops.png',
-    'images/images/cisco-pqc-security.png',
+    'images/covers/ebpf-xdp-networking-enterprise.png',
+    'images/images/ebpf-architecture-kernel.png',
+    'images/images/xdp-vs-iptables-path.png',
   ];
   
   for (const imagePath of imagesToPublish) {
