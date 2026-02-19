@@ -34,6 +34,32 @@ const ADMIN_EMAIL = "david.berkowicz@wifirst.fr";
 const corsMiddleware = cors({ origin: true });
 
 // ---------------------------------------------------------------------------
+// Rate limiting for trackEvent (per IP)
+// ---------------------------------------------------------------------------
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 30;
+const RATE_WINDOW_MS = 60_000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Rate limiting for subscribe (per UID)
+// ---------------------------------------------------------------------------
+const subscribeRateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const SUBSCRIBE_LIMIT = 3;
+const SUBSCRIBE_WINDOW_MS = 3_600_000; // 1 hour
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -297,6 +323,19 @@ export const subscribe = onCall(async (request) => {
     );
   }
 
+  const uid = request.auth.uid;
+
+  // Rate limit: max 3 subscribe attempts per UID per hour
+  const now = Date.now();
+  const subEntry = subscribeRateLimitMap.get(uid);
+  if (!subEntry || now > subEntry.resetAt) {
+    subscribeRateLimitMap.set(uid, { count: 1, resetAt: now + SUBSCRIBE_WINDOW_MS });
+  } else if (subEntry.count >= SUBSCRIBE_LIMIT) {
+    throw new HttpsError("resource-exhausted", "Too many subscription attempts. Try again later.");
+  } else {
+    subEntry.count++;
+  }
+
   const { email, displayName, categories } = request.data as {
     email?: string;
     displayName?: string;
@@ -310,7 +349,6 @@ export const subscribe = onCall(async (request) => {
     );
   }
 
-  const uid = request.auth.uid;
   const subscriberRef = db.collection("subscribers").doc(uid);
   const existing = await subscriberRef.get();
 
@@ -380,6 +418,12 @@ export const trackEvent = onRequest({ invoker: "public" }, async (req, res) => {
       return;
     }
 
+    const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "unknown";
+    if (!checkRateLimit(ip)) {
+      res.status(429).json({ error: "Rate limit exceeded" });
+      return;
+    }
+
     try {
       const { type, path, slug, sessionId } = req.body as {
         type?: string;
@@ -443,8 +487,8 @@ export const getSubscribers = onCall(async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "You must be signed in.");
   }
-  if (request.auth.token.email !== ADMIN_EMAIL) {
-    throw new HttpsError("permission-denied", "Only the admin can access subscribers.");
+  if (request.auth.token.role !== "admin") {
+    throw new HttpsError("permission-denied", "Only admins can access subscribers.");
   }
 
   const subscribersSnap = await db.collection("subscribers").get();
@@ -479,10 +523,10 @@ export const getAnalytics = onCall(async (request) => {
     );
   }
 
-  if (request.auth.token.email !== ADMIN_EMAIL) {
+  if (request.auth.token.role !== "admin") {
     throw new HttpsError(
       "permission-denied",
-      "Only the admin can access analytics."
+      "Only admins can access analytics."
     );
   }
 

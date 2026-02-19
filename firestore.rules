@@ -8,7 +8,8 @@ service cloud.firestore {
     }
     match /articles/{articleId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if request.auth != null &&
+        (request.auth.token.role == "publisher" || request.auth.token.role == "admin");
     }
     match /subscribers/{userId} {
       allow read: if request.auth != null && request.auth.uid == userId;
