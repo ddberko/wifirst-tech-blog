@@ -25,8 +25,10 @@ function HomeContent() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && visibleCount < posts.length) {
-          setVisibleCount((prev) => Math.min(prev + POSTS_PER_PAGE, posts.length));
+        if (entries[0].isIntersecting) {
+          setVisibleCount((prev) =>
+            prev < posts.length ? Math.min(prev + POSTS_PER_PAGE, posts.length) : prev
+          );
         }
       },
       { threshold: 0.1, rootMargin: "200px" }
@@ -34,7 +36,7 @@ function HomeContent() {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [visibleCount, posts.length]);
+  }, [posts.length]);
 
   useEffect(() => {
     async function loadData() {
