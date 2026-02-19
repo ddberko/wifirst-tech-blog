@@ -12,16 +12,43 @@ interface ManagedUser {
   uid: string;
   email: string;
   displayName: string;
-  role: string;
+  photoURL: string;
+  role: string | null;
+  lastSignIn: string | null;
   addedAt: string | null;
   updatedAt: string | null;
 }
 
-const ROLE_BADGES: Record<string, { bg: string; text: string }> = {
-  reader: { bg: "bg-gray-100", text: "text-gray-700" },
-  publisher: { bg: "bg-blue-100", text: "text-[#0066CC]" },
-  admin: { bg: "bg-purple-100", text: "text-purple-700" },
+const ROLE_BADGES: Record<string, { bg: string; text: string; label: string }> = {
+  reader: { bg: "bg-gray-100", text: "text-gray-700", label: "Reader" },
+  publisher: { bg: "bg-blue-100", text: "text-[#0066CC]", label: "Publisher" },
+  admin: { bg: "bg-purple-100", text: "text-purple-700", label: "Admin" },
 };
+
+const NO_ROLE_BADGE = { bg: "bg-gray-50", text: "text-gray-400", label: "Aucun r\u00f4le" };
+
+function UserAvatar({ user }: { user: ManagedUser }) {
+  const [imgError, setImgError] = useState(false);
+  const initials = (user.displayName || user.email).charAt(0).toUpperCase();
+
+  if (user.photoURL && !imgError) {
+    return (
+      <img
+        src={user.photoURL}
+        alt={user.displayName || user.email}
+        className="w-8 h-8 rounded-full object-cover shrink-0"
+        referrerPolicy="no-referrer"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  return (
+    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
+      <span className="text-sm font-medium text-gray-600">{initials}</span>
+    </div>
+  );
+}
 
 function UsersContent() {
   const { user, role, loading: roleLoading } = useRole();
@@ -114,7 +141,9 @@ function UsersContent() {
     try {
       const removeFn = httpsCallable(functions, "removeUserRole");
       await removeFn({ uid });
-      setUsers((prev) => prev.filter((u) => u.uid !== uid));
+      setUsers((prev) =>
+        prev.map((u) => (u.uid === uid ? { ...u, role: null } : u))
+      );
     } catch (err) {
       console.error("Error removing user:", err);
       setError("Erreur lors de la suppression");
@@ -369,16 +398,12 @@ function UsersContent() {
           {/* Mobile: cards */}
           <div className="md:hidden space-y-3">
             {users.map((u) => {
-              const badge = ROLE_BADGES[u.role] || ROLE_BADGES.reader;
+              const badge = u.role ? (ROLE_BADGES[u.role] || NO_ROLE_BADGE) : NO_ROLE_BADGE;
               return (
                 <div key={u.uid} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
-                        <span className="text-sm font-medium text-gray-600">
-                          {(u.displayName || u.email).charAt(0).toUpperCase()}
-                        </span>
-                      </div>
+                      <UserAvatar user={u} />
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">{u.email}</p>
                         {u.displayName && (
@@ -387,16 +412,22 @@ function UsersContent() {
                       </div>
                     </div>
                     <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${badge.bg} ${badge.text} shrink-0 ml-2`}>
-                      {u.role}
+                      {badge.label}
                     </span>
                   </div>
+                  {u.lastSignIn && (
+                    <p className="text-xs text-gray-400 mb-2">
+                      Derni&egrave;re connexion : {new Date(u.lastSignIn).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                    </p>
+                  )}
                   <div className="flex items-center justify-between mt-3">
                     <select
-                      value={u.role}
+                      value={u.role || ""}
                       onChange={(e) => handleRoleChange(u.uid, e.target.value as Role)}
                       disabled={actionLoading === u.uid}
                       className="text-sm border border-gray-200 rounded-lg px-2 py-1 bg-white"
                     >
+                      <option value="" disabled>Choisir un r&ocirc;le</option>
                       <option value="reader">Reader</option>
                       <option value="publisher">Publisher</option>
                       <option value="admin">Admin</option>
@@ -424,22 +455,19 @@ function UsersContent() {
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Utilisateur</th>
                   <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Derni&egrave;re connexion</th>
                   <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date ajout</th>
                   <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {users.map((u) => {
-                  const badge = ROLE_BADGES[u.role] || ROLE_BADGES.reader;
+                  const badge = u.role ? (ROLE_BADGES[u.role] || NO_ROLE_BADGE) : NO_ROLE_BADGE;
                   return (
                     <tr key={u.uid} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
-                            <span className="text-sm font-medium text-gray-600">
-                              {(u.displayName || u.email).charAt(0).toUpperCase()}
-                            </span>
-                          </div>
+                          <UserAvatar user={u} />
                           <div className="min-w-0">
                             <p className="text-sm font-medium text-gray-900">{u.email}</p>
                             {u.displayName && (
@@ -450,8 +478,17 @@ function UsersContent() {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${badge.bg} ${badge.text}`}>
-                          {u.role}
+                          {badge.label}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {u.lastSignIn
+                          ? new Date(u.lastSignIn).toLocaleDateString("fr-FR", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "\u2014"}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">
                         {u.addedAt
@@ -465,11 +502,12 @@ function UsersContent() {
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-2">
                           <select
-                            value={u.role}
+                            value={u.role || ""}
                             onChange={(e) => handleRoleChange(u.uid, e.target.value as Role)}
                             disabled={actionLoading === u.uid}
                             className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white focus:ring-2 focus:ring-[#0066CC] focus:border-transparent outline-none disabled:opacity-50"
                           >
+                            <option value="" disabled>Choisir un r&ocirc;le</option>
                             <option value="reader">Reader</option>
                             <option value="publisher">Publisher</option>
                             <option value="admin">Admin</option>
@@ -491,7 +529,7 @@ function UsersContent() {
                 })}
                 {users.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center text-gray-400">
+                    <td colSpan={5} className="px-6 py-12 text-center text-gray-400">
                       Aucun utilisateur
                     </td>
                   </tr>

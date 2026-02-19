@@ -717,16 +717,24 @@ export const listManagedUsers = onCall(async (request) => {
     throw new HttpsError("permission-denied", "Only admins can list users.");
   }
 
+  // Get all Firebase Auth users (up to 1000)
+  const listResult = await admin.auth().listUsers(1000);
+
+  // Get Firestore metadata for cross-referencing
   const usersSnap = await db.collection("users").get();
-  const users = usersSnap.docs.map((doc) => {
-    const data = doc.data();
+  const firestoreMeta = new Map(usersSnap.docs.map((d) => [d.id, d.data()]));
+
+  const users = listResult.users.map((u) => {
+    const meta = firestoreMeta.get(u.uid);
     return {
-      uid: doc.id,
-      email: data.email || "",
-      displayName: data.displayName || "",
-      role: data.role || "",
-      addedAt: data.addedAt?.toDate?.()?.toISOString() || null,
-      updatedAt: data.updatedAt?.toDate?.()?.toISOString() || null,
+      uid: u.uid,
+      email: u.email || "",
+      displayName: u.displayName || "",
+      photoURL: u.photoURL || "",
+      role: (u.customClaims?.role as string) || null,
+      lastSignIn: u.metadata.lastSignInTime || null,
+      addedAt: meta?.addedAt?.toDate?.()?.toISOString() || null,
+      updatedAt: meta?.updatedAt?.toDate?.()?.toISOString() || null,
     };
   });
 
