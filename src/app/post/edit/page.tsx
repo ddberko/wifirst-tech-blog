@@ -347,7 +347,7 @@ function EditPostContent() {
 
 export default function EditPostPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requiredRole={["publisher", "admin"]}>
       <Suspense
         fallback={
           <div className="max-w-4xl mx-auto px-4 py-24 text-center text-gray-400">

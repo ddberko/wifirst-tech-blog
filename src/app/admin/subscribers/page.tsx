@@ -1,13 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { auth } from "@/lib/firebase";
-import { onAuthStateChanged, User } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getApp } from "firebase/app";
+import AuthGuard from "@/components/AuthGuard";
 import Link from "next/link";
-
-const ADMIN_EMAIL = "david.berkowicz@wifirst.fr";
 
 interface Subscriber {
   uid: string;
@@ -24,22 +21,14 @@ interface SubscribersData {
   subscribers: Subscriber[];
 }
 
-export default function SubscribersPage() {
-  const [user, setUser] = useState<User | null>(null);
+function SubscribersContent() {
   const [data, setData] = useState<SubscribersData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => setUser(u));
-    return () => unsub();
+    loadSubscribers();
   }, []);
-
-  useEffect(() => {
-    if (user && user.email === ADMIN_EMAIL) {
-      loadSubscribers();
-    }
-  }, [user]);
 
   async function loadSubscribers() {
     setLoading(true);
@@ -55,23 +44,6 @@ export default function SubscribersPage() {
     } finally {
       setLoading(false);
     }
-  }
-
-  if (!user) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <p className="text-gray-500">Chargement...</p>
-      </div>
-    );
-  }
-
-  if (user.email !== ADMIN_EMAIL) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Accès refusé</h1>
-        <p className="text-gray-500">Cette page est réservée aux administrateurs.</p>
-      </div>
-    );
   }
 
   return (
@@ -222,5 +194,13 @@ export default function SubscribersPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function SubscribersPage() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <SubscribersContent />
+    </AuthGuard>
   );
 }

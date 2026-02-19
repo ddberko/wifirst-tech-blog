@@ -3,23 +3,35 @@
 import { useEffect, useState } from "react";
 import { auth, googleProvider } from "@/lib/firebase";
 import { onAuthStateChanged, signInWithPopup, User } from "firebase/auth";
+import type { Role } from "@/lib/useRole";
 
 interface AuthGuardProps {
   children: React.ReactNode;
+  requiredRole?: Role | Role[];
 }
 
-export default function AuthGuard({ children }: AuthGuardProps) {
+export default function AuthGuard({ children, requiredRole }: AuthGuardProps) {
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      if (currentUser && requiredRole) {
+        try {
+          const tokenResult = await currentUser.getIdTokenResult();
+          const claimRole = tokenResult.claims.role as Role | undefined;
+          setRole(claimRole || null);
+        } catch {
+          setRole(null);
+        }
+      }
       setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [requiredRole]);
 
   async function handleLogin() {
     setError(null);
@@ -56,7 +68,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             <div className="w-16 h-16 bg-[#0066CC] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-200/50">
               <span className="text-white font-bold text-2xl">W</span>
             </div>
-            
+
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Wifirst Tech Blog
             </h1>
@@ -92,6 +104,34 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         </div>
       </div>
     );
+  }
+
+  // Role check: if requiredRole is specified, verify the user has the right role
+  if (requiredRole) {
+    const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!role || !roles.includes(role)) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="max-w-md w-full mx-4 text-center">
+            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Acces refuse</h1>
+            <p className="text-gray-500 mb-6">
+              Vous n&apos;avez pas les permissions necessaires pour acceder a cette page.
+            </p>
+            <a
+              href="/admin"
+              className="text-[#0066CC] hover:underline text-sm font-medium"
+            >
+              Retour au dashboard
+            </a>
+          </div>
+        </div>
+      );
+    }
   }
 
   return <>{children}</>;

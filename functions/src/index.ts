@@ -579,3 +579,184 @@ export const getAnalytics = onCall(async (request) => {
     activeSubscribers,
   };
 });
+
+// ---------------------------------------------------------------------------
+// f) initializeAdmin -- HTTPS callable (bootstrap first admin)
+// ---------------------------------------------------------------------------
+export const initializeAdmin = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "You must be signed in.");
+  }
+
+  const callerEmail = request.auth.token.email;
+  if (callerEmail !== ADMIN_EMAIL) {
+    throw new HttpsError(
+      "permission-denied",
+      "Only the designated admin email can initialize."
+    );
+  }
+
+  // Check if an admin already exists in Firestore users collection
+  const existingAdmins = await db
+    .collection("users")
+    .where("role", "==", "admin")
+    .limit(1)
+    .get();
+
+  if (!existingAdmins.empty) {
+    throw new HttpsError(
+      "already-exists",
+      "An admin already exists."
+    );
+  }
+
+  const uid = request.auth.uid;
+
+  // Set custom claim
+  await admin.auth().setCustomUserClaims(uid, { role: "admin" });
+
+  // Create user doc
+  await db.collection("users").doc(uid).set({
+    email: callerEmail,
+    displayName: request.auth.token.name || "",
+    role: "admin",
+    addedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return { success: true };
+});
+
+// ---------------------------------------------------------------------------
+// g) setUserRole -- HTTPS callable (admin only)
+// ---------------------------------------------------------------------------
+export const setUserRole = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "You must be signed in.");
+  }
+  if (request.auth.token.role !== "admin") {
+    throw new HttpsError("permission-denied", "Only admins can set user roles.");
+  }
+
+  const { uid, role } = request.data as { uid?: string; role?: string };
+
+  if (!uid || !role) {
+    throw new HttpsError("invalid-argument", "uid and role are required.");
+  }
+
+  const validRoles = ["reader", "publisher", "admin"];
+  if (!validRoles.includes(role)) {
+    throw new HttpsError(
+      "invalid-argument",
+      "role must be one of: reader, publisher, admin."
+    );
+  }
+
+  // Set custom claim
+  await admin.auth().setCustomUserClaims(uid, { role });
+
+  // Upsert user doc
+  const userRef = db.collection("users").doc(uid);
+  const userDoc = await userRef.get();
+
+  if (userDoc.exists) {
+    await userRef.update({
+      role,
+      updatedBy: request.auth.uid,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  } else {
+    // Fetch user info from Firebase Auth
+    const userRecord = await admin.auth().getUser(uid);
+    await userRef.set({
+      email: userRecord.email || "",
+      displayName: userRecord.displayName || "",
+      role,
+      addedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedBy: request.auth.uid,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+  }
+
+  return { success: true };
+});
+
+// ---------------------------------------------------------------------------
+// h) removeUserRole -- HTTPS callable (admin only)
+// ---------------------------------------------------------------------------
+export const removeUserRole = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "You must be signed in.");
+  }
+  if (request.auth.token.role !== "admin") {
+    throw new HttpsError("permission-denied", "Only admins can remove user roles.");
+  }
+
+  const { uid } = request.data as { uid?: string };
+
+  if (!uid) {
+    throw new HttpsError("invalid-argument", "uid is required.");
+  }
+
+  // Clear custom claims
+  await admin.auth().setCustomUserClaims(uid, {});
+
+  // Delete user doc
+  await db.collection("users").doc(uid).delete();
+
+  return { success: true };
+});
+
+// ---------------------------------------------------------------------------
+// i) listManagedUsers -- HTTPS callable (admin only)
+// ---------------------------------------------------------------------------
+export const listManagedUsers = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "You must be signed in.");
+  }
+  if (request.auth.token.role !== "admin") {
+    throw new HttpsError("permission-denied", "Only admins can list users.");
+  }
+
+  const usersSnap = await db.collection("users").get();
+  const users = usersSnap.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      uid: doc.id,
+      email: data.email || "",
+      displayName: data.displayName || "",
+      role: data.role || "",
+      addedAt: data.addedAt?.toDate?.()?.toISOString() || null,
+      updatedAt: data.updatedAt?.toDate?.()?.toISOString() || null,
+    };
+  });
+
+  return { users };
+});
+
+// ---------------------------------------------------------------------------
+// j) getUserByEmail -- HTTPS callable (admin only)
+// ---------------------------------------------------------------------------
+export const getUserByEmail = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "You must be signed in.");
+  }
+  if (request.auth.token.role !== "admin") {
+    throw new HttpsError("permission-denied", "Only admins can look up users.");
+  }
+
+  const { email } = request.data as { email?: string };
+  if (!email) {
+    throw new HttpsError("invalid-argument", "email is required.");
+  }
+
+  try {
+    const userRecord = await admin.auth().getUserByEmail(email);
+    return {
+      uid: userRecord.uid,
+      email: userRecord.email || "",
+      displayName: userRecord.displayName || "",
+    };
+  } catch {
+    throw new HttpsError("not-found", "No user found with this email.");
+  }
+});

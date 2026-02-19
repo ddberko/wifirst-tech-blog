@@ -14,9 +14,9 @@ async function main() {
   const bucket = storage.bucket(BUCKET_NAME);
   
   const imagesToPublish = [
-    'images/covers/ebpf-xdp-networking-enterprise.png',
-    'images/images/ebpf-architecture-kernel.png',
-    'images/images/xdp-vs-iptables-path.png',
+    'images/covers/ran-room-area-network-2026.png',
+    'images/images/ran-building-isolation.png',
+    'images/images/ran-casting.png',
   ];
   
   for (const imagePath of imagesToPublish) {

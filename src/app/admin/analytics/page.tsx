@@ -1,14 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
 import { fetchAnalytics } from '@/lib/analytics';
 import AuthGuard from '@/components/AuthGuard';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-
-const ADMIN_EMAIL = 'david.berkowicz@wifirst.fr';
 
 interface AnalyticsData {
   dailyViews: Array<{ date: string; views: number; reads: number }>;
@@ -23,25 +19,15 @@ interface AnalyticsData {
 const AnalyticsChart = dynamic(() => import('./chart'), { ssr: false });
 
 function AnalyticsContent() {
-  const [user, setUser] = useState<User | null>(null);
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [period, setPeriod] = useState(30);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-    });
-    return () => unsub();
-  }, []);
-
-  useEffect(() => {
-    if (user && user.email === ADMIN_EMAIL) {
-      loadAnalytics();
-    }
+    loadAnalytics();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, period]);
+  }, [period]);
 
   async function loadAnalytics() {
     setLoading(true);
@@ -55,20 +41,6 @@ function AnalyticsContent() {
     } finally {
       setLoading(false);
     }
-  }
-
-  if (user && user.email !== ADMIN_EMAIL) {
-    return (
-      <div className="max-w-6xl mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-        <p className="text-gray-500">You don&apos;t have permission to view analytics.</p>
-      </div>
-    );
   }
 
   return (
@@ -186,7 +158,7 @@ function AnalyticsContent() {
 
 export default function AnalyticsPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requiredRole={["publisher", "admin"]}>
       <AnalyticsContent />
     </AuthGuard>
   );

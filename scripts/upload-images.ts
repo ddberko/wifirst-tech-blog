@@ -1,40 +1,30 @@
-import { Storage } from '@google-cloud/storage';
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getStorage } from 'firebase-admin/storage';
 import { readFileSync } from 'fs';
 import { join, basename } from 'path';
 
 const PROJECT_ROOT = '/Users/davidberkowicz/Projects/wifirst-tech-blog';
-const SERVICE_ACCOUNT_PATH = join(PROJECT_ROOT, 'service-account.json');
-const BUCKET_NAME = 'wifirst-tech-blog.firebasestorage.app';
+const sa = JSON.parse(readFileSync(join(PROJECT_ROOT, 'service-account.json'), 'utf8'));
+initializeApp({ credential: cert(sa), storageBucket: 'wifirst-tech-blog.firebasestorage.app' });
 
-const IMAGES = [
-  { local: 'public/images/covers/dimensionnement-openstack-cover.png', dest: 'covers/dimensionnement-openstack-cover.png' },
-  { local: 'public/images/dimensionnement-iac.png', dest: 'images/dimensionnement-iac.png' },
-  { local: 'public/images/dimensionnement-monitoring.png', dest: 'images/dimensionnement-monitoring.png' },
+const bucket = getStorage().bucket();
+
+const uploads: [string, string][] = [
+  [join(PROJECT_ROOT, 'content/images/swe-bench-verified-feb2026.png'), 'images/images/swe-bench-verified-feb2026.png'],
+  [join(PROJECT_ROOT, 'content/images/multi-benchmark-comparison-feb2026.png'), 'images/images/multi-benchmark-comparison-feb2026.png'],
+  [join(PROJECT_ROOT, 'content/images/coding-ai-landscape-2026-v2.png'), 'images/images/coding-ai-landscape-2026-v2.png'],
 ];
 
 async function main() {
-  const storage = new Storage({
-    keyFilename: SERVICE_ACCOUNT_PATH,
-    projectId: 'wifirst-tech-blog',
-  });
-  
-  const bucket = storage.bucket(BUCKET_NAME);
-  
-  for (const img of IMAGES) {
-    const localPath = join(PROJECT_ROOT, img.local);
-    console.log(`📤 Uploading ${img.local}...`);
-    
-    const [file] = await bucket.upload(localPath, {
-      destination: img.dest,
-      public: true,
-      metadata: { cacheControl: 'public, max-age=31536000' },
+  for (const [localPath, storagePath] of uploads) {
+    await bucket.upload(localPath, {
+      destination: storagePath,
+      metadata: { contentType: 'image/png', cacheControl: 'public, max-age=31536000' },
     });
-    
-    const publicUrl = `https://storage.googleapis.com/${BUCKET_NAME}/${img.dest}`;
-    console.log(`✅ ${publicUrl}`);
+    await bucket.file(storagePath).makePublic();
+    console.log(`✅ ${storagePath}`);
+    console.log(`   https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/${storagePath}`);
   }
-  
-  console.log('\n🎉 All images uploaded!');
 }
 
 main().catch(console.error);

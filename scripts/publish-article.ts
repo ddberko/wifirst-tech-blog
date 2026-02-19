@@ -19,14 +19,14 @@ import { join, basename } from 'path';
 // ============================================================================
 
 const ARTICLE = {
-  slug: 'agentic-sre-agents-ia-self-healing-reseau',
-  title: 'Agentic SRE : quand les agents IA prennent les commandes du réseau',
-  excerpt: 'HPE unifie Aruba et Juniper sous un AIOps agentique, Cisco lance le Silicon One G300, Dynatrace déploie des agents autonomes. L\'Agentic SRE transforme la gestion réseau : des agents LLM-driven qui détectent, diagnostiquent et corrigent en temps réel. Décryptage d\'un changement de paradigme.',
+  slug: 'fttx-comparatif-ftth-ftto-ftte-fttb-entreprise',
+  title: 'FTTH, FTTO, FTTE, FTTB : le guide complet pour choisir sa fibre professionnelle',
+  excerpt: 'FTTH mutualisée, FTTE dédiée, FTTO premium : tour d\'horizon complet des architectures FTTx et guide de décision pour chaque profil d\'entreprise, à l\'heure de la fermeture du réseau cuivre en 2030.',
   category: 'Infrastructure',
-  tags: ['agentic-ai', 'sre', 'aiops', 'self-healing', 'hpe', 'cisco', 'dynatrace', 'networking', 'automation', 'llm'],
-  readTime: 15,
-  coverImage: 'https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/covers/2026-02-16-agentic-sre-cover-v4.png',
-  contentFile: 'content/agentic-sre-self-healing-networks.md',
+  tags: ['fibre', 'ftth', 'ftto', 'ftte', 'fttb', 'fibre-optique', 'entreprise', 'arcep', 'xgs-pon', 'reseau'],
+  readTime: 11,
+  coverImage: 'https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/covers/fttx-comparatif-cover.png',
+  contentFile: 'content/fttx-comparatif-ftth-ftto-ftte-fttb-entreprise.md',
 };
 
 const AUTHOR = {

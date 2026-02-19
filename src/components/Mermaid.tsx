@@ -4,10 +4,9 @@ import React, { useEffect, useRef } from "react";
 import mermaid from "mermaid";
 
 mermaid.initialize({
-  startOnLoad: true,
+  startOnLoad: false,
   theme: "default",
   securityLevel: "loose",
-  fontFamily: "inherit",
 });
 
 export default function Mermaid({ chart }: { chart: string }) {
@@ -15,15 +14,21 @@ export default function Mermaid({ chart }: { chart: string }) {
 
   useEffect(() => {
     if (ref.current) {
-      mermaid.contentLoaded();
-      // Ensure mermaid re-renders when the component mounts or chart changes
       const render = async () => {
         try {
-          // Generate a unique ID for the diagram
           const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
           const { svg } = await mermaid.render(id, chart);
           if (ref.current) {
             ref.current.innerHTML = svg;
+            // Keep natural SVG width (for correct text layout)
+            // but allow shrinking on small screens
+            const svgEl = ref.current.querySelector("svg");
+            if (svgEl) {
+              svgEl.style.maxWidth = "75%";
+              svgEl.style.height = "auto";
+              svgEl.style.display = "block";
+              svgEl.style.margin = "0 auto";
+            }
           }
         } catch (error) {
           console.error("Mermaid error:", error);
@@ -37,6 +42,9 @@ export default function Mermaid({ chart }: { chart: string }) {
   }, [chart]);
 
   return (
-    <div className="mermaid flex justify-center my-8 p-6 bg-white rounded-xl shadow-sm border border-gray-100" ref={ref} />
+    <div
+      className="mermaid flex justify-center my-8 p-4 bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto"
+      ref={ref}
+    />
   );
 }

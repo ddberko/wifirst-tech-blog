@@ -77,7 +77,13 @@ function AdminContent() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
           <p className="text-gray-500 mt-1 text-sm sm:text-base">Manage your blog articles</p>
         </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+          <Link
+            href="/admin/users"
+            className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Utilisateurs
+          </Link>
           <Link
             href="/admin/subscribers"
             className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
@@ -334,7 +340,7 @@ function AdminContent() {
 
 export default function AdminPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requiredRole="admin">
       <AdminContent />
     </AuthGuard>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getPosts, getCategories } from "@/lib/posts";
 import FeaturedPost from "@/components/FeaturedPost";
 import PostCard from "@/components/PostCard";
@@ -8,20 +8,41 @@ import CategoryBadge from "@/components/CategoryBadge";
 import AuthGuard from "@/components/AuthGuard";
 import { Post } from "@/lib/types";
 
+const POSTS_PER_PAGE = 20;
+
 function HomeContent() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [featured, setFeatured] = useState<Post | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleCount < posts.length) {
+          setVisibleCount((prev) => Math.min(prev + POSTS_PER_PAGE, posts.length));
+        }
+      },
+      { threshold: 0.1, rootMargin: "200px" }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [visibleCount, posts.length]);
 
   useEffect(() => {
     async function loadData() {
       try {
         console.log("[Home] Starting to load posts...");
-        const allPosts = await getPosts({ max: 20 });
+        const allPosts = await getPosts();
         console.log("[Home] Raw posts fetched:", allPosts);
-        
+
         if (!allPosts || allPosts.length === 0) {
           console.warn("[Home] No posts returned from getPosts()");
         }
@@ -29,11 +50,11 @@ function HomeContent() {
         const feat = allPosts.find((p) => p.featured) || null;
         console.log("[Home] Featured post found:", feat?.title || "None");
         setFeatured(feat);
-        
+
         const otherPosts = feat ? allPosts.filter((p) => p.slug !== feat.slug) : allPosts;
         console.log("[Home] Setting posts to state, count:", otherPosts.length);
         setPosts(otherPosts);
-        
+
         const cats = await getCategories();
         setCategories(cats);
       } catch (err) {
@@ -117,12 +138,24 @@ function HomeContent() {
           <section className="pb-16">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Recent Articles</h2>
+              <span className="text-sm text-gray-400">{posts.length} articles</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
+              {posts.slice(0, visibleCount).map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
+            {visibleCount < posts.length && (
+              <div ref={sentinelRef} className="flex justify-center py-8">
+                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  <span>Chargement...</span>
+                </div>
+              </div>
+            )}
           </section>
         )}
       </div>
