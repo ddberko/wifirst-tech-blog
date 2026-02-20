@@ -19,14 +19,14 @@ import { join, basename } from 'path';
 // ============================================================================
 
 const ARTICLE = {
-  slug: 'fttx-comparatif-ftth-ftto-ftte-fttb-entreprise',
-  title: 'FTTH, FTTO, FTTE, FTTB : le guide complet pour choisir sa fibre professionnelle',
-  excerpt: 'FTTH mutualisée, FTTE dédiée, FTTO premium : tour d\'horizon complet des architectures FTTx et guide de décision pour chaque profil d\'entreprise, à l\'heure de la fermeture du réseau cuivre en 2030.',
+  slug: 'qkd-pqc-quantum-safe-infrastructure-2026',
+  title: 'Quantum Key Distribution et Post-Quantum Cryptography : Préparer l\'Infrastructure Réseau à l\'Après-Quantique',
+  excerpt: 'FIPS 203-205 sont finalisés. QKD vs PQC : deux chemins divergents pour sécuriser l\'après-quantique. Roadmap réaliste et cas d\'usage pour entreprises B2B.',
   category: 'Infrastructure',
-  tags: ['fibre', 'ftth', 'ftto', 'ftte', 'fttb', 'fibre-optique', 'entreprise', 'arcep', 'xgs-pon', 'reseau'],
-  readTime: 11,
-  coverImage: 'https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/covers/fttx-comparatif-cover.png',
-  contentFile: 'content/fttx-comparatif-ftth-ftto-ftte-fttb-entreprise.md',
+  tags: ['quantum', 'cryptographie', 'pqc', 'post-quantum', 'qkd', 'security', 'nist', 'tls', 'ipsec', 'ml-kem', 'ml-dsa', '5g', '6g', '3gpp', 'enterprise'],
+  readTime: 18,
+  coverImage: '/images/covers/qkd-pqc-cover.png',
+  contentFile: 'content/qkd-pqc-quantum-safe-infrastructure-2026.md',
 };
 
 const AUTHOR = {
