@@ -65,15 +65,28 @@ export default function ExportPdfButton({
 
       const content = contentRef.current.cloneNode(true) as HTMLElement;
 
+      // VERY AGGRESSIVE MERMAID RESIZING FOR PDF (A4 WIDTH IS ~754px WITH MARGINS)
       content.querySelectorAll<HTMLElement>(".mermaid").forEach((el) => {
         el.style.cssText =
-          "max-width: 100%; overflow: visible; break-inside: avoid; page-break-inside: avoid; margin: 16px 0; padding: 8px 0; text-align: center;";
+          "width: 100%; max-width: 750px; overflow: hidden; break-inside: avoid; page-break-inside: avoid; margin: 20px 0; text-align: center; box-sizing: border-box;";
+          
         el.querySelectorAll("svg").forEach((svg) => {
-          // Add explicit namespaces if missing
+          // Force viewBox if missing
+          if (!svg.getAttribute("viewBox")) {
+             const w = svg.getAttribute("width") || svg.getBoundingClientRect().width || 1000;
+             const h = svg.getAttribute("height") || svg.getBoundingClientRect().height || 500;
+             svg.setAttribute("viewBox", `0 0 ${parseFloat(w.toString())} ${parseFloat(h.toString())}`);
+          }
+        
           if (!svg.getAttribute("xmlns")) svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
           
-          svg.setAttribute("width", "100%");
+          // Remove ALL fixed dimensions to force fluid behavior via CSS
+          svg.removeAttribute("width");
           svg.removeAttribute("height");
+          svg.style.width = "100%";
+          svg.style.height = "auto";
+          svg.style.maxWidth = "750px";
+          svg.style.maxHeight = "900px"; // don't exceed a page height
           
           try {
             const svgString = new XMLSerializer().serializeToString(svg);
@@ -81,15 +94,12 @@ export default function ExportPdfButton({
             
             const img = document.createElement("img");
             img.src = encodedData;
-            img.style.maxWidth = "100%";
-            img.style.height = "auto";
-            img.style.display = "block";
-            img.style.margin = "0 auto";
+            // Force strict styling on the image output
+            img.style.cssText = "width: 100%; max-width: 750px; height: auto; display: block; margin: 0 auto; object-fit: contain;";
             
             svg.parentNode?.replaceChild(img, svg);
           } catch (e) {
             console.warn("Could not convert SVG to img", e);
-            svg.style.width = "100%";
           }
         });
       });
