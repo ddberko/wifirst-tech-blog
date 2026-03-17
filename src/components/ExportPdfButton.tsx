@@ -42,7 +42,7 @@ export default function ExportPdfButton({
       let finalCoverImage = coverImage || "";
       if (finalCoverImage && finalCoverImage.includes("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/")) {
           const pathPart = finalCoverImage.split("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/")[1].split("?")[0];
-          finalCoverImage = "https://firebasestorage.googleapis.com/v0/b/wifirst-tech-blog.firebasestorage.app/o/" + encodeURIComponent(pathPart) + "?alt=media&nocache=" + new Date().getTime();
+          finalCoverImage = "https://firebasestorage.googleapis.com/v0/b/wifirst-tech-blog.firebasestorage.app/o/" + encodeURIComponent(decodeURIComponent(pathPart)) + "?alt=media&nocache=" + new Date().getTime();
       } else if (finalCoverImage && finalCoverImage.includes("firebasestorage")) {
           finalCoverImage = finalCoverImage + (finalCoverImage.includes("?") ? "&" : "?") + "nocache=" + new Date().getTime();
       }
@@ -65,41 +65,48 @@ export default function ExportPdfButton({
 
       const content = contentRef.current.cloneNode(true) as HTMLElement;
 
-      // VERY AGGRESSIVE MERMAID RESIZING FOR PDF (A4 WIDTH IS ~754px WITH MARGINS)
+      // ULTIMATE MERMAID RESIZING FOR PDF
       content.querySelectorAll<HTMLElement>(".mermaid").forEach((el) => {
         el.style.cssText =
-          "width: 100%; max-width: 750px; overflow: hidden; break-inside: avoid; page-break-inside: avoid; margin: 20px 0; text-align: center; box-sizing: border-box;";
+          "width: 100%; max-width: 650px; overflow: hidden; break-inside: avoid; page-break-inside: avoid; margin: 24px auto; text-align: center; box-sizing: border-box; display: flex; justify-content: center;";
           
         el.querySelectorAll("svg").forEach((svg) => {
-          // Force viewBox if missing
-          if (!svg.getAttribute("viewBox")) {
-             const w = svg.getAttribute("width") || svg.getBoundingClientRect().width || 1000;
-             const h = svg.getAttribute("height") || svg.getBoundingClientRect().height || 500;
-             svg.setAttribute("viewBox", `0 0 ${parseFloat(w.toString())} ${parseFloat(h.toString())}`);
+          // Force viewBox if missing based on rendered size
+          let viewBox = svg.getAttribute("viewBox");
+          if (!viewBox) {
+             const w = svg.getAttribute("width") || svg.getBoundingClientRect().width || 800;
+             const h = svg.getAttribute("height") || svg.getBoundingClientRect().height || 400;
+             viewBox = `0 0 ${parseFloat(w.toString())} ${parseFloat(h.toString())}`;
+             svg.setAttribute("viewBox", viewBox);
           }
         
           if (!svg.getAttribute("xmlns")) svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
           
-          // Remove ALL fixed dimensions to force fluid behavior via CSS
-          svg.removeAttribute("width");
-          svg.removeAttribute("height");
-          svg.style.width = "100%";
-          svg.style.height = "auto";
-          svg.style.maxWidth = "750px";
-          svg.style.maxHeight = "900px"; // don't exceed a page height
+          // We calculate the ratio to not exceed the page
+          const vbParts = viewBox.split(' ');
+          const vbWidth = parseFloat(vbParts[2]) || 800;
+          const vbHeight = parseFloat(vbParts[3]) || 400;
+          
+          // Set absolute max constraints in mm equivalents translated to pixels (A4 width is 210mm ~ 794px, minus margins ~ 700px)
+          // We force an absolute width inline to constrain the SVG output BEFORE html2canvas captures it
+          const TARGET_MAX_WIDTH = 650; 
+          const scale = vbWidth > TARGET_MAX_WIDTH ? (TARGET_MAX_WIDTH / vbWidth) : 1;
+          const finalWidth = vbWidth * scale;
+          const finalHeight = vbHeight * scale;
+
+          svg.setAttribute("width", `${finalWidth}px`);
+          svg.setAttribute("height", `${finalHeight}px`);
+          svg.style.width = `${finalWidth}px`;
+          svg.style.height = `${finalHeight}px`;
+          svg.style.maxWidth = "100%";
+          svg.style.margin = "0 auto";
+          svg.style.display = "block";
           
           try {
-            const svgString = new XMLSerializer().serializeToString(svg);
-            const encodedData = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgString)));
-            
-            const img = document.createElement("img");
-            img.src = encodedData;
-            // Force strict styling on the image output
-            img.style.cssText = "width: 100%; max-width: 750px; height: auto; display: block; margin: 0 auto; object-fit: contain;";
-            
-            svg.parentNode?.replaceChild(img, svg);
+            // Keep SVG instead of base64 img since we forced strict absolute pixels, html2canvas handles it better
+            // when it's not a data URI that loses scaling context
           } catch (e) {
-            console.warn("Could not convert SVG to img", e);
+            console.warn("Could not process SVG", e);
           }
         });
       });
@@ -145,7 +152,7 @@ export default function ExportPdfButton({
         
         if (src.includes("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/")) {
            const pathPart = src.split("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/")[1].split("?")[0];
-           src = "https://firebasestorage.googleapis.com/v0/b/wifirst-tech-blog.firebasestorage.app/o/" + encodeURIComponent(pathPart) + "?alt=media&nocache=" + new Date().getTime();
+           src = "https://firebasestorage.googleapis.com/v0/b/wifirst-tech-blog.firebasestorage.app/o/" + encodeURIComponent(decodeURIComponent(pathPart)) + "?alt=media&nocache=" + new Date().getTime();
         } else if (src.includes("firebasestorage")) {
            src = src + (src.includes("?") ? "&" : "?") + "nocache=" + new Date().getTime();
         }
