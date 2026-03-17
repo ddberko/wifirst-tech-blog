@@ -30,7 +30,7 @@ export default function ExportPdfButton({
 
       wrapper = document.createElement("div");
       wrapper.style.cssText =
-        "font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #1a1a1a; line-height: 1.7; max-width: 100%;";
+        "font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #1a1a1a; line-height: 1.7; width: 794px;";
 
       const header = document.createElement("div");
       header.style.cssText =
@@ -40,7 +40,10 @@ export default function ExportPdfButton({
       const logoDataUri = `data:image/svg+xml;base64,${btoa(wifirstLogoSvg)}`;
 
       let finalCoverImage = coverImage || "";
-      if (finalCoverImage && (finalCoverImage.includes("firebasestorage") || finalCoverImage.includes("storage.googleapis"))) {
+      if (finalCoverImage && finalCoverImage.includes("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/")) {
+          finalCoverImage = finalCoverImage.replace("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/", "firebasestorage.googleapis.com/v0/b/wifirst-tech-blog.firebasestorage.app/o/");
+          finalCoverImage = finalCoverImage + (finalCoverImage.includes("?") ? "&" : "?") + "alt=media&nocache=" + new Date().getTime();
+      } else if (finalCoverImage && finalCoverImage.includes("firebasestorage")) {
           finalCoverImage = finalCoverImage + (finalCoverImage.includes("?") ? "&" : "?") + "nocache=" + new Date().getTime();
       }
 
@@ -114,9 +117,14 @@ export default function ExportPdfButton({
           } catch { }
         }
 
-        if (src.includes("firebasestorage") || src.includes("storage.googleapis")) {
+        
+        if (src.includes("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/")) {
+           src = src.replace("storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/", "firebasestorage.googleapis.com/v0/b/wifirst-tech-blog.firebasestorage.app/o/");
+           src = src + (src.includes("?") ? "&" : "?") + "alt=media&nocache=" + new Date().getTime();
+        } else if (src.includes("firebasestorage")) {
            src = src + (src.includes("?") ? "&" : "?") + "nocache=" + new Date().getTime();
         }
+
         
         el.setAttribute("src", src);
       });
@@ -155,15 +163,7 @@ export default function ExportPdfButton({
         .replace(/^-|-$/g, "")
         .slice(0, 60);
 
-      Object.assign(wrapper.style, {
-        position: "fixed",
-        left: "-9999px",
-        top: "0",
-        width: "794px",
-        zIndex: "-1",
-        overflow: "hidden",
-      });
-      document.body.appendChild(wrapper);
+      // No longer attaching to document.body to prevent blank rendering
 
       const images = Array.from(wrapper.querySelectorAll("img"));
       await Promise.all(
@@ -211,9 +211,7 @@ export default function ExportPdfButton({
       console.error("[ExportPdf] Error generating PDF:", err);
       alert("Failed to generate PDF. Please try again.");
     } finally {
-      if (wrapper && wrapper.parentNode) {
-        wrapper.parentNode.removeChild(wrapper);
-      }
+      
       setExporting(false);
     }
   }, [contentRef, title, author, date, coverImage, exporting]);
