@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
@@ -11,6 +12,16 @@ export default function MarkdownRenderer({ content }: { content: string }) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkFrontmatter]}
         components={{
+          pre({ children }) {
+            const child = React.Children.toArray(children)[0];
+            if (
+              React.isValidElement(child) &&
+              (child as React.ReactElement<{ className?: string }>).props?.className?.includes("language-mermaid")
+            ) {
+              return <>{children}</>;
+            }
+            return <pre>{children}</pre>;
+          },
           code({ className, children, ...props }) {
             const match = /language-mermaid/.exec(className || "");
             if (match) {

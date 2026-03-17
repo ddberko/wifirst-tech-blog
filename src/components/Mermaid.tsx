@@ -20,11 +20,10 @@ export default function Mermaid({ chart }: { chart: string }) {
           const { svg } = await mermaid.render(id, chart);
           if (ref.current) {
             ref.current.innerHTML = svg;
-            // Keep natural SVG width (for correct text layout)
-            // but allow shrinking on small screens
             const svgEl = ref.current.querySelector("svg");
-            if (svgEl) {
-              svgEl.style.maxWidth = "75%";
+            if (svgEl && svgEl.getAttribute("viewBox")) {
+              // Scale proportionally using the viewBox — no clipping, fits container width
+              svgEl.style.width = "100%";
               svgEl.style.height = "auto";
               svgEl.style.display = "block";
               svgEl.style.margin = "0 auto";
@@ -43,7 +42,7 @@ export default function Mermaid({ chart }: { chart: string }) {
 
   return (
     <div
-      className="mermaid flex justify-center my-8 p-4 bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto"
+      className="mermaid my-8 p-4 bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto"
       ref={ref}
     />
   );
