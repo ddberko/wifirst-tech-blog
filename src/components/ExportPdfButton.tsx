@@ -30,7 +30,7 @@ export default function ExportPdfButton({
 
       wrapper = document.createElement("div");
       wrapper.style.cssText =
-        "font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #1a1a1a; line-height: 1.7; width: 794px;";
+        "font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: #1a1a1a; line-height: 1.6; width: 794px; padding: 20px;";
 
       const header = document.createElement("div");
       header.style.cssText =
@@ -49,7 +49,7 @@ export default function ExportPdfButton({
 
       header.innerHTML = `
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-          <img src="${logoDataUri}" style="height: 28px; width: auto;" alt="Wifirst" />
+          <img src="${logoDataUri}" style="height: 28px; width: 96px; object-fit: contain; display: block;" alt="Wifirst" />
           <span style="height: 20px; width: 1px; background: #cbd5e1;"></span>
           <span style="font-size: 13px; font-weight: 500; color: #64748b; letter-spacing: 0.3px;">Tech Blog</span>
         </div>
@@ -80,13 +80,13 @@ export default function ExportPdfButton({
       });
 
       content.querySelectorAll("h2").forEach((el) => {
-        el.style.cssText = "font-size: 22px; font-weight: 700; color: #111; margin-top: 32px; margin-bottom: 12px; page-break-after: avoid;";
+        el.style.cssText = "font-size: 22px; font-weight: 700; color: #111; margin-top: 32px; margin-bottom: 12px; page-break-after: avoid; break-after: avoid; break-after: avoid;";
       });
       content.querySelectorAll("h3").forEach((el) => {
         el.style.cssText = "font-size: 18px; font-weight: 700; color: #222; margin-top: 24px; margin-bottom: 8px; page-break-after: avoid;";
       });
       content.querySelectorAll("p").forEach((el) => {
-        el.style.cssText = "font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px;";
+        el.style.cssText = "font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 12px; page-break-inside: avoid; break-inside: avoid;";
       });
       content.querySelectorAll("a").forEach((el) => {
         (el as HTMLAnchorElement).style.cssText = "color: #0066CC; text-decoration: underline;";
@@ -141,7 +141,7 @@ export default function ExportPdfButton({
         el.style.cssText = "padding-left: 24px; margin-bottom: 12px;";
       });
       content.querySelectorAll<HTMLLIElement>("li").forEach((el) => {
-        el.style.cssText = "font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px;";
+        el.style.cssText = "font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 4px; page-break-inside: avoid; break-inside: avoid;";
       });
       content.querySelectorAll<HTMLHRElement>("hr").forEach((el) => {
         el.style.cssText = "border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;";
@@ -202,7 +202,7 @@ export default function ExportPdfButton({
             format: "a4",
             orientation: "portrait",
           },
-          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+          pagebreak: { mode: ['css', 'legacy'] },
         })
         .from(wrapper)
         .save();
