@@ -20,7 +20,7 @@ const SMTP_PORT = defineString("SMTP_PORT", { default: "587" });
 const SMTP_USER = defineString("SMTP_USER", { default: "" });
 const SMTP_PASS = defineString("SMTP_PASS", { default: "" });
 const SMTP_FROM = defineString("SMTP_FROM", {
-  default: "noreply@wifirst.fr",
+  default: "\"Veille techno Wifirst\" <noreply@wifirst.fr>",
 });
 const SITE_URL = defineString("SITE_URL", {
   default: "https://wifirst-tech-blog.web.app",
@@ -229,7 +229,7 @@ async function sendNewsletterForArticle(
 
   const transporter = createTransporter();
   const fromAddress =
-    SMTP_FROM.value() || process.env.SMTP_FROM || "noreply@wifirst.fr";
+    SMTP_FROM.value() || process.env.SMTP_FROM || "\"Veille techno Wifirst\" <noreply@wifirst.fr>";
 
   const sendPromises = subscribersSnap.docs
     .map((doc) => doc.data() as Subscriber)

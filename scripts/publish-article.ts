@@ -1,10 +1,10 @@
 /**
  * Script de publication d'article pour Wifirst Tech Blog
- * 
+ *
  * Usage:
  *   cd /Users/davidberkowicz/Projects/wifirst-tech-blog
  *   NODE_PATH=./node_modules npx tsx scripts/publish-article.ts
- * 
+ *
  * Modifier les variables dans la section CONFIG ci-dessous avant exécution.
  */
 
@@ -19,14 +19,14 @@ import { join, basename } from 'path';
 // ============================================================================
 
 const ARTICLE = {
-  slug: 'qkd-pqc-quantum-safe-infrastructure-2026',
-  title: 'Quantum Key Distribution et Post-Quantum Cryptography : Préparer l\'Infrastructure Réseau à l\'Après-Quantique',
-  excerpt: 'FIPS 203-205 sont finalisés. QKD vs PQC : deux chemins divergents pour sécuriser l\'après-quantique. Roadmap réaliste et cas d\'usage pour entreprises B2B.',
-  category: 'Infrastructure',
-  tags: ['quantum', 'cryptographie', 'pqc', 'post-quantum', 'qkd', 'security', 'nist', 'tls', 'ipsec', 'ml-kem', 'ml-dsa', '5g', '6g', '3gpp', 'enterprise'],
-  readTime: 18,
-  coverImage: '/images/covers/qkd-pqc-cover.png',
-  contentFile: 'content/qkd-pqc-quantum-safe-infrastructure-2026.md',
+  slug: "rtwt-l4s-wifi7-2026",
+  title: "Wi-Fi 7 rTWT & L4S : la latence déterministe enfin accessible pour l'entreprise",
+  excerpt: "Le combo rTWT (Restricted TWT) et L4S transforme le Wi-Fi 7 en réseau déterministe. Fini le best-effort : slots réservés, DualQ et ECN ouvrent la porte à la XR, la robotique industrielle et le temps réel. Le point sur ce changement de paradigme.",
+  category: "Infrastructure",
+  tags: ["wifi-7", "rtwt", "l4s", "latence", "determinisme", "networking", "enterprise", "qos", "xr", "industrie-40", "wifirst"],
+  readTime: 10,
+  coverImage: "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers%2Frtwt-l4s-wifi7-cover.png",
+  contentFile: "content/rtwt-l4s-wifi7-2026.md",
 };
 
 const AUTHOR = {
@@ -59,11 +59,11 @@ async function uploadCoverImage(localPath: string, slug: string): Promise<string
     keyFilename: SERVICE_ACCOUNT_PATH,
     projectId: 'wifirst-tech-blog',
   });
-  
+
   const bucket = storage.bucket(BUCKET_NAME);
   // Chemin dans le bucket: ex. covers/energie-reseaux-telecom-2026-header-energie-telecom.png
   const destination = `covers/${slug}-${basename(localPath)}`;
-  
+
   const [file] = await bucket.upload(fullLocalPath, {
     destination: destination,
     public: true, // Rendre le fichier public
@@ -79,15 +79,15 @@ async function uploadCoverImage(localPath: string, slug: string): Promise<string
 
 async function main() {
   console.log('🚀 Publication de l\'article:', ARTICLE.slug);
-  
+
   // Init Firebase Admin (pour Firestore et Storage)
   const serviceAccount = JSON.parse(readFileSync(SERVICE_ACCOUNT_PATH, 'utf8'));
-  initializeApp({ 
+  initializeApp({
     credential: cert(serviceAccount),
     storageBucket: BUCKET_NAME // Indiquer le bucket de Storage pour le SDK Admin
   });
   const db = getFirestore();
-  
+
   // --- Gérer l'image de couverture ---
   let finalCoverImageUrl = ARTICLE.coverImage;
   // Si le chemin est local (commence par /images/...), on l'upload sur Storage
@@ -98,7 +98,7 @@ async function main() {
   if (finalCoverImageUrl === 'already-uploaded') {
      finalCoverImageUrl = 'https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/covers/wifi-sensing-cover.png';
   }
-  
+
   // Lire le contenu markdown
   const contentPath = join(PROJECT_ROOT, ARTICLE.contentFile);
   let content: string;
@@ -109,7 +109,7 @@ async function main() {
     console.error('❌ Erreur lecture contenu:', contentPath);
     process.exit(1);
   }
-  
+
   // Construire le document pour Firestore
   const now = Timestamp.now();
   const articleData = {
@@ -126,7 +126,7 @@ async function main() {
     updatedAt: now,
     status: 'published', // Nécessaire pour déclencher le Cloud Function newsletter
   };
-  
+
   // Publier sur Firestore (utilise merge: true pour ne pas écraser les champs non définis)
   try {
     await db.collection('articles').doc(ARTICLE.slug).set(articleData, { merge: true });
@@ -135,7 +135,7 @@ async function main() {
     console.error('❌ Erreur Firestore:', error);
     process.exit(1);
   }
-  
+
   // Résumé de publication
   console.log('\n========================================');
   console.log('📝 PUBLICATION RÉUSSIE');
