@@ -7,6 +7,12 @@ service firebase.storage {
       allow read: if true;
       allow write: if false; // Écriture uniquement via admin SDK
     }
+    
+    // Covers publiques en lecture (ajout pour l'export PDF)
+    match /covers/{coverFile} {
+      allow read: if true;
+      allow write: if false;
+    }
 
     // Bloquer tout le reste par défaut
     match /{allPaths=**} {
