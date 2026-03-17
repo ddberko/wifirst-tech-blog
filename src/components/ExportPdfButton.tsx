@@ -65,31 +65,33 @@ export default function ExportPdfButton({
 
       const content = contentRef.current.cloneNode(true) as HTMLElement;
 
-      // ULTIMATE MERMAID RESIZING FOR PDF
+      // GOD MODE MERMAID RESIZING FOR PDF
       content.querySelectorAll<HTMLElement>(".mermaid").forEach((el) => {
         el.style.cssText =
           "width: 100%; max-width: 650px; overflow: hidden; break-inside: avoid; page-break-inside: avoid; margin: 24px auto; text-align: center; box-sizing: border-box; display: flex; justify-content: center;";
           
         el.querySelectorAll("svg").forEach((svg) => {
-          // Force viewBox if missing based on rendered size
           let viewBox = svg.getAttribute("viewBox");
-          if (!viewBox) {
-             const w = svg.getAttribute("width") || svg.getBoundingClientRect().width || 800;
-             const h = svg.getAttribute("height") || svg.getBoundingClientRect().height || 400;
-             viewBox = `0 0 ${parseFloat(w.toString())} ${parseFloat(h.toString())}`;
+          // If no viewBox, or if we want to ensure the bounding box fits:
+          const rect = svg.getBoundingClientRect();
+          const w = parseFloat(svg.getAttribute("width") || "0") || rect.width || 800;
+          const h = parseFloat(svg.getAttribute("height") || "0") || rect.height || 400;
+          
+          // Sometimes viewBox is wrong, we override it based on true width
+          if (!viewBox || w > 800) {
+             viewBox = `0 0 ${w} ${h}`;
              svg.setAttribute("viewBox", viewBox);
           }
         
           if (!svg.getAttribute("xmlns")) svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
           
-          // We calculate the ratio to not exceed the page
           const vbParts = viewBox.split(' ');
-          const vbWidth = parseFloat(vbParts[2]) || 800;
-          const vbHeight = parseFloat(vbParts[3]) || 400;
+          const vbWidth = parseFloat(vbParts[2]) || w;
+          const vbHeight = parseFloat(vbParts[3]) || h;
           
-          // Set absolute max constraints in mm equivalents translated to pixels (A4 width is 210mm ~ 794px, minus margins ~ 700px)
-          // We force an absolute width inline to constrain the SVG output BEFORE html2canvas captures it
-          const TARGET_MAX_WIDTH = 650; 
+          // A4 portrait width at scale=2 is very unforgiving. 
+          // We force an extreme reduction for large flowcharts.
+          const TARGET_MAX_WIDTH = 600; 
           const scale = vbWidth > TARGET_MAX_WIDTH ? (TARGET_MAX_WIDTH / vbWidth) : 1;
           const finalWidth = vbWidth * scale;
           const finalHeight = vbHeight * scale;
@@ -101,13 +103,8 @@ export default function ExportPdfButton({
           svg.style.maxWidth = "100%";
           svg.style.margin = "0 auto";
           svg.style.display = "block";
-          
-          try {
-            // Keep SVG instead of base64 img since we forced strict absolute pixels, html2canvas handles it better
-            // when it's not a data URI that loses scaling context
-          } catch (e) {
-            console.warn("Could not process SVG", e);
-          }
+          // Important: avoid nested overflow scrolling breaking html2canvas
+          svg.style.overflow = "visible";
         });
       });
 
