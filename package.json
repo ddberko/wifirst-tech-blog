@@ -22,14 +22,17 @@
     "firebase-admin": "^12.7.0",
     "firebase-tools": "^15.5.1",
     "html2pdf.js": "^0.14.0",
+    "katex": "^0.16.40",
     "mermaid": "^10.9.5",
     "next": "^16.1.6",
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^10.1.0",
     "recharts": "^3.7.0",
+    "rehype-katex": "^7.0.1",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
     "roughjs": "^4.6.6"
   },
   "devDependencies": {
