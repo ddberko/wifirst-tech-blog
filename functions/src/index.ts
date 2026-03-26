@@ -103,65 +103,99 @@ function buildArticleEmail(
   const postUrl = `${siteUrl}/post?slug=${article.slug ?? ""}`;
   const unsubscribeUrl = `${siteUrl}/api/unsubscribe?token=${unsubscribeToken}`;
 
-  const coverHtml = article.coverImage
-    ? `<img src="${article.coverImage}" alt="${article.title ?? ""}" style="width:100%;max-width:600px;border-radius:8px;margin-bottom:24px;" />`
+  const categoryHtml = article.category 
+    ? `<div style="display: inline-block; padding: 4px 12px; background-color: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 700; border-radius: 9999px; text-transform: uppercase; margin-bottom: 20px; font-family: system-ui, -apple-system, sans-serif;">${article.category}</div>`
     : "";
 
-  return `
-<!DOCTYPE html>
-<html lang="fr">
+  const coverHtml = article.coverImage
+    ? `<tr><td style="padding-bottom: 30px;"><img src="${article.coverImage}" alt="Cover Image" width="520" style="width: 100%; max-width: 520px; border-radius: 8px; display: block;"></td></tr>`
+    : "";
+
+  return `<!DOCTYPE html>
+<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${article.title ?? "Nouvel article"}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    body { margin: 0; padding: 0; width: 100%; background-color: #f3f4f6; -webkit-font-smoothing: antialiased; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    table { border-collapse: collapse; }
+    img { border: 0; outline: none; text-decoration: none; max-width: 100%; height: auto; display: block; }
+    a { color: #0066cc; text-decoration: none; }
+  </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:Arial,Helvetica,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:#f4f4f5;">
-    <tr>
-      <td align="center" style="padding:32px 16px;">
-        <table width="600" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;">
-          <!-- Header -->
-          <tr>
-            <td style="background-color:#0D8ABC;padding:24px 32px;">
-              <h2 style="margin:0;color:#ffffff;font-size:20px;font-weight:700;">Wifirst Tech Blog</h2>
-            </td>
-          </tr>
-          <!-- Body -->
-          <tr>
-            <td style="padding:32px;">
-              ${coverHtml}
-              <h1 style="margin:0 0 16px;font-size:24px;color:#1a1a1a;">${article.title ?? ""}</h1>
-              <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#4a4a4a;">
-                ${article.excerpt ?? ""}
-              </p>
-              <table cellpadding="0" cellspacing="0" role="presentation">
-                <tr>
-                  <td style="border-radius:6px;background-color:#0D8ABC;">
-                    <a href="${postUrl}" target="_blank" style="display:inline-block;padding:14px 28px;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;">
-                      Lire l&rsquo;article
-                    </a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <!-- Footer -->
-          <tr>
-            <td style="padding:24px 32px;border-top:1px solid #e5e5e5;text-align:center;">
-              <p style="margin:0 0 8px;font-size:14px;color:#888888;">Wifirst Tech Blog</p>
-              <p style="margin:0;font-size:12px;color:#aaaaaa;">
-                Vous recevez cet e-mail car vous êtes abonné(e) au blog.
-                <br />
-                <a href="${unsubscribeUrl}" style="color:#0D8ABC;text-decoration:underline;">Se désabonner</a>
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+<body style="margin: 0; padding: 0; background-color: #f3f4f6;">
+  <div style="padding: 40px 20px;">
+    <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+      <tr>
+        <td align="center">
+          <table cellpadding="0" cellspacing="0" role="presentation" style="width: 100%; max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+            <!-- Header -->
+            <tr>
+              <td style="background-color: #0f172a; padding: 32px 40px; text-align: center;">
+                <h2 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 800; font-family: system-ui, -apple-system, sans-serif;">Wifirst Tech Blog</h2>
+                <p style="margin: 8px 0 0 0; color: #94a3b8; font-size: 13px; text-transform: uppercase; font-weight: 600; font-family: system-ui, -apple-system, sans-serif; letter-spacing: 1px;">Veille Technologique B2B</p>
+              </td>
+            </tr>
+            <!-- Content -->
+            <tr>
+              <td style="padding: 40px;">
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr><td>${categoryHtml}</td></tr>
+                  <tr>
+                    <td>
+                      <h1 style="margin: 0 0 24px 0; font-size: 26px; line-height: 1.3; color: #0f172a; font-weight: 800; font-family: system-ui, -apple-system, sans-serif;">${article.title ?? ""}</h1>
+                    </td>
+                  </tr>
+                  ${coverHtml}
+                  <tr>
+                    <td>
+                      <p style="margin: 0 0 32px 0; font-size: 16px; line-height: 1.6; color: #475569; font-family: system-ui, -apple-system, sans-serif;">
+                        ${article.excerpt ?? ""}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding-top: 8px;">
+                      <table cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <td align="center" style="border-radius: 8px; background-color: #0ea5e9;">
+                            <a href="${postUrl}" target="_blank" style="display: inline-block; padding: 16px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px; font-family: system-ui, -apple-system, sans-serif;">Lire l'article complet &rarr;</a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- Footer -->
+            <tr>
+              <td style="padding: 32px 40px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; text-align: center;">
+                <p style="margin: 0 0 12px 0; font-size: 13px; color: #64748b; line-height: 1.5; font-family: system-ui, -apple-system, sans-serif;">
+                  © 2026 Wifirst. Cet e-mail vous a été envoyé car vous êtes abonné(e) aux notifications du Wifirst Tech Blog.
+                </p>
+                <p style="margin: 0; font-size: 13px; font-family: system-ui, -apple-system, sans-serif;">
+                  <a href="${unsubscribeUrl}" style="color: #64748b; text-decoration: underline;">Gérer vos préférences de désabonnement</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
 </body>
-</html>`.trim();
+</html>`;
 }
 
 /**
