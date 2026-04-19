@@ -49,8 +49,10 @@ function HomeContent() {
           console.warn("[Home] No posts returned from getPosts()");
         }
 
-        const feat = allPosts.find((p) => p.featured) || null;
-        console.log("[Home] Featured post found:", feat?.title || "None");
+        // Logic improvement: Highlight the most recent featured article, or fallback to latest article
+        const feat = allPosts.find((p) => p.featured) || allPosts[0] || null;
+
+        console.log("[Home] Selected featured post:", feat?.title || "None");
         setFeatured(feat);
 
         const otherPosts = feat ? allPosts.filter((p) => p.slug !== feat.slug) : allPosts;

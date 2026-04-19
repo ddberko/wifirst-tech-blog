@@ -9,20 +9,12 @@ const BUCKET_NAME = 'wifirst-tech-blog.firebasestorage.app';
 
 const IMAGES = [
   {
-    local: '/Users/davidberkowicz/.openclaw/media/tool-image-generation/smart-building-ap-cover---daa95f5a-402a-48f2-a900-6ed8a09d3c3b.jpg',
-    remote: 'images/smart-building-ap-cover.png' // Keeping .png as in the article
+    local: '/Users/davidberkowicz/.openclaw/media/tool-image-generation/6g-isac-cover---8f65a6d0-80c1-4ea5-946a-5824b2589093.jpg',
+    remote: 'images/6g-isac-cover.png'
   },
   {
-    local: '/Users/davidberkowicz/.openclaw/media/tool-image-generation/thread-mesh-integration---2596307a-2d33-4605-a6fb-ded8b03d3d63.jpg',
-    remote: 'images/thread-mesh-integration.png'
-  },
-  {
-    local: '/Users/davidberkowicz/.openclaw/media/tool-image-generation/it-ot-dashboard---db757102-ac39-4e2f-803a-e27934afc643.jpg',
-    remote: 'images/it-ot-dashboard.png'
-  },
-  {
-    local: '/Users/davidberkowicz/.openclaw/media/tool-image-generation/sensor-ap-communication---891e7cd8-3e09-4527-98d3-57e1dbca2b44.jpg',
-    remote: 'images/sensor-ap-communication.png'
+    local: '/Users/davidberkowicz/.openclaw/media/tool-image-generation/6g-sensing-diagram---9e6e0720-e8dd-4e4c-a6ec-f3645c74ce79.jpg',
+    remote: 'images/6g-sensing-diagram.png'
   }
 ];
 
@@ -41,7 +33,7 @@ async function main() {
       destination: img.remote,
       public: true,
       metadata: {
-        contentType: 'image/jpeg' // Even if named .png for the URL consistency
+        contentType: 'image/jpeg'
       }
     });
     console.log(`Uploaded ${img.remote}`);

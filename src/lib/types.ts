@@ -6,6 +6,13 @@ export interface Author {
 
 export type PostStatus = 'draft' | 'published';
 
+export interface ArticleAnalysis {
+  technicalScore: number;
+  editorialScore: number;
+  factCheckPassed: boolean;
+  comment: string;
+}
+
 export interface Post {
   slug: string;
   title: string;
@@ -19,6 +26,7 @@ export interface Post {
   status: PostStatus;
   publishedAt: Date;
   updatedAt: Date;
+  analysis?: ArticleAnalysis;
 }
 
 export interface PostInput {
@@ -32,6 +40,7 @@ export interface PostInput {
   author: Author;
   featured?: boolean;
   status?: PostStatus;
+  analysis?: ArticleAnalysis;
 }
 
 export interface Subscriber {
