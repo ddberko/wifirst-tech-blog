@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
-import { getPostBySlug, getPosts } from "@/lib/posts";
+import { getPostBySlug, getRelatedPosts } from "@/lib/posts";
 import { Post } from "@/lib/types";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import CategoryBadge from "@/components/CategoryBadge";
@@ -54,8 +54,8 @@ function PostContent() {
         console.log("[PostPage] Post result:", p ? p.title : "null");
         setPost(p);
         if (p) {
-          const all = await getPosts({ category: p.category, max: 4 });
-          setRelated(all.filter((r) => r.slug !== p.slug).slice(0, 3));
+          const rel = await getRelatedPosts(p.category, p.slug, 3);
+          setRelated(rel);
         }
       } catch (err) {
         console.error("[PostPage] Error loading post:", err);
