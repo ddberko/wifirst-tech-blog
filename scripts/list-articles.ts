@@ -1,6 +1,10 @@
 /**
  * Liste tous les articles publiés sur Firestore
- * Usage: cd /Users/davidberkowicz/Projects/wifirst-tech-blog && NODE_PATH=./node_modules npx tsx scripts/list-articles.ts
+ * Usage: NODE_PATH=./node_modules npx tsx scripts/list-articles.ts
+ *
+ * Le service account est résolu relativement à ce fichier, pour que le script
+ * tourne aussi bien sur le Mac mini que dans la VM d'une routine cloud, où le
+ * repo est cloné sous /home/user/.
  */
 
 import { initializeApp, cert } from 'firebase-admin/app';
@@ -8,7 +12,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-const PROJECT_ROOT = '/Users/davidberkowicz/Projects/wifirst-tech-blog';
+const PROJECT_ROOT = join(__dirname, '..');
 const SERVICE_ACCOUNT_PATH = join(PROJECT_ROOT, 'service-account.json');
 
 async function main() {
