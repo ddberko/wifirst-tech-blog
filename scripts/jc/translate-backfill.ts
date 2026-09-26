@@ -3,8 +3,10 @@
  *
  * Deux commandes, appelées par la routine de backfill (scripts/jc/backfill-workflow.md) :
  *
- *   list [n]                 → les n articles prioritaires sans traduction complète,
- *                              avec le chemin où leur contenu français a été écrit
+ *   list [n] [décalage]      → n articles prioritaires sans traduction complète, à partir
+ *                              du rang [décalage], avec le chemin où leur contenu français
+ *                              a été écrit. Le décalage évite que des runs simultanés
+ *                              sélectionnent tous les mêmes articles.
  *   apply <slug> <lang> <f>  → injecte la traduction du fichier f dans le document
  *
  * Priorité : les articles `featured` d'abord, puis les plus récents. C'est la vitrine
@@ -39,7 +41,7 @@ function missingLocales(data: FirebaseFirestore.DocumentData): Locale[] {
   return LOCALES.filter((l) => !t[l]);
 }
 
-async function list(limit: number) {
+async function list(limit: number, offset = 0) {
   // Pas de where() sur translations : Firestore ne sait pas filtrer sur l'absence
   // d'une clé de map. On lit les publiés et on trie côté client.
   const snap = await db
@@ -59,11 +61,11 @@ async function list(limit: number) {
         (b.data.publishedAt?.toMillis?.() ?? 0) - (a.data.publishedAt?.toMillis?.() ?? 0)
       );
     })
-    .slice(0, limit);
+    .slice(offset, offset + limit);
 
   mkdirSync(WORKDIR, { recursive: true });
 
-  console.log(`${candidats.length} article(s) à traiter — ${snap.size} publiés au total\n`);
+  console.log(`${candidats.length} article(s) à traiter (décalage ${offset}) — ${snap.size} publiés au total\n`);
   for (const c of candidats) {
     const slug = c.data.slug;
     const src = join(WORKDIR, `${slug}.fr.md`);
@@ -117,7 +119,9 @@ const [cmd, ...args] = process.argv.slice(2);
 
 (async () => {
   if (cmd === 'list') {
-    await list(Number(args[0] ?? 3));
+    // Le décalage permet à plusieurs runs simultanés de travailler sur des tranches
+    // disjointes : sans lui, ils sélectionneraient tous les mêmes articles.
+    await list(Number(args[0] ?? 3), Number(args[1] ?? 0));
   } else if (cmd === 'apply') {
     const [slug, lang, file, title, excerpt] = args;
     if (!slug || !lang || !file || !title || !excerpt) {
@@ -125,7 +129,7 @@ const [cmd, ...args] = process.argv.slice(2);
     }
     await apply(slug, lang, file, title, excerpt);
   } else {
-    console.error('usage: list [n] | apply <slug> <lang> <fichier> <titre> <chapô>');
+    console.error('usage: list [n] [décalage] | apply <slug> <lang> <fichier> <titre> <chapô>');
     process.exit(2);
   }
   process.exit(0);
