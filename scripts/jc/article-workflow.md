@@ -20,8 +20,11 @@ Tu disposes de 3 subagents déclarés dans `.claude/agents/` du repo, repris aut
 Tu tournes dans une VM cloud, pas sur le Mac mini. Conséquences :
 
 - Le repo `wifirst-tech-blog` est cloné dans ton répertoire de travail courant.
-- Le repo `Claude-assistant` est cloné à côté (STEP 7). Localise-le une fois pour toutes :
+- Le repo `Claude-assistant` **peut** être cloné à côté (STEP 7). Localise-le une fois pour
+  toutes, sans supposer qu'il existe :
   `ASSISTANT=$(find .. -maxdepth 2 -type d -name "Claude-assistant" 2>/dev/null | head -1)`
+  S'il est vide, le workflow fonctionne quand même : seules les étapes 1 (fallback topics)
+  et 7b (mémoire) le consomment, et toutes deux savent s'en passer.
 - Variables d'environnement disponibles : `GEMINI_API_KEY`, `FIREBASE_SERVICE_ACCOUNT_B64`.
 - `uv`, `node`, `npx`, `jq`, `git`, `gh` sont préinstallés.
 - Réseau : seuls les domaines de l'allowlist par défaut sont joignables. `*.googleapis.com`
@@ -79,7 +82,8 @@ Logue : sujet retenu, score, source primaire, raison du choix.
 
 **Fallback** : si aucun candidat n'est suffisamment frais (tous < 18/30 OU tous rejetés pour
 redondance), prends la première ligne de `Pile en cours` dans `$ASSISTANT/workspace/topics.md`.
-Logue le fallback explicitement.
+Logue le fallback explicitement. Si `$ASSISTANT` est vide, prends le candidat le moins mauvais
+du sourcing plutôt que d'échouer, et signale-le dans le rapport final.
 
 ## STEP 2/8 — BRIEF APPROFONDI
 
@@ -238,6 +242,12 @@ git push
 les PNG générés et l'état mutable de `scripts/publish-article.ts`. Reste chirurgical.
 
 **7b — mémoire dans le repo `Claude-assistant`** (`$ASSISTANT`) :
+
+⚠️ **Étape conditionnelle.** Si `$ASSISTANT` est vide — le repo n'est pas attaché à la
+routine — **saute entièrement 7b**, logue `  - 7b sautée : repo Claude-assistant absent`
+et signale-le dans le rapport final. Ne tente pas de cloner le repo toi-même, ne cherche
+pas `~/assistant` (il n'existe pas dans la VM), et surtout ne considère pas le run en échec :
+l'article est publié, c'est ce qui compte.
 
 Append une ligne à `$ASSISTANT/workspace/memory.md` :
 
