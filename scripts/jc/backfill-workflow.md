@@ -95,6 +95,11 @@ Termine par les lignes du `$RUN_LOG`, pour que le log survive à la destruction 
 
 ## Règles d'or
 
+- ⚠️ **Ne rends jamais la main avant le rapport final.** Dans une routine, terminer ton tour
+  termine le run : la VM est détruite et tout subagent encore en vol est perdu avec elle.
+  Un `Task` peut partir en arrière-plan — dans ce cas **attends son retour dans le même
+  tour** au lieu de conclure par « j'attends son retour ». Tant qu'il reste une langue ou un
+  article à traiter, tu continues. Le seul message qui termine ce run est le STEP 4.
 - **Subagents séquentiels** : un seul Task en vol.
 - **Ne jamais réécrire l'article français.** Ce workflow n'ajoute que des traductions.
 - **Ne jamais commiter quoi que ce soit** — pas de `git add`, pas de `git push`.

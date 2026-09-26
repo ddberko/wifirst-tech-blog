@@ -358,8 +358,14 @@ survive à la destruction de la VM.
 
 ## Règles d'or
 
+- ⚠️ **Ne rends jamais la main avant le STEP 9.** Dans une routine, terminer ton tour
+  termine le run : la VM est détruite et tout subagent encore en vol est perdu avec elle.
+  Un `Task` peut partir en arrière-plan — dans ce cas **attends son retour dans le même
+  tour** au lieu de conclure par « j'attends son retour ». Observé le 2026-09-26 : une
+  traduction allemande écrite mais jamais appliquée, parce que le tour s'était terminé.
 - **Logue à CHAQUE étape**, START et DONE, avec les chiffres clés.
-- **Subagents séquentiels** : un seul Task en vol (researcher×2 → writer → fact-checker).
+- **Subagents séquentiels** : un seul Task en vol (researcher×2 → writer → fact-checker →
+  translator×3).
 - **AUCUNE décision humaine intermédiaire** : la routine tourne sans supervision.
 - **Fact-check : correction → re-check (max 2 retries)**. Un FAIL initial n'est jamais terminal.
 - **Images publiques** (`public: true`) sur storage.googleapis.com, jamais `firebasestorage.app/...?alt=media`.
