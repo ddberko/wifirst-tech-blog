@@ -229,17 +229,38 @@ Logue l'URL publique `https://wifirst-tech-blog.web.app/post?slug=<slug>`.
 
 C'est ici que le cloud diffère le plus du Mac mini : l'archive passe par git.
 
-**7a — draft dans ce repo**, sur la branche courante :
+**7a — draft dans ce repo**, sur `main` de préférence.
+
+Tu tournes sur une branche `claude/<...>` créée pour ce run. Si tu y archives le draft,
+il y reste : personne ne va le chercher, et une branche s'accumule à chaque run. Vise donc
+`main`, avec repli sur ta branche si le push est refusé.
 
 ```bash
-cp /tmp/article-draft.md "drafts/$(date +%Y-%m-%d)-<slug>.md"
-git add "drafts/$(date +%Y-%m-%d)-<slug>.md"
-git commit -m "docs(blog): archive draft <slug>"
-git push
+D=$(date +%Y-%m-%d); S=<slug>
+cp /tmp/article-draft.md "drafts/$D-$S.md"
+git add "drafts/$D-$S.md"
+git commit -m "docs(blog): archive draft $S"
+
+# Tentative sur main, en rebasant pour absorber un run concurrent
+BRANCHE=$(git branch --show-current)
+if git fetch origin main && git rebase origin/main && git push origin HEAD:main; then
+  echo "draft archivé sur main"
+else
+  git push -u origin "$BRANCHE" && echo "push main refusé — draft archivé sur $BRANCHE"
+fi
 ```
 
 ⚠️ Ne commite **que** ce fichier. `git add -A` embarquerait `service-account.json`,
 les PNG générés et l'état mutable de `scripts/publish-article.ts`. Reste chirurgical.
+
+⚠️ **Ne change pas l'identité git.** Laisse la configuration par défaut : Claude Code refuse
+qu'une routine pousse sur une branche portant des commits d'un autre auteur. Un commit signé
+d'un nom personnalisé sur `main` bloquerait tous les runs suivants.
+
+⚠️ **N'archive pas la constante `ARTICLE`** de `scripts/publish-article.ts`. C'est un
+brouillon réécrit à chaque run ; sa version commitée sur `main` ne sert que d'exemple de
+schéma. Si un hook de fin de session réclame un arbre de travail propre, laisse-la modifiée
+plutôt que de la pousser.
 
 **7b — mémoire dans le repo `Claude-assistant`** (`$ASSISTANT`) :
 
