@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Post } from "@/lib/types";
+import { Post, localizePost } from "@/lib/types";
 import ClientDate from "./ClientDate";
+import { useLocale } from "./LocaleProvider";
 
-export default function FeaturedPost({ post }: { post: Post }) {
+export default function FeaturedPost({ post: rawPost }: { post: Post }) {
+  const { locale } = useLocale();
+  const post = localizePost(rawPost, locale);
   return (
     <article className="group relative rounded-2xl overflow-hidden">
       <Link href={`/post?slug=${post.slug}`} className="block">

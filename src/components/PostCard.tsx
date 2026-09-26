@@ -1,10 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import CategoryBadge from "./CategoryBadge";
-import { Post } from "@/lib/types";
+import { Post, localizePost } from "@/lib/types";
 import ClientDate from "./ClientDate";
+import { useLocale } from "./LocaleProvider";
 
-export default function PostCard({ post }: { post: Post }) {
+// La localisation se fait ici plutôt que dans chaque page : home, catégories,
+// recherche et articles liés en bénéficient sans modification.
+export default function PostCard({ post: rawPost }: { post: Post }) {
+  const { locale } = useLocale();
+  const post = localizePost(rawPost, locale);
   return (
     <article className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 transition-all duration-300">
       {post.coverImage ? (

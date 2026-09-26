@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Suspense } from 'react';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
 import NewsletterConsent from '@/components/NewsletterConsent';
+import LocaleProvider from '@/components/LocaleProvider';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,18 +38,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // lang="fr" : le contenu est rédigé en français et LocaleProvider corrige
+    // l'attribut côté client selon la langue choisie.
+    <html lang="fr">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
         style={{ fontFamily: 'var(--font-geist-sans), system-ui, -apple-system, sans-serif' }}
       >
-        <Header />
-        <Suspense fallback={null}>
-          <AnalyticsTracker />
-          <NewsletterConsent />
-        </Suspense>
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <LocaleProvider>
+          <Header />
+          <Suspense fallback={null}>
+            <AnalyticsTracker />
+            <NewsletterConsent />
+          </Suspense>
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </LocaleProvider>
       </body>
     </html>
   );

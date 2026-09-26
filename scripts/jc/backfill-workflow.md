@@ -76,7 +76,24 @@ en le signalant dans le rapport.
 
 `availableLocales` est recalculé par le script, tu n'as rien à faire.
 
-## STEP 4 — RAPPORT FINAL
+## STEP 4 — VÉRIFICATION (obligatoire avant le rapport)
+
+Ne rédige **jamais** le rapport sur la foi de ce que tu crois avoir fait. Redemande l'état
+réel à Firestore :
+
+```bash
+NODE_PATH=./node_modules npx tsx scripts/jc/translate-backfill.ts list 1
+```
+
+- S'il te ressort **le même article** que celui que tu viens de traiter, c'est qu'il lui
+  manque encore au moins une langue. **Retourne au STEP 2** pour cette langue. C'est le cas
+  le plus fréquent : la dernière langue d'un lot saute quand le tour se termine trop tôt.
+- S'il ressort un **autre article**, ton lot est terminé : passe au rapport.
+- S'il ne ressort **rien**, il n'y a plus rien à rattraper : passe au rapport.
+
+Au maximum **deux** retours au STEP 2. Au-delà, rapporte l'échec plutôt que de boucler.
+
+## STEP 5 — RAPPORT FINAL
 
 Aucun commit, aucun push : ce workflow n'écrit que dans Firestore, jamais dans le repo.
 Ton message final de session est le rapport. Format :

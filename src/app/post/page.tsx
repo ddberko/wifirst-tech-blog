@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { getPostBySlug, getRelatedPosts } from "@/lib/posts";
-import { Post, Locale, LOCALES, LOCALE_LABELS, isLocale, localizePost } from "@/lib/types";
+import { Post, LOCALES, LOCALE_LABELS, localizePost } from "@/lib/types";
+import { useLocale } from "@/components/LocaleProvider";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import CategoryBadge from "@/components/CategoryBadge";
 import PostCard from "@/components/PostCard";
@@ -34,8 +35,7 @@ function ReadingProgress() {
 function PostContent() {
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug") || "";
-  const langParam = searchParams.get("lang");
-  const locale: Locale = isLocale(langParam) ? langParam : "fr";
+  const { locale, setLocale } = useLocale();
   const [rawPost, setRawPost] = useState<Post | null>(null);
   const [related, setRelated] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,14 +74,6 @@ function PostContent() {
   // si la langue demandée n'existe pas pour cet article, donc jamais de page vide.
   const post = rawPost ? localizePost(rawPost, locale) : null;
 
-  // Le <html lang> vit dans layout.tsx, un composant serveur qui ne voit pas la query
-  // string. On le corrige côté client : lecteurs d'écran et moteurs s'y fient.
-  useEffect(() => {
-    document.documentElement.lang = locale;
-    return () => {
-      document.documentElement.lang = "fr";
-    };
-  }, [locale]);
 
   if (loading) return (
     <div className="max-w-3xl mx-auto px-4 py-24 text-center">
@@ -135,27 +127,24 @@ function PostContent() {
       )}
 
       <article className="max-w-5xl mx-auto px-4 py-12">
-        {/* Langues — masqué si l'article n'existe qu'en français */}
-        {rawPost?.translations && Object.keys(rawPost.translations).length > 0 && (
-          <div className="flex items-center gap-1.5 mb-4" role="group" aria-label="Langue de l'article">
-            {LOCALES.filter((l) => l === "fr" || rawPost.translations?.[l]).map((l) => {
-              const active = l === locale;
-              return (
-                <Link
-                  key={l}
-                  href={l === "fr" ? `/post?slug=${post.slug}` : `/post?slug=${post.slug}&lang=${l}`}
-                  hrefLang={l}
-                  aria-current={active ? "true" : undefined}
-                  className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
-                    active
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"
-                  }`}
-                >
-                  {LOCALE_LABELS[l]}
-                </Link>
-              );
-            })}
+        {/* La langue se choisit dans l'en-tête, pour tout le blog. Ici on signale
+            seulement le cas où cet article-là n'existe pas encore dans cette langue. */}
+        {locale !== "fr" && rawPost && !rawPost.translations?.[locale] && (
+          <div className="flex items-start gap-2 mb-4 text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+            <svg className="w-4 h-4 shrink-0 mt-px" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>
+              Cet article n&apos;est pas encore traduit en {LOCALE_LABELS[locale]} — il
+              s&apos;affiche en français.{" "}
+              <button
+                type="button"
+                onClick={() => setLocale("fr")}
+                className="underline underline-offset-2 hover:text-amber-900"
+              >
+                Continuer en français
+              </button>
+            </span>
           </div>
         )}
 

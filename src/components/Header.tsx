@@ -8,6 +8,7 @@ import { auth, googleProvider } from "@/lib/firebase";
 import { signInWithPopup, signOut, onAuthStateChanged, User } from "firebase/auth";
 import Image from "next/image";
 import NewsletterButton from './NewsletterButton';
+import LocaleSwitcher from './LocaleSwitcher';
 
 function WifirstLogo() {
   return (
@@ -144,6 +145,9 @@ export default function Header() {
                 </div>
               )}
             </div>
+
+            {/* Langue — vaut pour tout le blog */}
+            <LocaleSwitcher />
 
             {/* Admin link */}
             {user && (
