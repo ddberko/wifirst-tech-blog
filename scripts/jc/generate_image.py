@@ -55,6 +55,11 @@ def main():
         "--api-key", "-k",
         help="Gemini API key (overrides GEMINI_API_KEY env var)"
     )
+    parser.add_argument(
+        "--model", "-m",
+        default=os.environ.get("GEMINI_IMAGE_MODEL", "gemini-3.1-flash-image"),
+        help="Image model (default: gemini-3.1-flash-image, or $GEMINI_IMAGE_MODEL)"
+    )
 
     args = parser.parse_args()
 
@@ -111,17 +116,33 @@ def main():
         contents = args.prompt
         print(f"Generating image with resolution {output_resolution}...")
 
-    try:
-        response = client.models.generate_content(
-            model="gemini-3-pro-image-preview",
+    print(f"Model: {args.model}")
+
+    # image_size pilote la résolution de sortie. Sans lui le modèle retombe sur
+    # son défaut (1408x768), soit la moitié des covers historiques en 2K.
+    def _generate(with_image_size: bool):
+        image_config = (
+            types.ImageConfig(image_size=output_resolution)
+            if with_image_size
+            else types.ImageConfig()
+        )
+        return client.models.generate_content(
+            model=args.model,
             contents=contents,
             config=types.GenerateContentConfig(
                 response_modalities=["TEXT", "IMAGE"],
-                image_config=types.ImageConfig(
-                     # removed for api compat
-                )
-            )
+                image_config=image_config,
+            ),
         )
+
+    try:
+        try:
+            response = _generate(with_image_size=True)
+        except Exception as size_error:
+            # Un modèle qui ne supporte pas image_size ne doit pas faire échouer
+            # tout le workflow : on retente sans, en le signalant.
+            print(f"image_size={output_resolution} refusé ({size_error}) — retry sans")
+            response = _generate(with_image_size=False)
 
         # Process response and convert to PNG
         image_saved = False
