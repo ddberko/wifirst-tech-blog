@@ -10,6 +10,22 @@ const AUTHOR = {
   avatar: 'https://ui-avatars.com/api/?name=David+Berkowicz&background=0D8ABC&color=fff'
 };
 
+/**
+ * Traductions. Une entrée par langue produite au STEP 6 du workflow ; les langues
+ * qui ont échoué sont simplement absentes. `contentFile` est lu comme celui de
+ * l'article français, et `availableLocales` est calculé à partir des entrées
+ * effectivement présentes.
+ */
+type TranslationInput = {
+  title: string;
+  excerpt: string;
+  tags?: string[];
+  contentFile: string;
+};
+
+const LOCALES = ['en', 'es', 'de'] as const;
+type Locale = (typeof LOCALES)[number];
+
 const ARTICLE = {
   "slug": "wifi-7-cisco-it-migration-commencee-un-an-avant",
   "title": "90 000 employés en Wi-Fi 7, et la vraie migration avait eu lieu un an plus tôt",
@@ -85,6 +101,43 @@ async function publish() {
     process.exit(1);
   }
 
+  // Traductions : lecture de chaque contentFile, avec les mêmes garde-fous que le français.
+  const rawTranslations = ((ARTICLE as Record<string, unknown>).translations ?? {}) as
+    Partial<Record<Locale, TranslationInput>>;
+  const translations: Record<string, unknown> = {};
+
+  for (const locale of LOCALES) {
+    const t = rawTranslations[locale];
+    if (!t) continue;
+    try {
+      const translated = readFileSync(t.contentFile, 'utf8');
+      const tWords = translated.split(/\s+/).length;
+      const ratio = tWords / wordCount;
+      if (ratio < 0.5 || ratio > 1.6) {
+        console.warn(`⚠️  ${locale} ignoré : ${tWords} mots pour ${wordCount} en français (ratio ${ratio.toFixed(2)}) — traduction probablement tronquée.`);
+        continue;
+      }
+      if (translated.includes('$')) {
+        console.warn(`⚠️  ${locale} : des « $ » subsistent, le frontend les rendra en LaTeX.`);
+      }
+      translations[locale] = {
+        title: t.title,
+        excerpt: t.excerpt,
+        tags: t.tags ?? ARTICLE.tags,
+        content: translated,
+        wordCount: tWords,
+      };
+      console.log(`✅ Traduction ${locale} : ${tWords} mots — « ${t.title} »`);
+    } catch (e) {
+      console.warn(`⚠️  ${locale} illisible (${t.contentFile}) : ${(e as Error).message}`);
+    }
+  }
+
+  const availableLocales = ['fr', ...Object.keys(translations)];
+  if (availableLocales.length === 1) {
+    console.log('ℹ️  Aucune traduction : l\'article sera publié en français seul.');
+  }
+
   const docRef = db.collection('articles').doc(ARTICLE.slug);
 
   const articleData = {
@@ -101,7 +154,9 @@ async function publish() {
     featured: ARTICLE.featured !== false,
     skipNewsletter: ARTICLE.skipNewsletter,
     status: 'published',
-    analysis: ARTICLE.analysis
+    analysis: ARTICLE.analysis,
+    translations,
+    availableLocales
   };
 
   await docRef.set(articleData, { merge: true });

@@ -70,6 +70,46 @@ export function resolveFactCheck(a: ArticleAnalysis): {
   return { state: 'unknown', label: '— Non renseigné', comment };
 }
 
+export const LOCALES = ['fr', 'en', 'es', 'de'] as const;
+export type Locale = (typeof LOCALES)[number];
+
+export const LOCALE_LABELS: Record<Locale, string> = {
+  fr: 'Français',
+  en: 'English',
+  es: 'Español',
+  de: 'Deutsch',
+};
+
+/** Version traduite d'un article. Les images, la catégorie et la cover restent communes. */
+export interface PostTranslation {
+  title: string;
+  excerpt: string;
+  tags?: string[];
+  content: string;
+  wordCount?: number;
+}
+
+export function isLocale(value: string | null | undefined): value is Locale {
+  return !!value && (LOCALES as readonly string[]).includes(value);
+}
+
+/**
+ * Applique une traduction à un article. Retombe sur le français si la langue
+ * demandée n'existe pas — un lecteur ne doit jamais tomber sur une page vide.
+ */
+export function localizePost(post: Post, locale: Locale): Post {
+  if (locale === 'fr') return post;
+  const t = post.translations?.[locale];
+  if (!t) return post;
+  return {
+    ...post,
+    title: t.title,
+    excerpt: t.excerpt,
+    content: t.content,
+    tags: t.tags ?? post.tags,
+  };
+}
+
 export interface Post {
   slug: string;
   title: string;
@@ -80,6 +120,8 @@ export interface Post {
   tags: string[];
   author: Author;
   featured: boolean;
+  translations?: Partial<Record<Locale, PostTranslation>>;
+  availableLocales?: string[];
   status: PostStatus;
   publishedAt: Date;
   updatedAt: Date;

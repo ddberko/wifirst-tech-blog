@@ -1,7 +1,7 @@
 # Workflow article quotidien — Wifirst Tech Blog (exécution cloud)
 
 Version cloud du workflow historiquement porté par `~/assistant/scripts/article-prompt.tmpl.md`
-sur le Mac mini. La routine Claude Code cloud lit ce fichier et déroule les 8 étapes.
+sur le Mac mini. La routine Claude Code cloud lit ce fichier et déroule les 9 étapes.
 
 **Le type d'article (`tech` ou `ai`) est fourni par la routine appelante.** Partout où ce
 document écrit `<TYPE>`, substitue la valeur reçue.
@@ -31,11 +31,11 @@ Tu tournes dans une VM cloud, pas sur le Mac mini. Conséquences :
   en fait partie, donc Gemini, Firestore et Cloud Storage passent. **Pas de Discord.**
 - Aucun accès à `~/assistant`, `~/.openclaw` ni au disque de David.
 
-## STEP 0/8 — AMORÇAGE
+## STEP 0/9 — AMORÇAGE
 
 ```bash
 RUN_LOG=/tmp/blog-run-$(date +%Y-%m-%d-%H%M%S).log
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] [STEP 0/8] STARTED — amorçage cloud" >> "$RUN_LOG"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [STEP 0/9] STARTED — amorçage cloud" >> "$RUN_LOG"
 
 # Le service account est injecté en base64 ; publish-article.ts attend ../service-account.json
 printf '%s' "$FIREBASE_SERVICE_ACCOUNT_B64" | base64 -d > service-account.json
@@ -53,7 +53,7 @@ les installe déjà ; ceci n'est qu'un filet) :
 node -e "require.resolve('firebase-admin')" 2>/dev/null || npm install --no-save firebase-admin @google-cloud/storage tsx
 ```
 
-Logue `[STEP 0/8] DONE`.
+Logue `[STEP 0/9] DONE`.
 
 ## 🔴 Log step-by-step (OBLIGATOIRE)
 
@@ -68,7 +68,7 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] [STEP X/8] DONE — <résumé 1 ligne avec 
 Sous-bullets `  - ...` pour tout ce qui compte : sujet retenu, scores, URLs, slugs, verdicts.
 David relit ce log. **Si tu ne logges pas, tu rates ta mission.**
 
-## STEP 1/8 — IDÉATION (sourcing actu via Gemini + Google Search)
+## STEP 1/9 — IDÉATION (sourcing actu via Gemini + Google Search)
 
 Invoke le subagent `researcher` en **mode sourcing avec type=<TYPE>** :
 
@@ -85,7 +85,7 @@ redondance), prends la première ligne de `Pile en cours` dans `$ASSISTANT/works
 Logue le fallback explicitement. Si `$ASSISTANT` est vide, prends le candidat le moins mauvais
 du sourcing plutôt que d'échouer, et signale-le dans le rapport final.
 
-## STEP 2/8 — BRIEF APPROFONDI
+## STEP 2/9 — BRIEF APPROFONDI
 
 Invoke `researcher` en **mode brief** sur le sujet retenu :
 
@@ -93,7 +93,7 @@ Invoke `researcher` en **mode brief** sur le sujet retenu :
 
 Sauvegarde dans `/tmp/article-brief.md`. Logue : nombre de sources, thèse en 1 phrase.
 
-## STEP 3/8 — RÉDACTION
+## STEP 3/9 — RÉDACTION
 
 Invoke `writer` :
 
@@ -120,7 +120,7 @@ les lignes concernées, sans bloquer (peut être légitime dans une URL).
 
 Récupère titre, slug, excerpt, category, tags du writer. Logue : titre, slug, word count, nb de Mermaid.
 
-## STEP 4/8 — GÉNÉRATION D'IMAGES (1 cover + 3 inline)
+## STEP 4/9 — GÉNÉRATION D'IMAGES (1 cover + 3 inline)
 
 ⚠️ **La cover n'est PAS dans le markdown** — le frontend l'affiche via le champ `coverImage`.
 Si tu trouves `![Cover](...)` dans le draft, retire-le :
@@ -158,7 +158,7 @@ Si une génération échoue → retry 1 fois. Si re-échec → log `[FAILED]`, S
 
 Logue : URL cover + 3 URLs inlines.
 
-## STEP 5/8 — FACT-CHECK (boucle correction → re-check, max 2 retries)
+## STEP 5/9 — FACT-CHECK (boucle correction → re-check, max 2 retries)
 
 Invoke `fact-checker` :
 
@@ -183,7 +183,44 @@ Variables internes : `RETRY_COUNT=0`, `MAX_RETRIES=2`. Boucle :
 
 Logue le récap : verdict initial → final, retries, scores Gemini, hallucinations corrigées vs résiduelles.
 
-## STEP 6/8 — PUBLICATION
+## STEP 6/9 — TRADUCTIONS (anglais, espagnol, allemand)
+
+⚠️ **Uniquement si le STEP 5 s'est conclu par PASS ou PASS avec corrections.** On ne traduit
+jamais un article bloqué : ce serait propager une hallucination dans quatre langues.
+
+Le draft `/tmp/article-draft.md` est désormais figé. Invoke le subagent `translator`
+**une fois par langue**, séquentiellement (un seul Task en vol, règle d'or du workflow) :
+
+> « Traduis `/tmp/article-draft.md` en `<en|es|de>`. Écris le résultat dans
+> `/tmp/article-<lang>.md`. Rends les quatre lignes TITLE / EXCERPT / TAGS / WORDS. »
+
+Récupère pour chaque langue son titre, son chapô, ses tags et son nombre de mots.
+
+**Contrôles après chaque traduction** — si l'un échoue, relance le `translator` sur cette
+langue une fois, puis passe outre en le signalant plutôt que de bloquer la publication :
+
+```bash
+L=en  # puis es, de
+F=/tmp/article-$L.md
+echo "  - $L : $(wc -w < $F) mots, $(grep -c '\$' $F) dollars, $(grep -c '^# ' $F) H1, $(grep -c '!\[' $F) images, $(grep -c '```mermaid' $F) mermaid"
+```
+
+Attendu, par comparaison avec le français : **0 `$`**, **0 `# `**, autant d'images et autant
+de blocs Mermaid, et un volume entre 80 % et 130 % du nombre de mots original. Un écart plus
+large signale une traduction tronquée ou délirante.
+
+Corrige un `$` résiduel sans relancer l'agent :
+
+```bash
+sed -i -E 's/Md\$/Md USD/g; s/([0-9]+) M\$/\1 M USD/g; s/\$([0-9]+)([BM])/\1 \2 USD/g' "$F"
+```
+
+**Une langue qui échoue ne bloque rien.** L'article se publie avec les traductions
+disponibles ; `availableLocales` reflète la réalité et le rapport final le dit.
+
+Logue : pour chaque langue, titre traduit, nombre de mots, contrôles passés ou non.
+
+## STEP 7/9 — PUBLICATION
 
 Édite UNIQUEMENT la constante `ARTICLE` dans `scripts/publish-article.ts` :
 
@@ -192,6 +229,16 @@ Logue le récap : verdict initial → final, retries, scores Gemini, hallucinati
 - `readTime` : `Math.ceil(wc / 200)`
 - `coverImage` : URL Firebase cover
 - `contentFile` : `/tmp/article-draft.md`
+- `translations` : une entrée par langue **réussie** au STEP 6, les autres omises —
+  ```ts
+  translations: {
+    en: { title: "...", excerpt: "...", tags: ["..."], contentFile: "/tmp/article-en.md" },
+    es: { title: "...", excerpt: "...", tags: ["..."], contentFile: "/tmp/article-es.md" },
+    de: { title: "...", excerpt: "...", tags: ["..."], contentFile: "/tmp/article-de.md" },
+  }
+  ```
+  `publish-article.ts` lit chaque `contentFile`, en injecte le contenu et calcule
+  `availableLocales` tout seul. Si le STEP 6 a été sauté, mets `translations: {}`.
 - `featured` : `true`
 - `skipNewsletter` : **`true` si TYPE=ai**, **`false` si TYPE=tech** (règle David, 2026-05-12)
 - `analysis` : construit depuis `/tmp/fact-check-result.json`, au **schéma enrichi** suivant —
@@ -225,7 +272,7 @@ Si la publication échoue → log `[FAILED]` avec stderr, STOP.
 
 Logue l'URL publique `https://wifirst-tech-blog.web.app/post?slug=<slug>`.
 
-## STEP 7/8 — ARCHIVE (commits git, pas de disque local)
+## STEP 8/9 — ARCHIVE (commits git, pas de disque local)
 
 C'est ici que le cloud diffère le plus du Mac mini : l'archive passe par git.
 
@@ -291,7 +338,7 @@ compte. Logue l'échec du push et signale-le dans le rapport final.
 
 Logue : chemin du draft commité + statut memory.md/topics.md.
 
-## STEP 8/8 — RAPPORT FINAL
+## STEP 9/9 — RAPPORT FINAL
 
 Il n'y a pas de webhook Discord dans la VM. Ton **message final de session** est le rapport :
 David le lit sur claude.ai/code. Max 10 lignes :
