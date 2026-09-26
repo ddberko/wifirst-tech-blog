@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
+import { useLocale } from "@/components/LocaleProvider";
 import { useSearchParams } from "next/navigation";
 import { getPosts } from "@/lib/posts";
 import { Post } from "@/lib/types";
 import PostCard from "@/components/PostCard";
 
 function CategoryContent() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const category = searchParams.get("name") || "";
   const [posts, setPosts] = useState<Post[]>([]);
@@ -28,9 +30,9 @@ function CategoryContent() {
           <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-sm font-medium px-4 py-2 rounded-full mb-4 border border-white/10">
             Category
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight">{category || "Categories"}</h1>
+          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight">{category || t("category.title")}</h1>
           <p className="text-blue-100/70 mt-3 text-lg">
-            {posts.length > 0 ? `${posts.length} article${posts.length !== 1 ? "s" : ""}` : "Explore articles"}
+            {posts.length > 0 ? `${posts.length} ${t("common.articles")}` : t("category.explore")}
           </p>
         </div>
       </section>
@@ -48,7 +50,7 @@ function CategoryContent() {
           </div>
         )}
         {!loading && posts.length === 0 && (
-          <p className="text-gray-400 text-center py-16">No articles found in this category.</p>
+          <p className="text-gray-400 text-center py-16">{t('category.empty')}</p>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => <PostCard key={post.slug} post={post} />)}
@@ -59,5 +61,5 @@ function CategoryContent() {
 }
 
 export default function CategoryPage() {
-  return <Suspense fallback={<div className="text-center py-12 text-gray-400">Loading...</div>}><CategoryContent /></Suspense>;
+  return <Suspense fallback={<div className="text-center py-12 text-gray-400">{'…'}</div>}><CategoryContent /></Suspense>;
 }

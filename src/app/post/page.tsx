@@ -35,7 +35,7 @@ function ReadingProgress() {
 function PostContent() {
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug") || "";
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const [rawPost, setRawPost] = useState<Post | null>(null);
   const [related, setRelated] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -94,7 +94,7 @@ function PostContent() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
       </div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Article</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('post.error')}</h1>
       <p className="text-red-600 font-mono text-sm bg-red-50 px-4 py-3 rounded-lg inline-block mb-4">{error}</p>
       <p className="text-gray-500 text-sm">Slug: <code className="bg-gray-100 px-2 py-1 rounded">{slug}</code></p>
     </div>
@@ -107,7 +107,7 @@ function PostContent() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Post not found</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('post.notFound')}</h1>
       <p className="text-gray-500 mb-2">The article you&apos;re looking for doesn&apos;t exist.</p>
       <p className="text-gray-400 text-sm">Slug: <code className="bg-gray-100 px-2 py-1 rounded">{slug}</code></p>
     </div>
@@ -219,7 +219,7 @@ function PostContent() {
         {/* Related */}
         {related.length > 0 && (
           <section className="mt-20 pt-10 border-t border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 tracking-tight">Related Articles</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-8 tracking-tight">{t('post.related')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {related.map((r) => <PostCard key={r.slug} post={r} />)}
             </div>
@@ -234,7 +234,7 @@ export default function PostPage() {
   return (
     <AuthGuard>
       <Suspense fallback={
-        <div className="max-w-3xl mx-auto px-4 py-24 text-center text-gray-400">Loading...</div>
+        <div className="max-w-3xl mx-auto px-4 py-24 text-center text-gray-400">{"…"}</div>
       }>
         <PostContent />
       </Suspense>

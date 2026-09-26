@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useLocale } from "./LocaleProvider";
 
 export default function Footer() {
+  const { t } = useLocale();
   return (
     <footer className="bg-gray-900 text-gray-300 mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,10 +24,10 @@ export default function Footer() {
 
           {/* Links */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Navigation</h3>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">{t('nav.navigation')}</h3>
             <ul className="space-y-2.5">
-              <li><Link href="/" className="text-sm text-gray-400 hover:text-white transition-colors">Home</Link></li>
-              <li><Link href="/search" className="text-sm text-gray-400 hover:text-white transition-colors">Search</Link></li>
+              <li><Link href="/" className="text-sm text-gray-400 hover:text-white transition-colors">{t('nav.home')}</Link></li>
+              <li><Link href="/search" className="text-sm text-gray-400 hover:text-white transition-colors">{t('nav.search')}</Link></li>
             </ul>
           </div>
 
@@ -32,7 +36,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Wifirst</h3>
             <ul className="space-y-2.5">
               <li><a href="https://www.wifirst.com" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-white transition-colors">wifirst.com</a></li>
-              <li><a href="https://www.wifirst.com/en/wifirst/about-us" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-white transition-colors">About Us</a></li>
+              <li><a href="https://www.wifirst.com/en/wifirst/about-us" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-white transition-colors">{t('nav.about')}</a></li>
             </ul>
           </div>
         </div>

@@ -7,10 +7,12 @@ import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
 import AuthGuard from "@/components/AuthGuard";
 import { Post } from "@/lib/types";
+import { useLocale } from "@/components/LocaleProvider";
 
 const POSTS_PER_PAGE = 20;
 
 function HomeContent() {
+  const { t } = useLocale();
   const [posts, setPosts] = useState<Post[]>([]);
   const [featured, setFeatured] = useState<Post | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
@@ -94,7 +96,7 @@ function HomeContent() {
               <span className="text-blue-200">Tech Blog</span>
             </h1>
             <p className="text-lg md:text-xl text-blue-100/80 max-w-xl leading-relaxed">
-              Engineering insights, technical deep-dives, and innovations in networking, AI, and software engineering.
+              {t("home.tagline")}
             </p>
           </div>
         </div>
@@ -111,8 +113,8 @@ function HomeContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">No posts yet</h2>
-            <p className="text-gray-500">Articles are on their way. Check back soon!</p>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">{t("home.empty.title")}</h2>
+            <p className="text-gray-500">{t("home.empty.body")}</p>
           </div>
         )}
 
@@ -127,7 +129,7 @@ function HomeContent() {
         {categories.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center gap-4 flex-wrap">
-              <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Topics</span>
+              <span className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{t("home.topics")}</span>
               <div className="flex flex-wrap gap-2">
                 {categories.map((cat) => (
                   <CategoryBadge key={cat} category={cat} />
@@ -141,8 +143,8 @@ function HomeContent() {
         {posts.length > 0 && (
           <section className="pb-16">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Recent Articles</h2>
-              <span className="text-sm text-gray-400">{posts.length} articles</span>
+              <h2 className="text-2xl font-bold text-gray-900 tracking-tight">{t("home.recent")}</h2>
+              <span className="text-sm text-gray-400">{posts.length} {t("common.articles")}</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.slice(0, visibleCount).map((post) => (
@@ -156,7 +158,7 @@ function HomeContent() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  <span>Chargement...</span>
+                  <span>{t("common.loading")}</span>
                 </div>
               </div>
             )}

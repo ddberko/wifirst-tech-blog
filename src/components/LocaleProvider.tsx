@@ -3,17 +3,21 @@
 import { createContext, useContext, useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Locale, LOCALES, isLocale } from "@/lib/types";
+import { translate, UIKey } from "@/lib/i18n";
 
 const STORAGE_KEY = "wtb.locale";
 
 type LocaleContextValue = {
   locale: Locale;
   setLocale: (l: Locale) => void;
+  /** Chaîne d'interface dans la langue courante. */
+  t: (key: UIKey) => string;
 };
 
 const LocaleContext = createContext<LocaleContextValue>({
   locale: "fr",
   setLocale: () => {},
+  t: (key) => translate("fr", key),
 });
 
 export function useLocale() {
@@ -80,15 +84,17 @@ function LocaleProviderInner({ children }: { children: React.ReactNode }) {
     window.history.replaceState({}, "", url.toString());
   }, []);
 
+  const t = useCallback((key: UIKey) => translate(locale, key), [locale]);
+
   return (
-    <LocaleContext.Provider value={{ locale, setLocale }}>{children}</LocaleContext.Provider>
+    <LocaleContext.Provider value={{ locale, setLocale, t }}>{children}</LocaleContext.Provider>
   );
 }
 
 export default function LocaleProvider({ children }: { children: React.ReactNode }) {
   // useSearchParams impose une frontière Suspense dans un export statique.
   return (
-    <Suspense fallback={<LocaleContext.Provider value={{ locale: "fr", setLocale: () => {} }}>{children}</LocaleContext.Provider>}>
+    <Suspense fallback={<LocaleContext.Provider value={{ locale: "fr", setLocale: () => {}, t: (k) => translate("fr", k) }}>{children}</LocaleContext.Provider>}>
       <LocaleProviderInner>{children}</LocaleProviderInner>
     </Suspense>
   );

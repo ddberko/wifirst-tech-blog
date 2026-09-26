@@ -9,6 +9,7 @@ import { signInWithPopup, signOut, onAuthStateChanged, User } from "firebase/aut
 import Image from "next/image";
 import NewsletterButton from './NewsletterButton';
 import LocaleSwitcher from './LocaleSwitcher';
+import { useLocale } from './LocaleProvider';
 
 function WifirstLogo() {
   return (
@@ -30,6 +31,7 @@ function WifirstLogo() {
 }
 
 export default function Header() {
+  const { t } = useLocale();
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -155,7 +157,7 @@ export default function Header() {
                 href="/admin"
                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#0066CC] rounded-lg hover:bg-blue-50 transition-all"
               >
-                Admin
+                {t('nav.admin')}
               </Link>
             )}
 
@@ -163,7 +165,7 @@ export default function Header() {
             <button
               onClick={() => setShowSearch(!showSearch)}
               className="p-2 text-gray-500 hover:text-[#0066CC] rounded-lg hover:bg-blue-50 transition-all mr-2"
-              aria-label="Search"
+              aria-label={t("nav.search")}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -192,7 +194,7 @@ export default function Header() {
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg py-1 z-50">
                     <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Account</p>
+                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">{t('account.title')}</p>
                       <p className="text-sm font-semibold text-gray-900 truncate">{user.displayName}</p>
                     </div>
                     <Link
@@ -258,7 +260,7 @@ export default function Header() {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Search articles..."
+                  placeholder={t("search.placeholder")}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   autoFocus
@@ -283,7 +285,7 @@ export default function Header() {
             </Link>
             {user && (
               <Link href="/admin" className="block px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0066CC] rounded-lg hover:bg-blue-50" onClick={() => setMobileMenuOpen(false)}>
-                Admin
+                {t('nav.admin')}
               </Link>
             )}
             {user && (
@@ -293,7 +295,7 @@ export default function Header() {
             )}
             {categories.length > 0 && (
               <div className="pt-2 border-t border-gray-100 mt-2">
-                <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Categories</p>
+                <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">{t('nav.categories')}</p>
                 {categories.map((cat) => (
                   <Link
                     key={cat}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, Suspense, useCallback } from "react";
+import { useLocale } from "@/components/LocaleProvider";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Post } from "@/lib/types";
 import PostCard from "@/components/PostCard";
@@ -8,6 +9,7 @@ import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 function SearchResults() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const router = useRouter();
   const q = searchParams.get("q") || "";
@@ -94,7 +96,7 @@ function SearchResults() {
     <>
       <section className="bg-gradient-to-br from-[#0066CC] to-[#004C99] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white tracking-tight mb-6">Recherche</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white tracking-tight mb-6">{t('search.title')}</h1>
           <div className="max-w-2xl">
             <form onSubmit={handleSearch} className="flex gap-3">
               <div className="relative flex-1">
@@ -103,7 +105,7 @@ function SearchResults() {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Rechercher des articles..."
+                  placeholder={t("search.placeholder")}
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-white/30 shadow-sm transition-all"
@@ -158,7 +160,7 @@ function SearchResults() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Aucun résultat</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('search.empty')}</h2>
             <p className="text-gray-500 text-sm">Essayez d&apos;autres mots-clés ou parcourez les catégories.</p>
           </div>
         )}
@@ -170,7 +172,7 @@ function SearchResults() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Recherchez un article</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('search.prompt')}</h2>
             <p className="text-gray-500 text-sm">Tapez un mot-clé ci-dessus pour trouver des articles.</p>
           </div>
         )}
@@ -183,7 +185,7 @@ export default function SearchPage() {
   return (
     <Suspense fallback={
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-gray-400">Chargement...</div>
+        <div className="text-gray-400">{'…'}</div>
       </div>
     }>
       <SearchResults />
