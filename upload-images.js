@@ -1,27 +1,20 @@
 const { Storage } = require('@google-cloud/storage');
-const storage = new Storage({ keyFilename: './service-account.json', projectId: 'wifirst-tech-blog' });
+const storage = new Storage({ keyFilename: 'service-account.json', projectId: 'wifirst-tech-blog' });
 const bucket = storage.bucket('wifirst-tech-blog.firebasestorage.app');
 
-async function uploadImages() {
-  const images = [
-    { src: '/tmp/cover-stanford-2026.png', dest: 'covers/stanford-ai-index-2026-cover.png' },
-    { src: '/tmp/inline-cyber-2026.png', dest: 'images/stanford-ai-index-2026-cyber.png' },
-    { src: '/tmp/inline-energy-2026.png', dest: 'images/stanford-ai-index-2026-energy.png' },
-    { src: '/tmp/inline-code-2026.png', dest: 'images/stanford-ai-index-2026-code.png' },
-  ];
-
-  for (const img of images) {
-    try {
-      const [file] = await bucket.upload(img.src, {
-        destination: img.dest,
-        public: true,
-        metadata: { cacheControl: 'public, max-age=31536000' }
-      });
-      console.log(`URL for ${img.dest}:`, file.publicUrl());
-    } catch (e) {
-      console.error(`Failed to upload ${img.src}:`, e);
-    }
-  }
+async function upload(localPath, destination) {
+  const [file] = await bucket.upload(localPath, {
+    destination: destination,
+    public: true,
+    metadata: { cacheControl: 'public, max-age=31536000' }
+  });
+  console.log(`URL for ${localPath}:`, file.publicUrl());
 }
 
-uploadImages();
+async function run() {
+  await upload('/tmp/schisme-agentique-cover.png', 'covers/schisme-agentique-2026-cover.png');
+  await upload('/tmp/agent-symphony.png', 'images/schisme-agentique-symphony.png');
+  await upload('/tmp/anthropic-moat.png', 'images/schisme-agentique-moat.png');
+  await upload('/tmp/agent-economics.png', 'images/schisme-agentique-economics.png');
+}
+run().catch(console.error);

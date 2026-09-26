@@ -80,6 +80,7 @@ interface ArticleData {
   slug?: string;
   status?: string;
   category?: string;
+  skipNewsletter?: boolean;
 }
 
 interface AnalyticsEvent {
@@ -238,6 +239,12 @@ async function sendNewsletterForArticle(
   // Guard: only send for published articles
   if (articleData.status !== "published") {
     console.log("[newsletter] Article not published, skipping.");
+    return;
+  }
+
+  // Guard: respect skipNewsletter flag (e.g. cron IA matinal n'envoie pas d'email)
+  if (articleData.skipNewsletter) {
+    console.log("[newsletter] skipNewsletter=true, skipping send.");
     return;
   }
 
