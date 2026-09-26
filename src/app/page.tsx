@@ -6,18 +6,26 @@ import FeaturedPost from "@/components/FeaturedPost";
 import PostCard from "@/components/PostCard";
 import CategoryBadge from "@/components/CategoryBadge";
 import AuthGuard from "@/components/AuthGuard";
-import { Post } from "@/lib/types";
+import { Post, filterByLocale, hasLocale } from "@/lib/types";
 import { useLocale } from "@/components/LocaleProvider";
 
 const POSTS_PER_PAGE = 20;
 
 function HomeContent() {
-  const { t } = useLocale();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [featured, setFeatured] = useState<Post | null>(null);
+  const { t, locale, setLocale } = useLocale();
+  const [rawPosts, setRawPosts] = useState<Post[]>([]);
+  const [rawFeatured, setRawFeatured] = useState<Post | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // On n'affiche que les articles lisibles dans la langue choisie. Si l'article à la
+  // une n'est pas traduit, le premier article disponible prend sa place : la page
+  // garde sa structure au lieu de perdre son hero.
+  const available = filterByLocale(rawPosts, locale);
+  const featuredOk = rawFeatured && hasLocale(rawFeatured, locale);
+  const featured = featuredOk ? rawFeatured : available[0] ?? null;
+  const posts = featuredOk ? available : available.slice(1);
+
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -55,11 +63,11 @@ function HomeContent() {
         const feat = allPosts.find((p) => p.featured) || allPosts[0] || null;
 
         console.log("[Home] Selected featured post:", feat?.title || "None");
-        setFeatured(feat);
+        setRawFeatured(feat);
 
         const otherPosts = feat ? allPosts.filter((p) => p.slug !== feat.slug) : allPosts;
         console.log("[Home] Setting posts to state, count:", otherPosts.length);
-        setPosts(otherPosts);
+        setRawPosts(otherPosts);
 
         const cats = await getCategories();
         setCategories(cats);
@@ -113,8 +121,26 @@ function HomeContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">{t("home.empty.title")}</h2>
-            <p className="text-gray-500">{t("home.empty.body")}</p>
+            {/* Deux vides différents : un blog sans article, ou un blog dont les
+                archives ne sont pas encore traduites dans la langue choisie. */}
+            {rawPosts.length === 0 ? (
+              <>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">{t("home.empty.title")}</h2>
+                <p className="text-gray-500">{t("home.empty.body")}</p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">{t("home.emptyLocale.title")}</h2>
+                <p className="text-gray-500 mb-5">{t("home.emptyLocale.body")}</p>
+                <button
+                  type="button"
+                  onClick={() => setLocale("fr")}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#0066CC] text-white text-sm font-semibold rounded-lg hover:bg-[#0052a3] transition-all active:scale-95"
+                >
+                  {t("home.switchToFr")}
+                </button>
+              </>
+            )}
           </div>
         )}
 

@@ -93,6 +93,24 @@ export function isLocale(value: string | null | undefined): value is Locale {
   return !!value && (LOCALES as readonly string[]).includes(value);
 }
 
+/** Cet article existe-t-il dans cette langue ? Le français est toujours disponible. */
+export function hasLocale(post: Post, locale: Locale): boolean {
+  return locale === 'fr' || !!post.translations?.[locale];
+}
+
+/**
+ * Ne garde que les articles réellement disponibles dans la langue choisie.
+ *
+ * Utilisé par toutes les listes — accueil, catégories, recherche, articles liés — pour
+ * qu'un lecteur non francophone ne voie que ce qu'il peut lire. Un article non traduit
+ * reste accessible par lien direct : la page article affiche alors le français avec un
+ * bandeau qui l'explique.
+ */
+export function filterByLocale(posts: Post[], locale: Locale): Post[] {
+  if (locale === 'fr') return posts;
+  return posts.filter((p) => hasLocale(p, locale));
+}
+
 /**
  * Applique une traduction à un article. Retombe sur le français si la langue
  * demandée n'existe pas — un lecteur ne doit jamais tomber sur une page vide.

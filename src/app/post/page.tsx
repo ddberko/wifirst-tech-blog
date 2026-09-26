@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { getPostBySlug, getRelatedPosts } from "@/lib/posts";
-import { Post, LOCALES, LOCALE_LABELS, localizePost } from "@/lib/types";
+import { Post, LOCALE_LABELS, localizePost, filterByLocale } from "@/lib/types";
 import { useLocale } from "@/components/LocaleProvider";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import CategoryBadge from "@/components/CategoryBadge";
@@ -37,7 +37,8 @@ function PostContent() {
   const slug = searchParams.get("slug") || "";
   const { locale, setLocale, t } = useLocale();
   const [rawPost, setRawPost] = useState<Post | null>(null);
-  const [related, setRelated] = useState<Post[]>([]);
+  const [rawRelated, setRawRelated] = useState<Post[]>([]);
+  const related = filterByLocale(rawRelated, locale);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const articleContentRef = useRef<HTMLDivElement>(null);
@@ -57,7 +58,7 @@ function PostContent() {
         setRawPost(p);
         if (p) {
           const rel = await getRelatedPosts(p.category, p.slug, 3);
-          setRelated(rel);
+          setRawRelated(rel);
         }
       } catch (err) {
         console.error("[PostPage] Error loading post:", err);

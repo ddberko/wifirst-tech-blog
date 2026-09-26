@@ -2,22 +2,26 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useLocale } from "@/components/LocaleProvider";
+import { filterByLocale } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { getPosts } from "@/lib/posts";
 import { Post } from "@/lib/types";
 import PostCard from "@/components/PostCard";
 
 function CategoryContent() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  // Seuls les articles disponibles dans la langue choisie sont listés.
+
   const searchParams = useSearchParams();
   const category = searchParams.get("name") || "";
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [rawPosts, setRawPosts] = useState<Post[]>([]);
+  const posts = filterByLocale(rawPosts, locale);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!category) { setLoading(false); return; }
     async function load() {
-      try { setPosts(await getPosts({ category })); } catch { /* */ } finally { setLoading(false); }
+      try { setRawPosts(await getPosts({ category })); } catch { /* */ } finally { setLoading(false); }
     }
     load();
   }, [category]);

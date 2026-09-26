@@ -42,6 +42,24 @@ export const UI = {
     de: "Die Artikel sind unterwegs. Schauen Sie bald wieder vorbei.",
   },
   "home.featured": { fr: "À la une", en: "Featured", es: "Destacado", de: "Empfohlen" },
+  "home.emptyLocale.title": {
+    fr: "Aucun article dans cette langue",
+    en: "No articles in this language yet",
+    es: "Todavía no hay artículos en este idioma",
+    de: "Noch keine Artikel in dieser Sprache",
+  },
+  "home.emptyLocale.body": {
+    fr: "La traduction des archives est en cours. Les articles paraissent d'abord en français.",
+    en: "We're still translating the archive. Articles are published in French first.",
+    es: "Seguimos traduciendo el archivo. Los artículos se publican primero en francés.",
+    de: "Das Archiv wird noch übersetzt. Artikel erscheinen zuerst auf Französisch.",
+  },
+  "home.switchToFr": {
+    fr: "Voir les articles en français",
+    en: "Browse the French articles",
+    es: "Ver los artículos en francés",
+    de: "Artikel auf Französisch ansehen",
+  },
 
   // Article
   "post.related": { fr: "Articles liés", en: "Related Articles", es: "Artículos relacionados", de: "Verwandte Artikel" },

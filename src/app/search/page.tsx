@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense, useCallback } from "react";
 import { useLocale } from "@/components/LocaleProvider";
+import { filterByLocale } from "@/lib/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Post } from "@/lib/types";
 import PostCard from "@/components/PostCard";
@@ -9,11 +10,13 @@ import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 function SearchResults() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const searchParams = useSearchParams();
   const router = useRouter();
   const q = searchParams.get("q") || "";
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [rawPosts, setRawPosts] = useState<Post[]>([]);
+  // La recherche ne renvoie que ce que le lecteur peut lire.
+  const posts = filterByLocale(rawPosts, locale);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchInput, setSearchInput] = useState(q);
@@ -70,11 +73,11 @@ function SearchResults() {
         .sort((a, b) => b.score - a.score || new Date(b.post.publishedAt).getTime() - new Date(a.post.publishedAt).getTime())
         .map(({ post }) => post);
 
-      setPosts(scored);
+      setRawPosts(scored);
     } catch (err) {
       console.error("Search error:", err);
       setError(`Erreur de recherche : ${err instanceof Error ? err.message : String(err)}`);
-      setPosts([]);
+      setRawPosts([]);
     } finally {
       setLoading(false);
     }
