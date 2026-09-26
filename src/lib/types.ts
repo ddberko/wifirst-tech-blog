@@ -6,11 +6,68 @@ export interface Author {
 
 export type PostStatus = 'draft' | 'published';
 
+/**
+ * Verdict du fact-checker.
+ *
+ * Deux schémas coexistent en base :
+ *  - legacy   : factCheckPassed + comment (articles d'avant le schéma enrichi)
+ *  - enrichi  : finalVerdict + geminiFactCheckPassed + verdictNote + geminiComment
+ *
+ * `finalVerdict` fait autorité quand il est présent : le verdict du fact-checker
+ * prime sur le booléen brut de Gemini, dont la coupure d'entraînement produit des
+ * faux négatifs sur nos articles datés 2026. Utiliser `resolveFactCheck()` plutôt
+ * que de lire un champ directement.
+ */
+export type FactCheckVerdict = 'PASS' | 'PASS avec corrections' | 'FAIL' | string;
+
 export interface ArticleAnalysis {
   technicalScore: number;
   editorialScore: number;
-  factCheckPassed: boolean;
-  comment: string;
+
+  // Schéma legacy
+  factCheckPassed?: boolean;
+  comment?: string;
+
+  // Schéma enrichi
+  finalVerdict?: FactCheckVerdict;
+  verdictNote?: string;
+  geminiFactCheckPassed?: boolean;
+  geminiComment?: string;
+  geminiModelVersion?: string;
+  hallucinations?: string[];
+  corrections?: string[];
+  residualHallucinations?: string[];
+  validatedClaims?: string[];
+}
+
+export type FactCheckState = 'passed' | 'passed-with-corrections' | 'failed' | 'unknown';
+
+/** Résout le verdict affichable, quel que soit le schéma de l'article. */
+export function resolveFactCheck(a: ArticleAnalysis): {
+  state: FactCheckState;
+  label: string;
+  comment?: string;
+} {
+  const comment = a.verdictNote ?? a.comment ?? a.geminiComment;
+
+  if (typeof a.finalVerdict === 'string') {
+    const v = a.finalVerdict.trim().toUpperCase();
+    if (v.startsWith('PASS')) {
+      return v.includes('CORRECTION')
+        ? { state: 'passed-with-corrections', label: '✓ Validé (corrigé)', comment }
+        : { state: 'passed', label: '✓ Validé', comment };
+    }
+    if (v.startsWith('FAIL')) return { state: 'failed', label: '✗ Échec', comment };
+  }
+
+  if (typeof a.factCheckPassed === 'boolean') {
+    return a.factCheckPassed
+      ? { state: 'passed', label: '✓ Validé', comment }
+      : { state: 'failed', label: '✗ Échec', comment };
+  }
+
+  // Ni l'un ni l'autre : ne pas afficher un échec par défaut, c'est une absence d'info.
+  return { state: 'unknown', label: '— Non renseigné', comment };
 }
 
 export interface Post {
