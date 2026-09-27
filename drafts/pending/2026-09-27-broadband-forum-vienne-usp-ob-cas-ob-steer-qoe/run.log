@@ -1,0 +1,37 @@
+[2026-09-27 07:09:22] [STEP 0/9] STARTED — amorçage cloud (type=tech)
+  - service-account.json écrit et valide
+[2026-09-27 07:09:27] [STEP 0/9] DONE — SA valide, deps OK, ASSISTANT absent
+[2026-09-27 07:09:27] [STEP 1/9] STARTED — idéation sourcing tech
+  - sujet retenu : Broadband Forum OB-CAS + USP TR-369 (QoS unifiée, démos Network X)
+  - score 29/32 (fraîcheur 7 / B2B 9 / profondeur 8 / variety 5), genre architecture-pattern
+  - source primaire : https://www.broadband-forum.org/news/2026-innovation-demonstrations-preview (25/09/2026)
+  - raison : ex-aequo avec Wi-Fi 8 Draft 2.0 mais Wi-Fi 7/8 déjà traité 3x en 26 jours ; genre absent des 7 derniers
+[2026-09-27 07:12:40] [STEP 1/9] DONE — Broadband Forum OB-CAS/TR-369, 29/32, 5 candidats
+[2026-09-27 07:12:40] [STEP 2/9] STARTED — brief approfondi
+  - brief : 10 sources (BBF x4, presse x2, analyste x2, technique x2), 1729 mots
+  - thèse : Network X 2026 (Vienne, 13-15/10) — le BBF déplace la bataille du débit vers l'automatisation QoE unifiée (USP/TR-369, OB-CAS, OB-STEER)
+  - ⚠ source primaire sourcing (2026-innovation-demonstrations-preview) en 404 ; contenu reconstitué via pages officielles BBF vivantes
+  - correction nom : OB-CAS = Open Broadband - CloudCO Application SDK
+[2026-09-27 07:19:00] [STEP 2/9] DONE — brief 10 sources, /tmp/article-brief.md
+[2026-09-27 07:19:00] [STEP 3/9] STARTED — rédaction
+  - titre : Vienne, 13 octobre : le Broadband Forum troque le mégabit contre l'expérience
+  - slug : broadband-forum-vienne-usp-ob-cas-ob-steer-qoe
+  - 2909 mots (wc -w), 2 Mermaid, 0 $, pas de H1, 3 placeholders inline
+[2026-09-27 07:26:06] [STEP 3/9] DONE — 2909 mots, 2 Mermaid, gardes OK
+[2026-09-27 07:26:06] [STEP 4/9] STARTED — génération images
+  - cover : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/broadband-forum-vienne-usp-ob-cas-ob-steer-qoe-cover.png
+  - inline 1 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/broadband-forum-vienne-usp-ob-cas-ob-steer-qoe-inline-1.png
+  - inline 2 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/broadband-forum-vienne-usp-ob-cas-ob-steer-qoe-inline-2.png
+  - inline 3 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/broadband-forum-vienne-usp-ob-cas-ob-steer-qoe-inline-3.png
+[2026-09-27 07:27:51] [STEP 4/9] DONE — 4 images générées et uploadées (public), placeholders remplacés
+[2026-09-27 07:27:51] [STEP 5/9] STARTED — fact-check
+  - verdict initial PASS → final PASS, 0 retry, tech 10/10, edito 10/10, gemini-3.8-flash passed=true
+  - hallucinations corrigées 0 / résiduelles 0 ; 15 claims validées ; page BBF Network X 2026 (Vienne 13-15/10) re-vérifiée par curl
+[2026-09-27 07:30:41] [STEP 5/9] DONE — PASS, 0 hallucination, 0 retry
+[2026-09-27 07:30:41] [STEP 6/9] STARTED — traductions en/es/de
+  - en : 2782 mots, 0 dollars, 0 H1, 3 images, 2 mermaid — Vienna, October 13: The Broadband Forum Trades Megabits for Experience
+  - es : 3076 mots, 0 dollars, 0 H1, 3 images, 2 mermaid — Viena, 13 de octubre: el Broadband Forum cambia el megabit por la experiencia
+  - de : 2739 mots, 0 dollars, 0 H1, 3 images, 2 mermaid — Wien, 13. Oktober: Das Broadband Forum tauscht Megabit gegen Experience
+[2026-09-27 07:51:46] [STEP 6/9] DONE — 3/3 langues OK (en 2782, es 3076, de 2739 mots), tous contrôles passés
+[2026-09-27 07:51:46] [STEP 7/9] STARTED — publication Firestore
+[2026-09-27 07:53:18] [STEP 7/9] FAILED — exécution de publish-article.ts refusée par le classifieur de permissions (auto mode, catégorie Real-World Transactions). Article NON publié, newsletter NON envoyée.

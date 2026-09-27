@@ -1,0 +1,97 @@
+const ARTICLE = {
+  "slug": "broadband-forum-vienne-usp-ob-cas-ob-steer-qoe",
+  "title": "Vienne, 13 octobre : le Broadband Forum troque le mégabit contre l'expérience",
+  "excerpt": "Au salon Network X de Vienne, du 13 au 15 octobre, le Broadband Forum assemble USP/TR-369, OB-CAS et OB-STEER en une boucle qui automatise la qualité d'expérience, de la fibre au Wi-Fi. La bataille des opérateurs quitte le tuyau pour l'orchestration, mais l'exploitation sans intervention humaine (zero-touch) n'est pas pour demain.",
+  "category": "Réseaux",
+  "tags": [
+    "Broadband Forum",
+    "USP TR-369",
+    "OB-CAS",
+    "OB-STEER",
+    "QoE",
+    "Wi-Fi",
+    "Network X",
+    "Automatisation réseau"
+  ],
+  "readTime": 15,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/broadband-forum-vienne-usp-ob-cas-ob-steer-qoe-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "Vienna, October 13: The Broadband Forum Trades Megabits for Experience",
+      "excerpt": "At the Network X show in Vienna, October 13-15, the Broadband Forum is assembling USP/TR-369, OB-CAS, and OB-STEER into a closed loop that automates quality of experience, from fiber to Wi-Fi. The operator battle is moving from the pipe to orchestration, but true zero-touch operation is still a ways off.",
+      "tags": [
+        "Broadband Forum",
+        "USP TR-369",
+        "OB-CAS",
+        "OB-STEER",
+        "QoE",
+        "Wi-Fi",
+        "Network X",
+        "Network Automation"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "Viena, 13 de octubre: el Broadband Forum cambia el megabit por la experiencia",
+      "excerpt": "En el salón Network X de Viena, del 13 al 15 de octubre, el Broadband Forum ensambla USP/TR-369, OB-CAS y OB-STEER en un bucle que automatiza la calidad de experiencia, de la fibra al Wi-Fi. La batalla de los operadores abandona la tubería para pasar a la orquestación, pero la operación sin intervención humana (zero-touch) no llegará todavía.",
+      "tags": [
+        "Broadband Forum",
+        "USP TR-369",
+        "OB-CAS",
+        "OB-STEER",
+        "QoE",
+        "Wi-Fi",
+        "Network X",
+        "Automatización de red"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "Wien, 13. Oktober: Das Broadband Forum tauscht Megabit gegen Experience",
+      "excerpt": "Auf der Network X in Wien, vom 13. bis 15. Oktober, fügt das Broadband Forum USP/TR-369, OB-CAS und OB-STEER zu einer Schleife zusammen, die die Quality of Experience automatisiert, von der Glasfaser bis zum Wi-Fi. Der Wettbewerb der Betreiber verlagert sich von der Leitung zur Orchestrierung, doch der Zero-Touch-Betrieb ohne menschliches Eingreifen lässt noch auf sich warten.",
+      "tags": [
+        "Broadband Forum",
+        "USP TR-369",
+        "OB-CAS",
+        "OB-STEER",
+        "QoE",
+        "Wi-Fi",
+        "Network X",
+        "Netzwerkautomatisierung"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "featured": true,
+  "skipNewsletter": false,
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'analyse technique des standards du Broadband Forum (USP/TR-369, OB-CAS, OB-STEER, TR-181) et de la boucle fermée de QoE est parfaitement exacte et rigoureuse. L'argumentation éditoriale est particulièrement lucide et nuancée, notamment quant aux limites réelles de l'automatisation par LLM face aux promesses marketing.",
+    "finalVerdict": "PASS",
+    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Les faits Network X 2026 (Vienne, VIECON Hall B stand D25, 13-15 octobre, sept démonstrations, plus de 20 membres, sessions BASe et intervenants Calix/Nokia/Vodafone/CityFibre/Telus) sont confirmés par fetch direct des pages événement officielles du Broadband Forum, et re-vérifiés par curl indépendant ; l'URL de sourcing initiale (news/2026-innovation-demonstrations-preview) renvoie 404 et n'est pas citée. Vienne 2026 (7 démonstrations, à venir) est explicitement distinguée de Paris 2025 (8 démonstrations, 14-16 octobre 2025). Le nom OB-CAS est le nom officiel (Open Broadband - CloudCO Application SDK), OB-STEER est rattaché à WT-474 et à son lancement de mars 2025 ; le lien avec un Wi-Fi auto-réparateur est présenté comme discours du Forum, non comme spécification. Le chiffre de 88 % provient de l'enquête déclarative du Broadband Forum (Future of the Connected Home, 116 opérateurs, 32 pays, 09/10/2025) et est qualifié comme tel. Les propos de Craig Thomas (Lightwave Online, 29/05/2026) sont paraphrasés, sans guillemets. Points issus des connaissances du writer vérifiés : CloudCO = Cloud Central Office, nomenclature WT vs TR, définition de L4S conforme à la RFC 9330. La fenêtre avril 2026 - avril 2027 est un calcul de l'auteur (6 à 18 mois après le 09/10/2025), balisé comme tel. Analyses d'auteur signalées (Ma lecture, Mon analyse, à mon sens) et schémas Mermaid marqués lecture de l'auteur.",
+    "hallucinations": [],
+    "corrections": [],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "Network X 2026 : VIECON Vienne, Hall B, stand D25, 13-15 octobre 2026, sept démonstrations, 20+ membres soutiens (https://www.broadband-forum.org/events/broadband-forum-at-network-x-2026/, 2026-09-27 (consultation))",
+      "4 sessions BASe 13-14 octobre, Partner Stage : Beyond Connectivity, The Autonomous Edge, Beyond the Bit, roundtable opérateurs 2027 (https://www.broadband-forum.org/events/base-at-network-x-2026/, 2026-09-27 (consultation))",
+      "Intervenants confirmés : Mike Emmendorfer (Calix), Kurt Pynaert (Nokia), Bruno Cornaglia (Vodafone), David Tomalin (CityFibre), Paul Arola (Telus) (https://www.broadband-forum.org/events/base-at-network-x-2026/, 2026-09-27 (consultation))",
+      "OB-CAS = Open Broadband - CloudCO Application (Software Development Kit) ; CloudCO = Cloud Central Office, le central d'accès réinventé en plateforme logicielle (SDN/NFV/cloud) (https://obcas.broadband-forum.org/sdk/overview/ ; https://broadband-forum.org/standards-and-software/major-projects/cloud-central-office, vérifié 2026-09-27)",
+      "Démo Condor Technologies : moteur de maintenance piloté par LLM, méthode Chain of Evidence (Describe/Diagnose/Recommend), évolution prévue vers actionnement autonome + tickets OSS/BSS (https://www.broadband-forum.org/blog/turning-raw-network-data-into-actionable-insights-with-ob-cas/, 2026)",
+      "OB-STEER = Open Broadband Subscriber Session Steering, basé sur WT-474, lancé en mars 2025 parmi 3 nouveaux projets Open Broadband (avec OB-CAS et OB-STAMP) (https://www.businesswire.com/news/home/20250305176951/en/Broadband-Forum-Launches-Three-New-Open-Broadband-Projects (confirmé via recherche croisée, page consultée en 403 direct), 2025-03-05)",
+      "Nomenclature Broadband Forum : WT (Working Text) = document de travail non publié, distinct de TR (Technical Report) = spécification officielle publiée (https://www.broadband-forum.org/pdfs/tr-049-1-0-0.pdf (ex-WT-066v4) ; usage confirmé dans plusieurs TR du Forum, vérifié 2026-09-27)",
+      "L4S (Low Latency, Low Loss, Scalable throughput) réduit la latence due aux files d'attente (queuing delay), via ECN, standardisé IETF/RFC 9330 (https://datatracker.ietf.org/doc/rfc9330/ ; https://www.broadband-forum.org/blog/the-future-of-broadband-why-services-led-qoe-is-essential/, vérifié 2026-09-27)",
+      "Citation Craig Thomas (CEO Broadband Forum), Lightwave Online 29/05/2026, Fiber Connect Orlando : 'big dumb pipe', pont Wi-Fi/application, migration TR-069 vers USP (https://www.lightwaveonline.com/home/article/55380814/broadband-forum-sets-sights-on-the-subscribers-experience, 2026-05-29)",
+      "Blog Broadband Forum 23/04/2025 : cadre Automated Intelligence Management (AIM) de bout en bout (data center/edge métro -> CPE -> device -> application), citant TR-398 et L4S (https://www.broadband-forum.org/blog/the-future-of-broadband-why-services-led-qoe-is-essential/, 2025-04-23)",
+      "Network X Paris 14-16 octobre 2025 : 8 démonstrations, OB-CAS seuils d'alarme dynamiques, lifeline monitoring via USP/TR-181, SLA via Delta-Q (TR-452.x) (https://www.businesswire.com/news/home/20250930781334/en/Turning-Standards-Into-Solutions... (confirmé via recherche croisée), 2025-09-30)",
+      "Lincoln Lavoie (UNH-IOL, président technique BBF) a supervisé le tournage des vidéos de démonstration ; panel BASe 'Service Assurance in a Heterogeneous Network World' le 30/09/2026 (https://viodi.com/2026/09/26/viodi-view-09-26-26/, 2026-09-26)",
+      "Rapport 'Future of the Connected Home', 116 opérateurs / 32 pays, publié 09/10/2025, 88% des BSP déploient/prévoient USP dans les 6-18 mois (https://www.morningstar.com/news/business-wire/20251009946527/usp-critical-to-broadband-service-provider-ai-plans-and-growth-of-homeworking-services-new-report-finds, 2025-10-09)",
+      "Fenêtre 'avril 2026 à avril 2027' = calcul de l'auteur (6 à 18 mois après le 09/10/2025), explicitement qualifiée de 'grosso modo' et attribuée à sa propre lecture (calcul arithmétique dérivé de la source Morningstar/Business Wire, vérifié correct, calcul 2026-09-27)",
+      "URL initiale de sourcing (broadband-forum.org/news/2026-innovation-demonstrations-preview) renvoie 404 — non citée dans les sources finales de l'article, remplacée par des pages officielles vivantes confirmées (vérification directe curl -I : HTTP/2 404 le 2026-09-27, 2026-09-27)"
+    ]
+  }
+};
