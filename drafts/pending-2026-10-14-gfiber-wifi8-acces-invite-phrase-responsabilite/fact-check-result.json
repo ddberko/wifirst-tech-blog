@@ -1,0 +1,76 @@
+{
+  "verdict": "PASS avec corrections",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique est rigoureuse, cohérente et parfaitement documentée sur les aspects réseau, IA locale et réglementaires (notamment le calendrier CRA et le standard 802.11bn). Le propos éditorial pose avec justesse les limites opérationnelles et contractuelles entre commande vocale usager et politique d'accès opérateur.",
+  "hallucinations": [],
+  "warnings": [
+    {
+      "severity": "minor",
+      "claim": "Ligne 5 : démonstration donnée 'le 12 octobre 2026 au salon Network X'",
+      "finding": "Le 12/10 est la date de publication Light Reading/Qualcomm. Network X 2026 se tient les 13-15 octobre (Nagra, listing Messe Wien ; une seule source pour le lieu). La démo ne peut pas avoir eu lieu le 12 sur le salon avec certitude.",
+      "correction": "Dater l'annonce, pas la démo."
+    },
+    {
+      "severity": "minor",
+      "claim": "Ligne 129 : rapport final 'ou un mois pour un incident grave'",
+      "finding": "Exact mais ambigu : le délai d'un mois court après la notification des 72 h. Les notifications vont via la plateforme unique au CSIRT coordinateur et à l'ENISA simultanément (le texte ne mentionne que l'ENISA).",
+      "correction": "Précision optionnelle, voir corrections."
+    },
+    {
+      "severity": "minor",
+      "claim": "Ligne 19 : certification Wi-Fi Alliance 'vers janvier 2028' [8]",
+      "finding": "Le titre Wi-Fi NOW confirme janvier 2028 mais d'autres sources évoquent fin 2027 (Evezone). La formule 'vers' et le brouillon sont corrects. Pas de blocage.",
+      "correction": "Optionnel : 'fin 2027 ou janvier 2028 selon les sources'."
+    },
+    {
+      "severity": "minor",
+      "claim": "Source [2] URL tronquée (...wi-fi-8-broadba)",
+      "finding": "URL telle qu'indexée, tronquée, source primaire dont le corps n'a pas été lu (shell JS). Source [4] Fierce (403) et [6] agrégateur : seules [1] et [3] sont lues en entier. Les faits cités avec [4] sont aussi dans [1].",
+      "correction": "Vérifier l'URL complète dans un navigateur avant publication, sinon retirer le lien."
+    },
+    {
+      "severity": "info",
+      "claim": "Ligne 21 : article du 16 septembre sur le NPU",
+      "finding": "Absent du dépôt local (drafts/content) donc non vérifiable ici. Le brief indique que le slug baie-technique-noeud-inference-npu-wifi8 (2026-09-16) est publié. Les autres renvois (agents-effacent-leurs-traces, disjoncteur NOC, RFC 10065 du 12/10, Nokia/Inseego 5G) sont confirmés dans /drafts."
+    }
+  ],
+  "suggestedCorrections": [
+    {
+      "line": 5,
+      "from": "C'est la démonstration que gFiber (l'ex-Google Fiber), Qualcomm et Gemtek ont donnée le 12 octobre 2026 au salon Network X, autour d'une future passerelle",
+      "to": "C'est la démonstration que gFiber (l'ex-Google Fiber), Qualcomm et Gemtek ont annoncée le 12 octobre 2026, à l'occasion du salon Network X, autour d'une future passerelle"
+    },
+    {
+      "line": 129,
+      "from": "rapport final 14 jours après la disponibilité d'un correctif, ou un mois pour un incident grave.",
+      "to": "rapport final 14 jours après la disponibilité d'un correctif pour une vulnérabilité exploitée, ou un mois après la notification pour un incident grave."
+    },
+    {
+      "line": 129,
+      "from": "via la plateforme unique de l'ENISA, l'agence européenne de cybersécurité [7]",
+      "to": "via la plateforme unique de notification, qui transmet au CSIRT national coordinateur et à l'ENISA, l'agence européenne de cybersécurité [7]"
+    },
+    {
+      "line": 185,
+      "from": "https://www.qualcomm.com/news/releases/2026/10/gfiber--qualcomm--and-gemtek-unveil-an-ai-native-wi-fi-8-broadba",
+      "to": "URL complète à récupérer dans un navigateur (forme actuelle tronquée) ; à défaut retirer le lien"
+    }
+  ],
+  "validatedClaims": [
+    {"claim": "gFiber, Qualcomm, Gemtek, gFiber Wi-Fi 8 Premium Gateway, annonce 12/10/2026", "source": "Light Reading [1], recoupé WebSearch", "date": "2026-10-12"},
+    {"claim": "Plateforme NPro A8 Elite, Wi-Fi 8 quad-band, NPU Hexagon, CPU penta-core, écran tactile", "source": "Light Reading [1], communiqué Qualcomm [2] via WebSearch", "date": "2026-10-12"},
+    {"claim": "Trois démos (contrôle parental, invités voix + QR, domotique/diagnostic), IA locale", "source": "Light Reading [1]", "date": "2026-10-12"},
+    {"claim": "20G = abonnement symétrique WAN, 25G-PON, pas un débit Wi-Fi", "source": "Light Reading [1] ; périmètre conforme au brief", "date": "2026-10-12"},
+    {"claim": "33 Gbit/s = PHY crête théorique de la plateforme, non associé à la box ; quatre vs cinq bandes", "source": "CNX Software [5]", "date": "2026-03-03"},
+    {"claim": "Calendrier gFiber : abonnés 20G existants d'abord, migration après certification ; pas de prix ni date", "source": "Light Reading [1]", "date": "2026-10-12"},
+    {"claim": "Pas d'affirmation que la box embarque SAM ; SAM = agent télémétrie, politiques cloud vers passerelle, RDK-B/prplOS/OpenWrt, natif ou conteneur", "source": "Qualcomm SAM brief [3]", "date": "2026-10"},
+    {"claim": "CRA : notification applicable depuis le 11/09/2026 ; 24 h / 72 h / 14 jours après correctif / 1 mois incident grave ; plateforme unique ; reste du règlement au 11/12/2027", "source": "Commission européenne [7], recoupé McCann FitzGerald, Mondaq, CSA via WebSearch", "date": "2026-09-11"},
+    {"claim": "802.11bn en brouillon, certification Wi-Fi Alliance vers janvier 2028", "source": "Wi-Fi NOW / TechSpot [8] (Evezone : fin 2027, d'où le 'vers')", "date": "2026"},
+    {"claim": "Gemtek : stratégie Wi-Fi 8 avec passerelles IA au MWC 2026 ; fabrication non confirmée (rédigé comme tel)", "source": "EverythingRF [9], Gemtek MWC release", "date": "2026-02/03"},
+    {"claim": "Renvois blog : disjoncteur NOC, agents/traces, RFC 10065 (12/10), Nokia/Inseego FastMile", "source": "Dépôt /drafts", "date": "2026-09-26 à 2026-10-12"},
+    {"claim": "Conservation des données de connexion hôtelier : formulée avec réserve, sans durée chiffrée, à revalider juridiquement", "source": "L'Hôtellerie Restauration [10], brief", "date": "2006-2018"}
+  ]
+}

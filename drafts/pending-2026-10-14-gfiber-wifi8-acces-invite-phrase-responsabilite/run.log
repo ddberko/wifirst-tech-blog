@@ -1,0 +1,36 @@
+[2026-10-14 07:09:40] [STEP 0/9] STARTED — amorçage cloud (type=tech)
+  - service-account.json écrit et valide
+[2026-10-14 07:09:41] [STEP 0/9] DONE — SA valide, deps OK, ASSISTANT='absent'
+[2026-10-14 07:10:10] [STEP 1/9] STARTED — idéation sourcing type=tech
+  - 5 candidats (gemini-source.sh tech), catalogue 492 articles, aucun rejet monoculture/CVE
+  - sujet retenu : gFiber + Qualcomm + Gemtek, passerelle Wi-Fi 8 20G à NPU (Network X 2026) — angle politique d'accès invité décidée sur la box
+  - score 27/32 (brut Gemini 30), genre wifi-mobilite (absent des 7 derniers)
+  - source primaire : Qualcomm Press Center 2026-10-12 (URL Gemini 404, à revalider) + Light Reading https://lightreading.com/broadband/gfiber-teams-with-gemtek-and-qualcomm-on-wi-fi-8-router
+  - raison : seul candidat < 48h vérifié et pertinent Wifirst ; réserve : adjacent à baie-technique-noeud-inference-npu-wifi8 (2026-09-16), angle différent
+[2026-10-14 07:22:20] [STEP 1/9] DONE — candidat #1 retenu (27/32), plan B Broadband Forum 23/32
+[2026-10-14 07:22:20] [STEP 2/9] STARTED — brief approfondi
+  - brief /tmp/article-brief.md (~3100 mots), 10 sources (1 primaire Light Reading 2026-10-12, Qualcomm PR, brief SAM PDF, CNX, CE/CRA, Wi-Fi NOW, Lexing...)
+  - thèse : l'IA locale déplace la décision d'accès invité sans déplacer la responsabilité ; tant que l'intention n'est pas compilée en politique déclarative signée, journalisée hors box et bornée par une enveloppe opérateur, l'opérateur reste responsable sans maîtriser la règle
+[2026-10-14 07:31:14] [STEP 2/9] DONE — brief 10 sources, 2 Mermaid proposés, 4 prompts image
+[2026-10-14 07:31:14] [STEP 3/9] STARTED — rédaction
+  - titre : gFiber Wi-Fi 8 : l'accès invité devient une phrase, la responsabilité reste un contrat
+  - slug : gfiber-wifi8-acces-invite-phrase-responsabilite
+  - 3155 mots (wc -w), 2 Mermaid, 3 placeholders inline ; garde anti-H1 : rien à corriger ; garde anti-$ : 0 restant
+[2026-10-14 07:43:28] [STEP 3/9] DONE — 3155 mots ≥ 1800, 2 Mermaid, 0 H1, 0 $
+[2026-10-14 07:43:28] [STEP 4/9] STARTED — génération images 1 cover + 3 inline
+  - cover : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/gfiber-wifi8-acces-invite-phrase-responsabilite-cover.png (HTTP 200)
+  - inline 1-3 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/gfiber-wifi8-acces-invite-phrase-responsabilite-inline-{1,2,3}.png (HTTP 200), placeholders remplacés
+[2026-10-14 07:46:46] [STEP 4/9] DONE — 4/4 images générées 2K et publiques, 0 retry
+[2026-10-14 07:46:46] [STEP 5/9] STARTED — fact-check (RETRY_COUNT=0, MAX=2)
+  - verdict initial : PASS avec corrections → final : PASS avec corrections, 0 retry
+  - Gemini gemini-3.8-flash : tech 10/10, edito 10/10, factCheckPassed=true ; 0 hallucination, 13 claims validés, 5 warnings mineurs
+  - corrections PASS appliquées (3 items) : date annonce vs démo Network X, délai rapport final CRA, plateforme unique → CSIRT coordinateur + ENISA
+  - URL Qualcomm [2] : HTTP 200 vérifié par curl, conservée ; article 16/09 baie-technique-noeud-inference-npu-wifi8 confirmé présent dans Firestore
+[2026-10-14 07:59:19] [STEP 5/9] DONE — PASS avec corrections, 0 hallucination, 3 corrections, tech 10 / edito 10
+[2026-10-14 07:59:19] [STEP 6/9] STARTED — traductions en/es/de
+  - en : "gFiber Wi-Fi 8: guest access becomes a sentence, liability stays a contract" — 3077 mots (97 %), 0 $, 0 H1, 3 img, 2 mermaid — OK
+  - es : "gFiber Wi-Fi 8: el acceso de invitados se pide con una frase, la responsabilidad sigue estando en el contrato" — 3324 mots (104 %), 0 $, 0 H1, 3 img, 2 mermaid — OK
+  - de : "gFiber Wi-Fi 8: Der Gastzugang wird zum Satz, die Verantwortung bleibt Vertragssache" — 2955 mots (93 %), 0 $, 0 H1, 3 img, 2 mermaid — OK
+[2026-10-14 08:14:15] [STEP 6/9] DONE — 3/3 traductions OK, 0 relance
+[2026-10-14 08:14:15] [STEP 7/9] STARTED — publication Firestore (skipNewsletter=false)
+[2026-10-14 08:15:36] [STEP 7/9] FAILED — exécution de publish-article.ts refusée par le classifieur de permissions (auto mode, motif « Real-World Transactions ») ; article NON publié, newsletter NON envoyée
