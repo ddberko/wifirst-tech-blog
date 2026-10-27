@@ -1,0 +1,29 @@
+{
+  "verdict": "PASS avec corrections",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique et sectorielle de l'AI-RAN est parfaitement rigoureuse, distinguant avec justesse les jalons d'intégration logicielle des véritables gains de performance mesurés en production. La contextualisation des normes 3GPP et le démontage des verrous logiciels face au silicium dédié sont particulièrement pertinents et équilibrés.",
+  "hallucinations": [],
+  "warnings": [
+    {"severity": "minor", "line": 17, "finding": "La date de l'appel est dite 'floue' mais le conflit Fierce (samedi 17 octobre, non lu en direct, confirmé par résumé de recherche) n'est pas signalé. Omission, pas erreur."},
+    {"severity": "minor", "line": 83, "finding": "'objectif de 50 % en 2027' : le brief note 'jusqu'à 50 %'. Et le communiqué Nokia de septembre ne reprend pas 50/100 % (ils viennent de la couverture du lancement de juillet). Attribution déjà prudente ('Nokia vise')."}
+  ],
+  "corrections": [
+    {"line": 17, "current": "Même la date de l'appel reste floue : l'annonce est du 21 octobre, NVIDIA évoque un appel passé « récemment », et Light Reading n'en dit pas plus [1][2].", "corrected": "Même la date de l'appel reste floue : l'annonce est du 21 octobre, NVIDIA évoque un appel passé « récemment », Light Reading n'en dit pas plus [1][2], et Fierce Network le situe au samedi 17 octobre, sans que ni NVIDIA ni Nokia ne le confirment."},
+    {"line": 83, "current": "puis un objectif de 50 % en 2027 et de plus de 100 % en 2028", "corrected": "puis un objectif pouvant aller jusqu'à 50 % en 2027 et de plus de 100 % en 2028"}
+  ],
+  "validatedClaims": [
+    {"claim": "Appel AI-RAN Bellevue, stack Nokia Massive MIMO + anyRAN CUDA + NVIDIA ARC + coeur 5G SA, annonce 21/10 GTC Berlin", "source": "NVIDIA Newsroom [1], Light Reading [2], SDxCentral [3]; recoupé par recherche web", "date": "2026-10-21"},
+    {"claim": "Aucune métrique publiée", "source": "SDxCentral/DCD [3], NVIDIA [1]", "date": "2026-10-22"},
+    {"claim": "Ericsson/T-Mobile NYC +16 % / +12 % / +10 %, sans GPU", "source": "Light Reading [2], TeckNexus [8]", "date": "2026-10-21/22"},
+    {"claim": "Ericsson/Singtel +19 % débit en essai sur réseau live", "source": "Communiqué Ericsson [14], recherche web (Light Reading, TelecomTV)", "date": "2026-10-20"},
+    {"claim": "Feuille de route Nokia >20 % / 50 % 2027 / >100 % 2028, pilotes 2026, commercial 2027", "source": "TelecomTV [6], ComSoc [10], recoupé par recherche web (Futurum, Nokia)", "date": "2026-07-15"},
+    {"claim": "Dell'Oro 35 Md USD 2026-2030, GPU ~1 Md USD, non-GPU dominant", "source": "Dell'Oro [11][12] (lus par le brief)", "date": "2026-03-19 / 2026-06-30"},
+    {"claim": "3GPP Rel-17 : modèles IA implementation-specific", "source": "NVIDIA Developer Blog [13] (seconde main, 2024)", "date": "2024-07-19"},
+    {"claim": "Investissement NVIDIA 1 Md USD dans Nokia", "source": "SDxCentral [3], TelecomTV [6]", "date": "2025-10"},
+    {"claim": "Renvois internes (5 août Séoul, 13 août Open RAN, 19/23/26 octobre)", "source": "Brief, section anti-recoupement", "date": "2026-08 à 2026-10"}
+  ],
+  "unverifiedByMe": ["Contenu exact des pages Dell'Oro, ABI, TeckNexus, MWL (reprises du brief, non rouvertes)", "Clauses 'fully certified' Wi-Fi 8 (article interne du 19/10)"]
+}

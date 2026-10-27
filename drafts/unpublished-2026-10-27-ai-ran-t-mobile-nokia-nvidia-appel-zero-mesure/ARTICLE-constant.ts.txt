@@ -1,0 +1,95 @@
+const ARTICLE = {
+  "slug": "ai-ran-t-mobile-nokia-nvidia-appel-zero-mesure",
+  "title": "AI-RAN à Bellevue : un appel vocal, zéro mesure",
+  "excerpt": "À Bellevue, T-Mobile, Nokia et NVIDIA ont fait passer un appel vocal sur GPU sans publier un seul chiffre. Les gains mesurés en réseau live viennent d'Ericsson, sans GPU : voici les cinq preuves à exiger avant de payer le GPU.",
+  "category": "Réseaux",
+  "tags": [
+    "AI-RAN",
+    "T-Mobile",
+    "Nokia",
+    "NVIDIA",
+    "Ericsson",
+    "GPU",
+    "Lock-in",
+    "Achats réseau"
+  ],
+  "readTime": 18,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/ai-ran-t-mobile-nokia-nvidia-appel-zero-mesure-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "AI-RAN in Bellevue: One Phone Call, Zero Measurements",
+      "excerpt": "In Bellevue, T-Mobile, Nokia and NVIDIA ran a voice call on a GPU without publishing a single number. The gains measured on live networks come from Ericsson, with no GPU: here are the five proofs to demand before paying for the GPU.",
+      "tags": [
+        "AI-RAN",
+        "T-Mobile",
+        "Nokia",
+        "NVIDIA",
+        "Ericsson",
+        "GPU",
+        "Lock-in",
+        "Network procurement"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "AI-RAN en Bellevue: una llamada de voz, cero mediciones",
+      "excerpt": "En Bellevue, T-Mobile, Nokia y NVIDIA hicieron pasar una llamada de voz por GPU sin publicar una sola cifra. Las ganancias medidas en red live provienen de Ericsson, sin GPU: estas son las cinco pruebas que hay que exigir antes de pagar la GPU.",
+      "tags": [
+        "AI-RAN",
+        "T-Mobile",
+        "Nokia",
+        "NVIDIA",
+        "Ericsson",
+        "GPU",
+        "Lock-in",
+        "Compras de red"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "AI-RAN in Bellevue: ein Anruf, null Messwerte",
+      "excerpt": "In Bellevue haben T-Mobile, Nokia und NVIDIA einen Sprachanruf über GPU geführt, ohne eine einzige Zahl zu veröffentlichen. Die im Live-Netz gemessenen Gewinne stammen von Ericsson, und zwar ohne GPU: Hier sind die fünf Nachweise, die Sie verlangen sollten, bevor Sie für die GPU zahlen.",
+      "tags": [
+        "AI-RAN",
+        "T-Mobile",
+        "Nokia",
+        "NVIDIA",
+        "Ericsson",
+        "GPU",
+        "Lock-in",
+        "Netzwerk-Einkauf"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "featured": true,
+  "skipNewsletter": false,
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'analyse technique et sectorielle de l'AI-RAN est parfaitement rigoureuse, distinguant avec justesse les jalons d'intégration logicielle des véritables gains de performance mesurés en production. La contextualisation des normes 3GPP et le démontage des verrous logiciels face au silicium dédié sont particulièrement pertinents et équilibrés.",
+    "finalVerdict": "PASS avec corrections",
+    "verdictNote": "PASS avec corrections au premier passage, zéro hallucination, zéro retry ; 2 avertissements mineurs corrigés plus 1 durcissement de prudence. Périmètre des chiffres : l'appel de Bellevue (annoncé le 21/10/2026 au GTC Berlin) est un jalon d'intégration sans aucune métrique publiée (ni débit, latence, bande, durée, ni consommation) — l'article le dit explicitement. La date exacte de l'appel reste non confirmée : NVIDIA dit « récemment », Fierce Network (non lu en direct, 403) le situe au samedi 17/10, attribué comme tel sans être affirmé. Les gains mesurés en réseau live (+16 % débit DL, +12 % efficacité spectrale, +10 % volume DL) sont ceux d'Ericsson sur T-Mobile New York, sans GPU NVIDIA, sur un nombre de sites non divulgué, et sont distingués de l'essai d'ordonnanceur IA Ericsson (~10 % / jusqu'à 15 %). Singtel +19 % re-vérifié (communiqué Ericsson du 20/10/2026). Les objectifs Nokia (plus de 20 % aujourd'hui, jusqu'à 50 % en 2027, plus de 100 % en 2028) sont attribués à la feuille de route du 15/07/2026, présentés comme cibles et explicitement non validés par l'appel. Le modèle de GPU du site de Bellevue a été retiré du schéma faute de confirmation. Le billet Nokia (403) n'est jamais cité textuellement. Le référentiel 3GPP (modèles IA propres à chaque implémentation) repose sur une source de seconde main, sans numéro de spec cité. La grille d'achat pour la 5G privée de campus et le Wi-Fi managé est balisée comme analyse d'auteur.",
+    "hallucinations": [],
+    "corrections": [
+      "Ligne 17 : « Même la date de l'appel reste floue : l'annonce est du 21 octobre, NVIDIA évoque un appel passé « récemment », et Light Reading n'en dit pas plus [1][2]. » → « Même la date de l'appel reste floue : l'annonce est du 21 octobre, NVIDIA évoque un appel passé « récemment », Light Reading n'en dit pas plus [1][2], et Fierce Network le situe au samedi 17 octobre, sans que ni NVIDIA ni Nokia ne le confirment. »",
+      "Ligne 83 : « puis un objectif de 50 % en 2027 et de plus de 100 % en 2028 » → « puis un objectif pouvant aller jusqu'à 50 % en 2027 et de plus de 100 % en 2028 »",
+      "Schéma Mermaid 1 : « Serveur NVIDIA ARC (GPU RTX PRO 6000 Blackwell) » → « Serveur NVIDIA ARC » (modèle de GPU du site de Bellevue non confirmé ; la config RTX PRO 6000 reste citée comme configuration ARC générique)"
+    ],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "Appel AI-RAN Bellevue, stack Nokia Massive MIMO + anyRAN CUDA + NVIDIA ARC + coeur 5G SA, annonce 21/10 GTC Berlin (NVIDIA Newsroom [1], Light Reading [2], SDxCentral [3]; recoupé par recherche web, 2026-10-21)",
+      "Aucune métrique publiée (SDxCentral/DCD [3], NVIDIA [1], 2026-10-22)",
+      "Ericsson/T-Mobile NYC +16 % / +12 % / +10 %, sans GPU (Light Reading [2], TeckNexus [8], 2026-10-21/22)",
+      "Ericsson/Singtel +19 % débit en essai sur réseau live (Communiqué Ericsson [14], recherche web (Light Reading, TelecomTV), 2026-10-20)",
+      "Feuille de route Nokia >20 % / 50 % 2027 / >100 % 2028, pilotes 2026, commercial 2027 (TelecomTV [6], ComSoc [10], recoupé par recherche web (Futurum, Nokia), 2026-07-15)",
+      "Dell'Oro 35 Md USD 2026-2030, GPU ~1 Md USD, non-GPU dominant (Dell'Oro [11][12] (lus par le brief), 2026-03-19 / 2026-06-30)",
+      "3GPP Rel-17 : modèles IA implementation-specific (NVIDIA Developer Blog [13] (seconde main, 2024), 2024-07-19)",
+      "Investissement NVIDIA 1 Md USD dans Nokia (SDxCentral [3], TelecomTV [6], 2025-10)",
+      "Renvois internes (5 août Séoul, 13 août Open RAN, 19/23/26 octobre) (Brief, section anti-recoupement, 2026-08 à 2026-10)"
+    ]
+  }
+};
