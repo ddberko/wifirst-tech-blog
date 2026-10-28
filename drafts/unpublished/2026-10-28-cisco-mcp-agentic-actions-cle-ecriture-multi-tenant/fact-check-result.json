@@ -1,0 +1,66 @@
+{
+  "verdict": "PASS avec corrections",
+  "verdictCondition": "Valable uniquement si les 2 corrections ci-dessous sont appliquees (aucune ne remet en cause le fond de l'article).",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique est rigoureuse, demontrant une parfaite coherence interne concernant les specifications MCP, l'architecture OAuth 2.1 et les contraintes reelles de l'API Cisco Meraki. L'article distingue methodiquement les annonces marketing des faits documentes et contextualise precisement les enjeux multi-tenant pour un operateur. (NB: Gemini n'a pas detecte les 2 ecarts ci-dessous; son score ne remplace pas le cross-check primaire.)",
+  "hallucinations": [
+    {
+      "severity": "major-correctable",
+      "claim": "Mermaid ligne 34: Networking MCP servers (« plans to add ») ; le brief et le writer attribuent cette citation a Network World",
+      "finding": "Citation introuvable. Network World ecrit: 'Cisco also said it would be adding Model Context Protocol servers for its networking platforms.' Converge Digest: 'Cisco is introducing MCP servers for networking platforms'. Channel Insider: 'MCP connectivity'. Aucune des 3 sources fetchees ne contient 'plans to add'. Le sens est exact, seule la citation entre guillemets est fausse. Le corps du texte (ligne 13) paraphrase correctement ('prevoit de les ajouter').",
+      "correction": "Ligne 34: remplacer « plans to add » par « annoncés, sans date »"
+    },
+    {
+      "severity": "minor",
+      "claim": "Ligne 3: 'L'etude a ete commandee et publiee par Cisco'",
+      "finding": "Le communique Cisco dit: 'Conducted independently by Omdia ... surveyed 1,000 IT and network operations leaders at organizations with 500 or more employees'. Il ne dit pas que Cisco a commande l'etude; il dit que Cisco l'a publiee. 'Commandee' vient du brief et n'est pas confirme par la source primaire.",
+      "correction": "Ligne 3: 'L'étude, menée par Omdia, a été publiée par Cisco, donc prudence' (ou 'menée par Omdia pour le compte de Cisco' uniquement si une source le confirme)"
+    }
+  ],
+  "optionalNuance": "Ligne 117: le 24 % est presente dans la source comme sous-ensemble des 80 % 'a l'aise avec un role eleve ou pleinement autonome de l'IA'; la base exacte n'est pas precisee (rapport complet requis). La formulation actuelle ('24 % seulement acceptent une IA sans aucune supervision') est acceptable, mais 'se disent a l'aise avec' serait plus fidele que 'acceptent'. Idem 82 %: base non precisee, article ne pretend pas le contraire.",
+  "validatedClaims": [
+    {"claim": "Omdia: 51 % IA agentique qui agit en production; 1 000 decideurs IT/NetOps; 500+ salaries; Amerique du Nord, Europe de l'Ouest, APAC; ni dates de terrain ni marge d'erreur", "source": "newsroom.cisco.com (S12)", "date": "2026-09-23"},
+    {"claim": "82 % a l'aise pour changements de production sans approbation prealable; 24 % a l'aise avec IA sans supervision; 69 % explicabilite detaillee; 36 % observabilite complete comme minimum", "source": "newsroom.cisco.com (S12)", "date": "2026-09-23"},
+    {"claim": "Partner Summit Vancouver 26-28 octobre 2026", "source": "cisco.com/.../partner-summit (page evenement, via WebSearch); Destination Vancouver; Vendelux", "date": "2026-10-28"},
+    {"claim": "Networking MCP servers: 'standardized, supported integration layer that connects AI agents directly to live network data'; aucun prix ni date; permissions/audit non mentionnes; Vaccaro 'SVP/GM Network Platform & Assurance'", "source": "blogs.cisco.com (S1)", "date": "2026-10-26"},
+    {"claim": "Agentic Actions 'Now in controlled availability'; inscription beta pour clients existants; Meraki seulement dans les URL d'inscription; terme absent de la presse (NW, Converge, Channel Insider)", "source": "blogs.cisco.com (S1), Network World, Converge Digest, Channel Insider", "date": "2026-10-26/27"},
+    {"claim": "Model Foundry en controlled availability, d'abord partenaires", "source": "Network World ('Controlled availability begins with Cisco partners'), Converge Digest", "date": "2026-10-26/27"},
+    {"claim": "Cisco IQ for Partners GA le 26 oct + Cisco IQ MCP Server + RBAC (le client accorde au partenaire une visibilite sur son parc installe)", "source": "StorageReview, Network World", "date": "2026-10-26/27"},
+    {"claim": "Privileged Infrastructure Access (avec Teleport): en developpement; NW: 'unclear how this package will ultimately be available'", "source": "Converge Digest ('remains under development'), Network World", "date": "2026-10-26/27"},
+    {"claim": "POINT 1 DU WRITER: Channel Insider decrit bien Privileged Infrastructure Access: 'fast, governed, task-specific access', 'short-lived, identity-bound certificates', 'Sessions will be recorded, and privilege expires when the session ends'. Le slug 'quantum-safe-networking' est sans incidence: l'article couvre tout le Partner Summit.", "source": "channelinsider.com (S5)", "date": "2026-10-27"},
+    {"claim": "Cisco plus gros investisseur de Teleport ('the largest strategic investor'); 'only the privilege required for the task'", "source": "goteleport.com (S10)", "date": "2026-08-25"},
+    {"claim": "Meraki MCP: beta, schemas non retrocompatibles, 'Write operations are not supported', OAuth non supporte, cle API Dashboard en bearer, appel direct possible avec cle lecture-ecriture, limite de debit par organisation, sessions multi-orgs", "source": "developer.cisco.com Code Exchange (S6)", "date": "non date"},
+    {"claim": "Cle API Meraki = identite de l'admin, memes droits par organisation, 2 cles valides max par identite toutes orgs confondues", "source": "developer.cisco.com/meraki/api-v1/authorization (S14)", "date": "non date"},
+    {"claim": "getOrganizationApiRequests: adminId nul pour OAuth, champs method/path/userAgent/sourceIp/responseCode/client.type (api_key|oauth), timespan max 31 jours, retention non precisee", "source": "developer.cisco.com (S15)", "date": "non date"},
+    {"claim": "Catalyst Center MCP: 'does not add an authorization layer or enforce read-only access'; identifiants en variables d'environnement; compte dedie moindre privilege; bind 127.0.0.1", "source": "developer.cisco.com Code Exchange (S7)", "date": "non date"},
+    {"claim": "Spec MCP 2026-07-28: autorisation OPTIONAL; SHOULD pour HTTP, SHOULD NOT pour STDIO; serveur = resource server OAuth 2.1; parametre resource RFC 8707 MUST; validation d'audience; 'MUST NOT accept or transit any other tokens'", "source": "modelcontextprotocol.io authorization (S8)", "date": "2026-07-28"},
+    {"claim": "Token passthrough 'explicitly forbidden'; risques: contournement de controles, piste d'audit brouillee (logs aval montrant une autre identite); scope minimization: elevation via WWW-Authenticate, journalisation avec correlation IDs, scopes * / admin:* en erreurs courantes", "source": "modelcontextprotocol.io security_best_practices (S9)", "date": "2026-07-28"}
+  ],
+  "statusCheckPoint3": {
+    "Cisco IQ for Partners + Cisco IQ MCP Server": "disponible (GA 26 oct) - confirme",
+    "Agentic Actions": "controlled availability, source unique Cisco - confirme",
+    "Networking MCP servers": "annonces sans date - confirme (mais pas de citation 'plans to add')",
+    "Privileged Infrastructure Access": "en developpement - confirme",
+    "Meraki MCP": "beta, lecture seule - confirme (doc developpeur, hors annonce)"
+  },
+  "sourcesConsulted": [
+    "https://blogs.cisco.com/partner/powering-partner-potential-in-a-world-of-agentic-ai",
+    "https://www.networkworld.com/article/4240556/cisco-taps-ai-partners-to-modernize-it-operations-and-fortify-network-security.html",
+    "https://www.channelinsider.com/infrastructure/cisco-ai-operations-quantum-safe-networking/",
+    "https://convergedigest.com/cisco-agentic-network-operations-model-foundry-mcp/",
+    "https://www.storagereview.com/news/cisco-iq-general-availability-partners-model-foundry-live-protect-wifi-7",
+    "https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2026/m09/cisco-ai-research-agenticops-scaling-quickly-in-the-enterprise.html",
+    "https://goteleport.com/blog/cisco-teleport-partnership/",
+    "https://developer.cisco.com/codeexchange/github/repo/CiscoDevNet/cisco-meraki-mcp-official/",
+    "https://developer.cisco.com/codeexchange/github/repo/cisco-en-programmability/catc-mcp-oss/",
+    "https://developer.cisco.com/meraki/api-v1/authorization/",
+    "https://developer.cisco.com/meraki/api-v1/get-organization-api-requests/",
+    "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+    "https://modelcontextprotocol.io/specification/2026-07-28/basic/security_best_practices",
+    "https://www.cisco.com/c/m/en_us/training-events/events-webinars/partner-summit.html",
+    "https://www.destinationvancouver.com/conference/cisco-partner-summit-2026"
+  ]
+}
