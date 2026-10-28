@@ -1,0 +1,105 @@
+const ARTICLE = {
+  "slug": "cisco-mcp-agentic-actions-cle-ecriture-multi-tenant",
+  "title": "Agents IA chez Cisco : la clé d'écriture n'est pas dans le serveur MCP",
+  "excerpt": "Cisco a annoncé à Vancouver ses Networking MCP servers, sans date, et ouvert Agentic Actions en controlled availability. Sur un parc Wi-Fi multi-tenant, la frontière entre lire et écrire ne tient pourtant ni au protocole ni au serveur : elle tient au rôle attaché à la clé d'API, et au journal que l'opérateur garde, ou pas.",
+  "category": "Réseaux",
+  "tags": [
+    "Cisco",
+    "MCP",
+    "Agentic Actions",
+    "Agents IA",
+    "Meraki",
+    "Multi-tenant",
+    "Identité d'agent",
+    "Audit"
+  ],
+  "readTime": 17,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/cisco-mcp-agentic-actions-cle-ecriture-multi-tenant-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "Cisco's AI agents: the write key is not in the MCP server",
+      "excerpt": "Cisco announced its Networking MCP servers in Vancouver with no date, and opened Agentic Actions in controlled availability. On a multi-tenant Wi-Fi estate, though, the line between read and write is drawn neither by the protocol nor by the server. It is drawn by the role attached to the API key, and by the log the operator keeps, or doesn't.",
+      "tags": [
+        "Cisco",
+        "MCP",
+        "Agentic Actions",
+        "AI agents",
+        "Meraki",
+        "Multi-tenant",
+        "Agent identity",
+        "Audit"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "Agentes de IA en Cisco: la clave de escritura no está en el servidor MCP",
+      "excerpt": "Cisco anunció en Vancouver sus Networking MCP servers, sin fecha, y abrió Agentic Actions en controlled availability. En un parque Wi-Fi multi-tenant, la frontera entre leer y escribir no depende del protocolo ni del servidor: depende del rol asociado a la clave de API y del registro que el operador conserve, o no.",
+      "tags": [
+        "Cisco",
+        "MCP",
+        "Agentic Actions",
+        "Agentes de IA",
+        "Meraki",
+        "Multi-tenant",
+        "Identidad de agente",
+        "Auditoría"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "KI-Agenten bei Cisco: Der Schreibschlüssel steckt nicht im MCP-Server",
+      "excerpt": "Cisco hat in Vancouver seine Networking MCP servers ohne Termin angekündigt und Agentic Actions in controlled availability geöffnet. In einem Multi-Tenant-WLAN-Park verläuft die Grenze zwischen Lesen und Schreiben jedoch weder im Protokoll noch im Server, sondern in der Rolle, die am API-Schlüssel hängt, und im Log, das der Betreiber behält oder eben nicht.",
+      "tags": [
+        "Cisco",
+        "MCP",
+        "Agentic Actions",
+        "KI-Agenten",
+        "Meraki",
+        "Multi-Tenant",
+        "Agentenidentität",
+        "Audit"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "featured": true,
+  "skipNewsletter": false,
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'analyse technique est rigoureuse, demontrant une parfaite coherence interne concernant les specifications MCP, l'architecture OAuth 2.1 et les contraintes reelles de l'API Cisco Meraki. L'article distingue methodiquement les annonces marketing des faits documentes et contextualise precisement les enjeux multi-tenant pour un operateur.",
+    "finalVerdict": "PASS avec corrections",
+    "verdictNote": "PASS avec corrections au premier passage, zéro retry, zéro hallucination de fond ; environ 40 affirmations validées sur les sources primaires par cross-check web indépendant (Gemini n'avait pas détecté les deux écarts de forme). Statuts rattachés à leur périmètre exact : Cisco IQ for Partners et Cisco IQ MCP Server disponibles le 26/10 ; Agentic Actions en controlled availability selon le seul billet Cisco (Meraki n'apparaît que dans les URL d'inscription, lien Meraki/Agentic Actions présenté comme inférence) ; Networking MCP servers annoncés sans prix ni date ; Privileged Infrastructure Access (avec Teleport) en développement ; MCP Meraki en bêta, lecture seule, documenté hors annonce. Chiffres Omdia (51 %, 82 %, 69 %, 36 %, 24 %) cadrés : étude menée par Omdia et publiée par Cisco, 1 000 décideurs, entreprises de 500 salariés et plus, trois régions, sans dates de terrain ni marge d'erreur. Spec MCP 2026-07-28 vérifiée sur modelcontextprotocol.io (autorisation optionnelle, token passthrough interdit, piste d'audit brouillée parmi les risques). Journal API Meraki : fenêtre de 31 jours par requête, rétention non documentée. Catalyst Center MCP : pas de couche d'autorisation ni de lecture seule imposée. Les termes « Quantum-Safe » et « MCP natif sur équipement » ont été écartés faute de source. Le modèle des trois clés, le découpage multi-tenant et la checklist opérateur sont balisés comme lecture d'auteur. Traductions en/es/de produites après corrections.",
+    "hallucinations": [
+      "[major-correctable] Mermaid ligne 34: Networking MCP servers (« plans to add ») ; le brief et le writer attribuent cette citation a Network World — Citation introuvable. Network World ecrit: 'Cisco also said it would be adding Model Context Protocol servers for its networking platforms.' Converge Digest: 'Cisco is introducing MCP servers for networking platforms'. Channel Insider: 'MCP connectivity'. Aucune des 3 sources fetchees ne contient 'plans to add'. Le sens est exact, seule la citation entre guillemets est fausse. Le corps du texte (ligne 13) paraphrase correctement ('prevoit de les ajouter').",
+      "[minor] Ligne 3: 'L'etude a ete commandee et publiee par Cisco' — Le communique Cisco dit: 'Conducted independently by Omdia ... surveyed 1,000 IT and network operations leaders at organizations with 500 or more employees'. Il ne dit pas que Cisco a commande l'etude; il dit que Cisco l'a publiee. 'Commandee' vient du brief et n'est pas confirme par la source primaire."
+    ],
+    "corrections": [
+      "Mermaid : citation « plans to add » introuvable dans Network World, remplacée par « annoncés, sans date »",
+      "Intro : « étude commandée et publiée par Cisco » → « menée par Omdia, publiée par Cisco » (le communiqué dit conduite indépendamment par Omdia)",
+      "Section audit : « 24 % acceptent une IA sans aucune supervision » → « se disent à l'aise avec », plus fidèle à la source"
+    ],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "Omdia: 51 % IA agentique qui agit en production; 1 000 decideurs IT/NetOps; 500+ salaries; Amerique du Nord, Europe de l'Ouest, APAC; ni dates de terrain ni marge d'erreur (newsroom.cisco.com (S12), 2026-09-23)",
+      "82 % a l'aise pour changements de production sans approbation prealable; 24 % a l'aise avec IA sans supervision; 69 % explicabilite detaillee; 36 % observabilite complete comme minimum (newsroom.cisco.com (S12), 2026-09-23)",
+      "Partner Summit Vancouver 26-28 octobre 2026 (cisco.com/.../partner-summit (page evenement, via WebSearch); Destination Vancouver; Vendelux, 2026-10-28)",
+      "Networking MCP servers: 'standardized, supported integration layer that connects AI agents directly to live network data'; aucun prix ni date; permissions/audit non mentionnes; Vaccaro 'SVP/GM Network Platform & Assurance' (blogs.cisco.com (S1), 2026-10-26)",
+      "Agentic Actions 'Now in controlled availability'; inscription beta pour clients existants; Meraki seulement dans les URL d'inscription; terme absent de la presse (NW, Converge, Channel Insider) (blogs.cisco.com (S1), Network World, Converge Digest, Channel Insider, 2026-10-26/27)",
+      "Model Foundry en controlled availability, d'abord partenaires (Network World ('Controlled availability begins with Cisco partners'), Converge Digest, 2026-10-26/27)",
+      "Cisco IQ for Partners GA le 26 oct + Cisco IQ MCP Server + RBAC (le client accorde au partenaire une visibilite sur son parc installe) (StorageReview, Network World, 2026-10-26/27)",
+      "Privileged Infrastructure Access (avec Teleport): en developpement; NW: 'unclear how this package will ultimately be available' (Converge Digest ('remains under development'), Network World, 2026-10-26/27)",
+      "POINT 1 DU WRITER: Channel Insider decrit bien Privileged Infrastructure Access: 'fast, governed, task-specific access', 'short-lived, identity-bound certificates', 'Sessions will be recorded, and privilege expires when the session ends'. Le slug 'quantum-safe-networking' est sans incidence: l'article couvre tout le Partner Summit. (channelinsider.com (S5), 2026-10-27)",
+      "Cisco plus gros investisseur de Teleport ('the largest strategic investor'); 'only the privilege required for the task' (goteleport.com (S10), 2026-08-25)",
+      "Meraki MCP: beta, schemas non retrocompatibles, 'Write operations are not supported', OAuth non supporte, cle API Dashboard en bearer, appel direct possible avec cle lecture-ecriture, limite de debit par organisation, sessions multi-orgs (developer.cisco.com Code Exchange (S6), non date)",
+      "Cle API Meraki = identite de l'admin, memes droits par organisation, 2 cles valides max par identite toutes orgs confondues (developer.cisco.com/meraki/api-v1/authorization (S14), non date)",
+      "getOrganizationApiRequests: adminId nul pour OAuth, champs method/path/userAgent/sourceIp/responseCode/client.type (api_key|oauth), timespan max 31 jours, retention non precisee (developer.cisco.com (S15), non date)",
+      "Catalyst Center MCP: 'does not add an authorization layer or enforce read-only access'; identifiants en variables d'environnement; compte dedie moindre privilege; bind 127.0.0.1 (developer.cisco.com Code Exchange (S7), non date)",
+      "Spec MCP 2026-07-28: autorisation OPTIONAL; SHOULD pour HTTP, SHOULD NOT pour STDIO; serveur = resource server OAuth 2.1; parametre resource RFC 8707 MUST; validation d'audience; 'MUST NOT accept or transit any other tokens' (modelcontextprotocol.io authorization (S8), 2026-07-28)",
+      "Token passthrough 'explicitly forbidden'; risques: contournement de controles, piste d'audit brouillee (logs aval montrant une autre identite); scope minimization: elevation via WWW-Authenticate, journalisation avec correlation IDs, scopes * / admin:* en erreurs courantes (modelcontextprotocol.io security_best_practices (S9), 2026-07-28)"
+    ]
+  }
+};
