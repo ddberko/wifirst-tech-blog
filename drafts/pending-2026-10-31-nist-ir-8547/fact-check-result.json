@@ -1,0 +1,299 @@
+{
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique et réglementaire de la transition post-quantique est d'une grande rigueur, distinguant parfaitement dépréciation et interdiction ainsi que les enjeux spécifiques au matériel réseau. Le style est percutant, pédagogique et parfaitement ancré dans les réalités opérationnelles des acheteurs et ingénieurs réseau.",
+  "geminiCaveat": "Gemini a rendu 10/10 sans avoir vu la derive IEEE 802.11 (voir hallucinations[0]). Score non utilise seul : evaluation independante technique = 8/10.",
+  "independentTechnicalScore": 8,
+  "verdict": "PASS avec corrections",
+  "verdictCondition": "Publication autorisee uniquement apres application de C1 (IEEE, obligatoire) et C2 (ANSSI, obligatoire) et verification manuelle de C5 (liens internes). Zero hallucination de type standard/RFC/citation inventee.",
+  "hallucinations": [
+    {
+      "id": "H1",
+      "severity": "medium",
+      "type": "stale-fact (pas une invention)",
+      "location": "ligne 137 (+ ligne 129, ligne 170, source 10)",
+      "finding": "L'article presente l'effort IEEE 802.11 comme un 'groupe d'etude' dont le 'projet de mandat' a ete approuve en juillet 2025. La page IEEE officielle actuelle (grouper.ieee.org/groups/802/11/Reports/tgbt_update.htm, lue directement) montre un Task Group BT (P802.11bt, PQC) avec Draft D1.0 en Letter Ballot 297, 650 commentaires dont 232 resolus a la reunion de septembre 2026, editeur Jay Yang. Le brief s'appuyait sur l'ancienne page du Study Group (pqc_update.htm, derniere maj mai 2025). La conclusion 'aucun standard publie' reste exacte (amendement en brouillon), mais 'groupe d'etude' est faux a la date du 2026-10-31 et l'etat d'avancement est sous-estime."
+    },
+    {
+      "id": "H2",
+      "severity": "low",
+      "type": "attribution",
+      "location": "ligne 50",
+      "finding": "La recommandation d'hybridation de l'ANSSI est rattachee a la paraphrase Clubic. L'article Clubic (19 juin 2026, intervention de Samih Souissi a France Quantum) ne mentionne ni 'hybridation' ni 'hybride'. Les resultats de recherche indiquent que la FAQ ANSSI la recommande, mais la FAQ n'a pas pu etre lue directement (page vide cote fetch). A attribuer correctement ou hedger."
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "U1",
+      "severity": "low",
+      "location": "ligne 143 et ligne 50",
+      "finding": "Liens internes tunnels-ipsec-quatre-ans-retard-post-quantique et anssi-calendrier-post-quantique-2027-sourcing-equipements : absents de /home/user/wifirst-tech-blog/drafts et content (seuls les 2 slugs d'octobre existent : drafts/2026-10-01-chiffre-pas-post-quantique-mesurer-ecart-client-origine.md et drafts/2026-10-02-cloudflare-ca-merkle-tree-certificates-ari-rfc-9773.md). Le brief les declare au catalogue ; a confirmer sur le site publie avant mise en ligne (risque de 404)."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "C1",
+      "required": true,
+      "line": 137,
+      "reason": "H1",
+      "old": "Un groupe d'étude dédié, présidé par Stephen Orr (Cisco), a vu son projet de mandat approuvé par la plénière 802.11 de juillet 2025, avec pour objectif de mettre à jour ou de créer des mécanismes de gestion de clés résistants, et d'examiner notamment SAE et OWE.",
+      "new": "Un groupe de travail dédié, le Task Group BT présidé par Stephen Orr (Cisco), prépare l'amendement P802.11bt. Son mandat (PAR et CSD) a été approuvé par la plénière 802.11 en juillet 2025. Son projet D1.0 est passé en vote de groupe (Letter Ballot 297) et la résolution des 650 commentaires reçus était en cours à la réunion de septembre 2026. Il vise des suites d'authentification et de gestion de clés (AKM) résistantes, un échange de clé par mot de passe post-quantique et la révision des échanges de clés, en regardant notamment SAE et OWE."
+    },
+    {
+      "id": "C1b",
+      "required": true,
+      "line": 137,
+      "old": "À ma connaissance, aucun standard IEEE 802.11 post-quantique n'est publié.",
+      "new": "À ma connaissance, aucun standard IEEE 802.11 post-quantique n'est publié : l'amendement P802.11bt n'en est qu'au stade du brouillon."
+    },
+    {
+      "id": "C1c",
+      "required": true,
+      "line": 137,
+      "old": "**La radio n'a pas de solution.**",
+      "new": "**La radio n'a pas encore de solution publiée.**"
+    },
+    {
+      "id": "C1d",
+      "required": true,
+      "line": 129,
+      "old": "Rien de normalisé : veille IEEE 802.11",
+      "new": "Rien de publié : amendement IEEE P802.11bt en brouillon, à suivre"
+    },
+    {
+      "id": "C1e",
+      "required": true,
+      "line": 170,
+      "old": "les travaux du groupe IEEE 802.11",
+      "new": "la publication de l'amendement IEEE P802.11bt"
+    },
+    {
+      "id": "C1f",
+      "required": true,
+      "line": 199,
+      "old": "10. IEEE 802.11, PQC Study Group, compte rendu : https://grouper.ieee.org/groups/802/11/Reports/pqc_update.htm",
+      "new": "10. IEEE 802.11, Task Group BT (PQC), P802.11bt, compte rendu (réunion de septembre 2026) : https://grouper.ieee.org/groups/802/11/Reports/tgbt_update.htm"
+    },
+    {
+      "id": "C2",
+      "required": true,
+      "line": 50,
+      "reason": "H2",
+      "old": "Ces dates proviennent d'une paraphrase de presse (Clubic, juin 2026) d'une intervention de l'agence, pas d'un texte officiel que j'aurais relu. Elles sont à confirmer à la source,",
+      "new": "Ces dates proviennent d'une paraphrase de presse (Clubic, 19 juin 2026) d'une intervention de l'agence, pas d'un texte officiel que j'aurais relu ; l'article ne parle d'ailleurs pas d'hybridation, ce point est à vérifier dans la FAQ de l'ANSSI. Ces éléments sont à confirmer à la source,"
+    },
+    {
+      "id": "C3",
+      "required": false,
+      "line": 141,
+      "reason": "precision",
+      "old": "quelques mois avant que la fenêtre de dépréciation ne s'ouvre",
+      "new": "environ neuf mois avant que la fenêtre de dépréciation ne s'ouvre"
+    },
+    {
+      "id": "C5",
+      "required": true,
+      "type": "verification manuelle",
+      "lines": [
+        50,
+        143
+      ],
+      "action": "Confirmer que les slugs tunnels-ipsec-quatre-ans-retard-post-quantique et anssi-calendrier-post-quantique-2027-sourcing-equipements sont publies sur wifirst-tech-blog.web.app avant mise en ligne. Sinon retirer les liens."
+    }
+  ],
+  "notes": [
+    "Faux positif a ignorer : certaines pages web citent 'EO 14409' pour ce decret ; le Federal Register (91 FR 38483, 25 juin 2026) confirme EO 14412 signe le 22 juin 2026.",
+    "Aucun element de l'article ne repose sur Quantum Computing Report / postquantum.com : les ecarts connus (31 dec 2035, enforce TLS 1.3, SP 800-56C mis a jour) sont bien evites.",
+    "Le script Gemini ecrit desormais /tmp/gemini-raw-result.json (et non /tmp/fact-check-result.json) pour ne pas ecraser ce rapport consolide."
+  ],
+  "validatedClaims": [
+    {
+      "claim": "Version finale IR 8547 publiee le 27 octobre 2026 ; PDF date octobre 2026",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) ; csrc.nist.gov/pubs/ir/8547/final (historique 10/27/26)",
+      "date": "2026-10-27"
+    },
+    {
+      "claim": "Citation exacte : 'NIST will deprecate quantum-vulnerable public-key cryptography after 2030 and disallow its use under NIST standards and guidelines after 2035.' (section 4, p.13)",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.13 imprime",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Aucune date au jour pres pour 2030/2035 dans le texte ; echeances EO/OMB seules au jour pres",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) ; EO 14412, 91 FR 38483 (PDF whitehouse.gov)",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Fenetre 2030-2035 n'altere pas les echeances plus precoces HVA/high impact (section 4, p.13)",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.13",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Tables 2 et 4 (p.15-16) : tous niveaux listes 'Deprecated after 2030 / Disallowed after 2035'",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) Tables 2, 4",
+      "date": "2026-10"
+    },
+    {
+      "claim": "IPD 2024 : seuls 112 bits 'Deprecated after 2030', >=128 bits seulement 'Disallowed after 2035'",
+      "status": "validated",
+      "source": "NIST IR 8547 IPD PDF, tables (nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8547.ipd.pdf)",
+      "date": "2024-11-12"
+    },
+    {
+      "claim": "'NIST recommends using ML-KEM-768 as the default parameter set' (4.1.2, p.17) ; ML-KEM seul schema PQ d'etablissement de cle approuve ; HQC selectionne, FIPS en developpement",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.17 imprime",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Hybride : 'typically expected to be temporary measures' (p.10) ; acceptation FIPS 140 si une brique approuvee ; NIST 'intends to update SP 800-56C'",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.10-11, p.18",
+      "date": "2026-10"
+    },
+    {
+      "claim": "'a practical near-term path' TLS 1.3 + hybride ; priorite echange de cles TLS/IKE ; prochaine revision SP 800-52 (4.2, p.20)",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.20",
+      "date": "2026-10"
+    },
+    {
+      "claim": "'Organizations should treat the migration to PQC as a current operational priority...' (p.1)",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.1",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Rapport destine aux agences, fournisseurs, normalisation, labos ; 'blueprint' pour infrastructures critiques (1.1, p.2)",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.2",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Firmware : fabricants materiels doivent amorcer l'integration PQC immediatement (p.6) ; LMS/XMSS non destines a un usage general",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.6, 2.1.1",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Agences doivent supporter (pas imposer) TLS 1.3 au plus tard le 2 janvier 2030",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) p.13, p.20 ; OMB M-26-15 (PDF whitehouse.gov)",
+      "date": "2026-10"
+    },
+    {
+      "claim": "Aucune mention Wi-Fi/RADIUS/VPN dans l'IR 8547 ; RFC 10024 non citee par le rapport",
+      "status": "validated",
+      "source": "NIST IR 8547 final (PDF, nvlpubs.nist.gov/nistpubs/ir/2026/NIST.IR.8547.pdf) (grep texte integral)",
+      "date": "2026-10"
+    },
+    {
+      "claim": "EO 14412 signe le 22 juin 2026, publie 91 FR 38483 le 25 juin 2026",
+      "status": "validated",
+      "source": "EO 14412, 91 FR 38483 (PDF whitehouse.gov)",
+      "date": "2026-06-22"
+    },
+    {
+      "claim": "EO 4(b) : cle 2030-12-31, signatures 2031-12-31 pour HVA et high impact",
+      "status": "validated",
+      "source": "EO 14412, 91 FR 38483 (PDF whitehouse.gov) Sec. 4(b)(ii)-(iii)",
+      "date": "2026-06-22"
+    },
+    {
+      "claim": "EO 6(c) : regle FAR proposee sous 180 jours (=2026-12-19), covered contractors conformes FIPS dont PQC au 2030-12-31",
+      "status": "validated",
+      "source": "EO 14412, 91 FR 38483 (PDF whitehouse.gov) Sec. 6(c)",
+      "date": "2026-06-22"
+    },
+    {
+      "claim": "'covered contractors' non defini a la Sec. 2",
+      "status": "validated",
+      "source": "EO 14412, 91 FR 38483 (PDF whitehouse.gov) Sec. 2",
+      "date": "2026-06-22"
+    },
+    {
+      "claim": "EO 7(c) : aucun droit opposable cree",
+      "status": "validated",
+      "source": "EO 14412, 91 FR 38483 (PDF whitehouse.gov) Sec. 7(c)",
+      "date": "2026-06-22"
+    },
+    {
+      "claim": "EO 6(b) : revision CMVP sous 180 jours ; 5(d) : contenu minimal CBOM par CISA sous 270 jours (=2027-03-19)",
+      "status": "validated",
+      "source": "EO 14412, 91 FR 38483 (PDF whitehouse.gov)",
+      "date": "2026-06-22"
+    },
+    {
+      "claim": "Regle FAR PQC non publiee a ce jour (recherche web independante : cabinets Skadden, King & Spalding, Wiley ; aucune publication au Federal Register trouvee)",
+      "status": "validated",
+      "source": "WebSearch, skadden.com/insights/publications/2026/06/big-changes-coming-for-government-contractors et al.",
+      "date": "2026-10-31"
+    },
+    {
+      "claim": "M-26-15 du 24 juin 2026 ; phases 2026-27, 2027-28, 2028-30, 2031, 2035 ; hybride 'intricate and resource-intensive stopgap' ; exemple x25519 + ML-KEM-768 ; alignement IR 8547 'or successor' ; systemes non migrables a remplacer",
+      "status": "validated",
+      "source": "OMB M-26-15 (PDF whitehouse.gov)",
+      "date": "2026-06-24"
+    },
+    {
+      "claim": "RFC 10024 : titre exact, aout 2026, Proposed Standard ; X25519MLKEM768 seul 'Recommended = Y' (SecP256r1MLKEM768 et SecP384r1MLKEM1024 = N)",
+      "status": "validated",
+      "source": "datatracker.ietf.org/doc/rfc10024/",
+      "date": "2026-08"
+    },
+    {
+      "claim": "RFC 9954 'Hybrid Key Exchange in TLS 1.3', juillet 2026, Informational",
+      "status": "validated",
+      "source": "rfc-editor.org/rfc/rfc9954.html",
+      "date": "2026-07"
+    },
+    {
+      "claim": "OpenSSL 3.5 LTS publie le 8 avril 2025, support jusqu'au 8 avril 2030 ; OpenSSL 3.0 correctifs de securite jusqu'au 7 septembre 2026 ; key shares par defaut X25519MLKEM768 + X25519",
+      "status": "validated",
+      "source": "openssl-library.org/post/2025-04-08-openssl-35-final-release/ ; github.com/openssl/openssl/discussions/27299",
+      "date": "2025-04-08"
+    },
+    {
+      "claim": "draft-ietf-emu-pqc-eap-tls-02 : 23 sept 2026, T. Reddy (Nokia), exige TLS 1.3 + groupe PQ/hybride + chaine PQ/hybride pour confidentialite longue duree, ne nomme ni RADIUS ni RadSec ni 802.1X, Internet-Draft",
+      "status": "validated",
+      "source": "ietf.org/archive/id/draft-ietf-emu-pqc-eap-tls-02.html",
+      "date": "2026-09-23"
+    },
+    {
+      "claim": "CISA 23 janvier 2026 : Networking Hardware/Software dans la liste 'transitioning' ; ni Wi-Fi AP ni VPN",
+      "status": "validated",
+      "source": "cisa.gov product-categories page",
+      "date": "2026-01-23"
+    },
+    {
+      "claim": "Feuille de route UE (NIS CG) publiee juin 2025 ; jalons 2026/2030/2035 (via miroir key4biz, cite l'IPD 2024)",
+      "status": "validated",
+      "source": "digital-strategy.ec.europa.eu (page 2025-06-23) ; brief 5.6",
+      "date": "2025-06"
+    },
+    {
+      "claim": "ANSSI 2027/2030 : paraphrase Clubic (19 juin 2026, annonce de Samih Souissi a France Quantum) ; correctement hedgee dans l'article",
+      "status": "validated",
+      "source": "clubic.com/actualite-617680",
+      "date": "2026-06-19"
+    },
+    {
+      "claim": "IEEE : chair Stephen Orr (Cisco) ; PAR/CSD approuves en plenaire de juillet 2025 (exact, mais statut depuis obsolete, voir H1)",
+      "status": "validated-but-stale",
+      "source": "grouper.ieee.org/groups/802/11/Reports/tgbt_update.htm",
+      "date": "2026-09"
+    },
+    {
+      "claim": "Calcul 180 jours = 2026-12-19 ; 270 jours = 2027-03-19 (article : 'mi-decembre', 'mi-mars')",
+      "status": "validated",
+      "source": "calcul date -d",
+      "date": "2026-10-31"
+    }
+  ]
+}

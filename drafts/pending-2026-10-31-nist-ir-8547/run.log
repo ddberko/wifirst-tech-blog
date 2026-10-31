@@ -1,0 +1,44 @@
+[2026-10-31 07:08:33] [STEP 0/9] STARTED — amorçage cloud
+  - service-account.json écrit et valide
+[2026-10-31 07:08:34] [STEP 0/9] DONE — SA valide, deps OK, ASSISTANT=absent
+[2026-10-31 07:08:36] [STEP 1/9] STARTED — idéation sourcing type=tech
+  - 5 candidats Gemini, 3 rejetés (Wi-Fi 8 Intel/Broadcom non vérifiable, Dell'Oro 404, Gateway API v1.6 périmé)
+  - sujet retenu : NIST IR 8547 final — calendrier migration post-quantique 2030/2035 (genre standard-rfc)
+  - score 25/32 (fraîcheur 5, B2B 8, profondeur 9, variété 3)
+  - source primaire : https://csrc.nist.gov/pubs/ir/8547/final (NIST, 2026-10-27)
+  - raison : seul candidat à source primaire vérifiée et fraîche ; angle à distinguer des articles PQC 10-01 et 10-02
+[2026-10-31 07:12:03] [STEP 1/9] DONE — NIST IR 8547 retenu, 25/32, recommandation researcher suivie
+[2026-10-31 07:12:03] [STEP 2/9] STARTED — brief approfondi
+  - brief : /tmp/article-brief.md (5301 mots), 17 sources (NIST PDF final + draft 2024, EO 14412, OMB M-26-15, RFC 10024, RFC 9954, feuille de route UE, OpenSSL…)
+  - thèse : l'IR 8547 ne lie pas l'opérateur mais fournit l'horloge (déprécié après 2030, interdit après 2035) que les fournisseurs subiront via FAR/CMVP ; il faut la traduire en jalons contractuels datés + inventaire crypto
+  - prémisses corrigées : « contractuel » = EO 14412 §6(c)/FAR proposée, pas l'IR ; hybride « typically temporary » ; RFC 10024 = août 2026, non citée par l'IR
+[2026-10-31 07:19:26] [STEP 2/9] DONE — brief 17 sources, thèse horloge NIST → jalons contractuels
+[2026-10-31 07:19:26] [STEP 3/9] STARTED — rédaction
+  - titre : 2030, 2035 : NIST règle l'horloge post-quantique de vos fournisseurs
+  - slug : nist-ir-8547-horloge-post-quantique-fournisseurs ; catégorie Cybersécurité
+  - 3859 mots (wc -w, sources incluses), 2 Mermaid (gantt + flowchart), 3 placeholders inline
+  - garde anti-H1 : OK (pas de H1) ; garde anti-$ : 0 $ restant
+  - 4 liens internes ajoutés (articles PQC 10-01, 10-02, ANSSI 2027, IPsec), slugs vérifiés dans Firestore
+[2026-10-31 07:30:25] [STEP 3/9] DONE — 3859 mots, 2 Mermaid, 0 $, 0 H1
+[2026-10-31 07:30:26] [STEP 4/9] STARTED — génération images
+  - cover : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/nist-ir-8547-horloge-post-quantique-fournisseurs-cover.png
+  - inline 1 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/nist-ir-8547-horloge-post-quantique-fournisseurs-inline-1.png
+  - inline 2 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/nist-ir-8547-horloge-post-quantique-fournisseurs-inline-2.png
+  - inline 3 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/nist-ir-8547-horloge-post-quantique-fournisseurs-inline-3.png
+  - 4/4 générées au 1er essai (gemini-3.1-flash-image), 4/4 HTTP 200 public
+[2026-10-31 07:31:18] [STEP 4/9] DONE — 1 cover + 3 inline uploadées, placeholders remplacés
+[2026-10-31 07:31:18] [STEP 5/9] STARTED — fact-check (vigilance MAX, sujet réglementaire)
+  - verdict initial : PASS avec corrections → final : PASS avec corrections, 0 retry
+  - Gemini (gemini-3.8-flash) : tech 10/10, edito 10/10, passed=true ; éval indépendante fact-checker tech 8/10
+  - 0 hallucination bloquante ; 2 non bloquantes corrigées (IEEE groupe d'étude → Task Group BT P802.11bt D1.0 ; attribution hybridation ANSSI à Clubic retirée)
+  - corrections PASS appliquées (9 items : C1-C1f, C2, C3 + reformulation hybridation)
+  - U1 (slugs IPsec/ANSSI) : vérifiés EXISTS dans Firestore → liens conservés
+  - 31 affirmations validées contre sources primaires ; résiduel : 0
+[2026-10-31 07:37:54] [STEP 5/9] DONE — PASS avec corrections (9 corrections, 0 résiduelle, 0 retry)
+[2026-10-31 07:37:54] [STEP 6/9] STARTED — traductions en/es/de
+  - en : « 2030, 2035: NIST Sets Your Vendors' Post-Quantum Clock » — 3791 mots (95 %), 0 $, 0 H1, 3 img, 2 mermaid → OK
+  - es : « 2030, 2035: el NIST fija el reloj poscuántico de sus proveedores » — 4246 mots (107 %), 0 $, 0 H1, 3 img, 2 mermaid → OK (titre « Sources » → « Fuentes » corrigé)
+  - de : « 2030, 2035: NIST stellt die Post-Quanten-Uhr Ihrer Lieferanten » — 3661 mots (92 %), 0 $, 0 H1, 3 img, 2 mermaid → OK
+[2026-10-31 07:43:22] [STEP 6/9] DONE — 3/3 traductions OK (en, es, de), 0 relance
+[2026-10-31 07:43:22] [STEP 7/9] STARTED — publication Firestore
+[2026-10-31 07:44:14] [STEP 7/9] FAILED — exécution de publish-article.ts refusée par le classifieur de permissions de l'environnement (Real-World Transactions) ; article NON publié, aucune écriture Firestore, aucun envoi newsletter
