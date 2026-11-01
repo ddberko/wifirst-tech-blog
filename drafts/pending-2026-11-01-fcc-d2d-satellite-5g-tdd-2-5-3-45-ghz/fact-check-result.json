@@ -1,0 +1,49 @@
+{
+  "verdict": "PASS",
+  "checkedAt": "2026-11-01",
+  "retry": 1,
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique des contraintes d'interférence et de synchronisation inhérentes au TDD face aux transmissions satellitaires D2D est d'une grande rigueur. La contextualisation réglementaire et l'impact opérationnel pour les liaisons de secours d'entreprise sont parfaitement articulés et crédibles.",
+  "geminiCaveat": "Gemini ne remplace pas la vérification manuelle (il n'avait pas détecté la fausse citation au run 1). Verdict fondé sur la relecture manuelle + vérifs de sources.",
+  "hallucinations": [],
+  "residualHallucinations": [],
+  "corrections": [
+    {"line": 114, "severity": "optionnelle/cosmétique", "current": "un intervenant espagnol a décrit", "corrected": "la présidente du RSPG, l'Espagnole Julia Criado, a décrit (optionnel, non bloquant ; nom issu du run 1 / RCR, non revérifié ce run)"}
+  ],
+  "correctionsVerified": [
+    {"line": 61, "status": "OK", "note": "Citation « Today's spectrum-related votes don't propose any specific new rules yet » vérifiée verbatim sur Light Reading 29/10/2026. « It's unclear if the 2.5GHz and 3.45GHz bands will be part of a follow-on rulemaking » également verbatim."},
+    {"line": 37, "status": "OK", "note": "Light Reading 26/10 : 96 %, 88-99 %, 35 % à 15 miles, 1-3 miles, 300 millions, Ultra Capacity confirmés ; pas de 35 miles ni de 60 % dans cet article. Broadband Breakfast 26/10 : « bleed up to 35 miles » (attribué à T-Mobile), pas de 96 %. La nuance de l'article est donc exacte."},
+    {"line": 7, "status": "OK", "note": "Point 1.13 (694 MHz-2,7 GHz) conforme au projet FCC et à RCR."},
+    {"line": 127, "status": "OK", "note": "« distincte » conforme (ET 26-169 / FCC 26-51 séparé du NPRM SCS)."},
+    {"line": 5, "status": "OK", "note": "« à ma connaissance » cohérent avec l'aveu l.70 (texte adopté non consulté)."}
+  ],
+  "validatedClaims": [
+    {"claim": "Vote unanime 3-0 du 29/10/2026, NPRM, Carr/Gomez/Trusty", "source": "Telecompetitor 30/10/2026 (unanimously adopted two NPRMs, 3 commissaires nommés, relu ce run) ; Broadband Breakfast 29/10/2026", "date": "2026-10-29"},
+    {"claim": "482 MHz supplémentaires, passage de 5 à 13 bandes", "source": "Telecompetitor 30/10/2026 (relu) ; fiche FCC DOC-425711A1 (brief)", "date": "2026-10-08"},
+    {"claim": "Citations Light Reading du 29/10 (« don't propose any specific new rules yet », « unclear if the 2.5GHz and 3.45GHz... »)", "source": "Light Reading 29/10/2026, verbatim confirmé par fetch", "date": "2026-10-29"},
+    {"claim": "Chiffres T-Mobile : 96 %, 88-99 %, 35 % à 15 miles, 1-3 miles, 300 millions, Ultra Capacity, demande « would » vs « could »", "source": "Light Reading 26/10/2026, confirmé par fetch", "date": "2026-10-26"},
+    {"claim": "Débordement du signal satellite jusqu'à 35 miles (attribué à T-Mobile)", "source": "Broadband Breakfast 26/10/2026, confirmé par fetch", "date": "2026-10-26"},
+    {"claim": "WRC-27 : ouverture le 18 octobre 2027 à Shanghai (fin 12 novembre) ; RA-27 du 11 au 15 octobre", "source": "ITU https://www.itu.int/wrc-27/ (confirmé ce run). L'article est correct ; la date du 11/10 vue ailleurs correspond à l'Assemblée RA-27.", "date": "2027-10-18"},
+    {"claim": "Citations FCC (time delay instead of spectral separation, technically possible, focus mainly on FDD, will not change)", "source": "Projet FCC DOC-425711A1 par. 18, 74-75, 121-122 (brief, lu intégralement via pdftotext, non relu ce run)", "date": "2026-10-08"},
+    {"claim": "FCC 26-51 / ET 26-169, adopté 6 août, 2400-2483,5 et 5725-5850 MHz, 4 W, ECC/DEC/(25)02 en 862-870 MHz", "source": "FCC-26-51A1.pdf (brief, lu intégralement)", "date": "2026-08-06"},
+    {"claim": "Citation Taubenblatt et réaction Broadcom/Intel/Cisco", "source": "Broadband Breakfast 29/10 et 05/08/2026 (vérifié au run 1)", "date": "2026-10-29"},
+    {"claim": "RSPG D2D-IMT, 2027/28, CEPT ; Arcep bande L 20/07/2026 ; CE 2 GHz 27/05/2026 ; RCR panel 19/10 (MasOrange/Starlink, Ofcom)", "source": "Sources 10-13 du brief ; RCR relu au run 1", "date": "2025-07-23 / 2026-07-20 / 2026-05-27 / 2026-10-19"},
+    {"claim": "Délais 60 j / 90 j présentés comme issus du projet, dates à confirmer", "source": "Projet FCC ; Light Reading « deadlines to be set »", "date": "2026-10-29"}
+  ],
+  "limits": [
+    "Texte adopté du 29/10 non consulté (l'article le dit explicitement l.70).",
+    "Dépôts ECFS T-Mobile/CTIA non lus ; chiffres via presse, correctement attribués et balisés comme estimations non vérifiées.",
+    "Fiche FCC et FCC 26-51 non relues ce run (fondées sur le brief, source primaire lue en amont).",
+    "Nom Julia Criado (correction optionnelle) non revérifié ce run."
+  ],
+  "sourcesConsulted": [
+    "https://www.lightreading.com/satellite/fcc-seeks-feedback-on-carrier-warnings-about-running-d2d-in-5g-bands",
+    "https://www.lightreading.com/satellite/big-three-warn-that-running-d2d-in-5g-bands-will-cripple-network-performance",
+    "https://broadbandbreakfast.com/wireless-carriers-opposed-to-fcc-plan-for-direct-to-device-in-5g-bands/",
+    "https://www.telecompetitor.com/fcc-begins-clearing-the-way-for-increased-d2d-communications/",
+    "https://www.itu.int/wrc-27/"
+  ]
+}
