@@ -1,0 +1,139 @@
+diff --git a/scripts/publish-article.ts b/scripts/publish-article.ts
+index 939dc60..c6bb038 100644
+--- a/scripts/publish-article.ts
++++ b/scripts/publish-article.ts
+@@ -27,21 +27,70 @@ const LOCALES = ['en', 'es', 'de'] as const;
+ type Locale = (typeof LOCALES)[number];
+ 
+ const ARTICLE = {
+-  "slug": "wifi-7-cisco-it-migration-commencee-un-an-avant",
+-  "title": "90 000 employés en Wi-Fi 7, et la vraie migration avait eu lieu un an plus tôt",
+-  "excerpt": "Cisco IT a basculé 90 000 employés en Wi-Fi 7 sans configuration sur site. Le facteur déterminant n'était pas la borne : certificats, télémétrie et automatisation RF étaient posés douze mois plus tôt.",
++  "slug": "alternate-marking-preuve-sla-domaine-controle",
++  "title": "Alternate Marking : la preuve de SLA s'arrête à la frontière de votre domaine",
++  "excerpt": "Un brouillon IETF -00 publié le 30 octobre 2026 décrit comment déployer l'Alternate Marking pour mesurer perte, délai et gigue sur le trafic réel, sans sondes. Utile pour prouver un SLA multi-sites, à condition de comprendre qu'il ne vaut que sur le segment que l'on marque soi-même, ni sur l'Internet public ni dans l'air du Wi-Fi.",
+   "category": "Réseaux",
+   "tags": [
+-    "Wi-Fi 7",
+-    "WPA3",
+-    "802.11be",
+-    "Cisco",
+-    "Dell'Oro",
+-    "MLO"
++    "IETF",
++    "Alternate Marking",
++    "RFC 9341",
++    "SLA",
++    "Mesure hybride",
++    "STAMP",
++    "IOAM",
++    "Multi-sites"
+   ],
+-  "readTime": 16,
+-  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/wifi-7-cisco-it-migration-commencee-un-an-avant-cover.jpg",
++  "readTime": 18,
++  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/alternate-marking-preuve-sla-domaine-controle-cover.png",
+   "contentFile": "/tmp/article-draft.md",
++  "translations": {
++    "en": {
++      "title": "Alternate Marking: SLA proof stops at the edge of your domain",
++      "excerpt": "An IETF -00 draft published on October 30, 2026 describes how to deploy Alternate Marking to measure loss, delay and jitter on real traffic, without probes. It is useful for proving a multi-site SLA, provided you understand it only holds on the segment you mark yourself, not on the public Internet and not over the Wi-Fi air interface.",
++      "tags": [
++        "IETF",
++        "Alternate Marking",
++        "RFC 9341",
++        "SLA",
++        "Hybrid measurement",
++        "STAMP",
++        "IOAM",
++        "Multi-site"
++      ],
++      "contentFile": "/tmp/article-en.md"
++    },
++    "es": {
++      "title": "Alternate Marking: la prueba del SLA termina en la frontera de su dominio",
++      "excerpt": "Un borrador del IETF (-00), publicado el 30 de octubre de 2026, describe cómo desplegar el Alternate Marking para medir pérdida, retardo y jitter sobre el tráfico real, sin sondas. Es útil para probar un SLA multisitio, siempre que se entienda que solo vale en el segmento que uno mismo marca: ni en Internet público ni en el aire del Wi-Fi.",
++      "tags": [
++        "IETF",
++        "Alternate Marking",
++        "RFC 9341",
++        "SLA",
++        "Medición híbrida",
++        "STAMP",
++        "IOAM",
++        "Multisitio"
++      ],
++      "contentFile": "/tmp/article-es.md"
++    },
++    "de": {
++      "title": "Alternate Marking: Der SLA-Nachweis endet an der Grenze Ihrer Domäne",
++      "excerpt": "Ein am 30. Oktober 2026 veröffentlichter IETF-Draft (-00) beschreibt, wie sich Alternate Marking einsetzen lässt, um Verlust, Verzögerung und Jitter am echten Verkehr ohne Sonden zu messen. Das hilft beim SLA-Nachweis über mehrere Standorte, gilt aber nur auf dem Segment, das man selbst markiert, weder im öffentlichen Internet noch in der Luftschnittstelle des Wi-Fi.",
++      "tags": [
++        "IETF",
++        "Alternate Marking",
++        "RFC 9341",
++        "SLA",
++        "Hybride Messung",
++        "STAMP",
++        "IOAM",
++        "Multi-Site"
++      ],
++      "contentFile": "/tmp/article-de.md"
++    }
++  },
+   "featured": true,
+   "skipNewsletter": false,
+   "analysis": {
+@@ -49,31 +98,30 @@ const ARTICLE = {
+     "editorialScore": 10,
+     "geminiFactCheckPassed": true,
+     "geminiModelVersion": "gemini-3.8-flash",
+-    "geminiComment": "L'analyse technique et contextuelle est rigoureuse, offrant une excellente distinction entre les prérequis d'infrastructure, les contraintes cryptographiques et les réalités du marché. La chronologie et les ordres de grandeur sont parfaitement cohérents avec le cadre temporel fixé.",
+-    "finalVerdict": "PASS",
+-    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Chaque chiffre est rattaché à son périmètre exact : la baisse de 40 % des incidents concerne un seul site de Cisco IT et est attribuée par Cisco à l'adoption de Meraki, pas au Wi-Fi 7 ; les 39 sites sur 44 sans étude prédictive sont une mesure d'un trimestre sur un parc corporate homogène. Ordre de grandeur Dell'Oro re-vérifié par curl direct : plus de 10 MILLIONS de points d'accès expédiés au 2T 2026 (record sectoriel), jamais milliards. Les séries 1T 2026 (Light Reading) et 2T 2026 (Dell'Oro) sont traitées comme deux trimestres distincts et l'article le dit explicitement. Dates du standard conformes : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, amendement approuvé sous la désignation 802.11be-2024 avec document final publié le 22 juillet 2025 ; aucune mention d'une Release 2 non vérifiée. Aucune citation guillemetée : les propos de Cisco et de Siân Morgan (Senior Director at Dell'Oro Group, titre confirmé par curl du communiqué) sont paraphrasés. Le rapprochement CCMP-128 / GCMP-256 et le coût caché de mise à niveau des switchs sont explicitement balisés comme lecture d'architecte de l'auteur, le billet Cisco ne traitant aucun des deux. La capture de trames Windows 11 25H2 / Intel BE200 est présentée comme un test individuel de blogueur, sans en tirer de statistique de parc. Le contexte opérateur Wi-Fi managé (hôtellerie, résidences étudiantes) est assumé comme analyse, aucune source publique ne le chiffrant. Vérifications additionnelles hors brief : CW9178I confirmé comme produit réel (Cisco Wireless 9178I), obligation WPA3 sur les liens MLO confirmée multi-sources.",
++    "geminiComment": "L'analyse technique de l'Alternate Marking et des RFC citées (9341, 9342, 9343, 7799) est d'une grande rigueur et parfaitement conforme aux standards. La contextualisation opérationnelle et la distinction entre mesure en domaine contrôlé et bout en bout sont particulièrement pertinentes.",
++    "finalVerdict": "PASS avec corrections",
++    "verdictNote": "PASS avec corrections au premier passage, zéro hallucination, zéro retry. Le fact-checker a relu les sources primaires (datatracker bpm -00 et texte du draft, historique ippm, charte bpm, RFC 9341, 9343, 7872, 9947, 9951, draft-zhou expiré). Statut cadré : draft -00 work in progress, Informational selon l'en-tête du texte (le champ Intended RFC status du datatracker affiche None), aucun état IESG, AD ni shepherd ; ce n'est pas un standard. Auteurs et affiliations confirmés : Fioccola, Zhu, Zhou (Huawei), Graf (Swisscom), Zhang (China Mobile) ; biais vendeur signalé. Les 5 citations courtes en anglais sont présentes dans le texte -00. Chiffres rattachés à leur périmètre : collisions FlowMonID RFC 9343 (20 bits, 50 % à 1206 flux, 1 % à 145 flux par couple d'hôtes, 1 048 576 avec contrôleur) ; bande de garde RFC 9341 ; pertes HBH RFC 7872 de 39 à 54 % mesurées en 2014-2015, présentées comme ordre de grandeur historique. RFC 9947 Experimental sans consensus IETF. Les déploiements opérateurs viennent d'un draft individuel Huawei expiré, non endossé par l'IETF, sans chiffre d'échelle. La comparaison IOAM/STAMP, les implications Wi-Fi managé multi-sites et l'arbre de décision sont balisés comme analyse personnelle de l'auteur, le draft ne traitant ni de Wi-Fi ni de SLA. 4 corrections de formulation appliquées (synchronisation NTP/PTP citée en exemple, formulation RFC 9947 sur la duplication, source du statut Informational, précision sur le numéro de période en section 7).",
+     "hallucinations": [],
+-    "corrections": [],
++    "corrections": [
++      "Ligne 22 : « La RFC exige des nœuds synchronisés, par NTP ou par PTP (Precision Time Protocol, la norme IEEE 1588). » → « La RFC exige des nœuds synchronisés et cite NTP et PTP (Precision Time Protocol, la norme IEEE 1588) comme exemples. »",
++      "Ligne 136 : « Elle avertit elle-même d'un risque de double marquage si on la combine avec la 9343. » → « Elle indique elle-même que la duplication de l'information est à éviter si on la combine avec la 9343. »",
++      "Ligne 30 : « au statut visé Informational et non Standards Track. » → « dont l'en-tête vise le statut Informational et non Standards Track. »",
++      "Ligne 34 : « Rien ne permet donc d'annoncer une RFC imminente, ni d'affirmer que la section 7 a été clarifiée. » → « Rien ne permet donc d'annoncer une RFC imminente. Le -00 définit le numéro de période par une division arrondie à l'entier inférieur, ce qui va dans le sens de la remarque du responsable de suivi, mais sans diff je ne peux pas dire si le -10 ippm l'avait déjà corrigé. »"
++    ],
+     "residualHallucinations": [],
+     "validatedClaims": [
+-      "Cisco IT : 90 000 employés et des centaines de sites dans le monde (Cisco Blogs, 14/09/2026)",
+-      "Débits observés : 1,4 Gbit/s contre 600 Mbit/s en Wi-Fi 6E sur leurs réseaux, soit 100 % ou plus",
+-      "Cisco ISE / authentification par certificat posée comme prérequis garantissant le support WPA3 des terminaux",
+-      "Meraki Dashboard + AP en production depuis plus d'un an avant la sortie du Wi-Fi 7",
+-      "Baisse de 40 % des incidents remontés — sur UN SEUL site, attribuée à Meraki et non au Wi-Fi 7",
+-      "Catalyst Center AI RRM : 39 des 44 sites ont sauté l'étude de couverture prédictive sur un trimestre",
+-      "Splunk : vue historique de la performance sans fil sur chaque site avant bascule",
+-      "Onboarding réseau par site ramené de 2 jours à 1-2 heures via le Plug-and-Play Meraki",
+-      "Déploiement du CW9178I, démarrage au nouveau bureau d'Austin, TX ; Campus Gateway pour l'itinérance et la sécurité sur les grands campus",
+-      "Dell'Oro 2T 2026 : plus de 10 millions d'AP expédiés, record sectoriel ; Wi-Fi 7 au-delà de la moitié du marché WLAN entreprise",
+-      "Siân Morgan (Senior Director, Dell'Oro) : ASP en hausse modérée, volumes en envolée, commandes anticipées, hausse des prix attendue sur l'année du fait du coût des composants mémoire tiré par l'IA",
+-      "Dell'Oro : plus grand nombre d'AP multi-gig et 10 Gbps jamais expédié sur un trimestre",
+-      "Light Reading (04/06/2026) : croissance à deux chiffres du marché WLAN au 1T 2026 malgré la pénurie mémoire — série distincte du 2T",
+-      "IEEE 802.11be : premier draft mars 2021, approuvé sous la désignation 802.11be-2024, document final publié le 22 juillet 2025",
+-      "Wi-Fi Alliance : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, avant la publication finale du document IEEE",
+-      "Capture de trames mrn-cciew (14/01/2026) : Windows 11 25H2 / Intel BE200 en MLO 5+6 GHz sur SSID Meraki WPA3-Enterprise négocie CCMP-128-AES alors que le Wi-Fi Alliance met en avant GCMP-256 — test individuel, pas statistique de parc",
+-      "Support WPA3-Enterprise pour Wi-Fi 7 absent des postes Windows jusqu'à la version 25H2",
+-      "Lecture CCMP-128/GCMP-256 et coût de mise à niveau des switchs balisés comme analyse de l'auteur, non traités par le billet Cisco"
++      "bpm-00 : 30/10/2026, expire 3/05/2027, Informational dans l'en-tête, remplace ippm, seule version, pas d'état IESG/AD/shepherd (https://datatracker.ietf.org/doc/draft-ietf-bpm-alt-mark-deployment/, 2026-10-30)",
++      "Auteurs : Fioccola, Zhu, Zhou (Huawei), Graf (Swisscom), Zhang (China Mobile) (texte -00 et datatracker, 2026-10-30)",
++      "Historique ippm : individuel 2023-07-07, WG -00 2024-01-03, -10 2026-10-22, WGLC 2026-05-07, write-up Ihlar 2026-10-21 avec nit sur le PN en section 7 et trois coquilles (https://datatracker.ietf.org/doc/draft-ietf-ippm-alt-mark-deployment/history/, 2026-11-02)",
++      "bpm : chairs Fioccola, Ihlar, Graf ; successeur de BMWG et IPPM (https://datatracker.ietf.org/wg/bpm/about/, 2026-11-02)",
++      "Citations MUST be deployed in a controlled domain, in practice this is not common, could overwhelm a router processor, work in progress, simply not considered in the measurement (texte -00, 2026-10-30)",
++      "Aucune mention IOAM, STAMP, Wi-Fi, SLA, SD-WAN ni valeur par défaut dans le -00 (texte -00, 2026-10-30)",
++      "RFC 9341 : décembre 2022, Standards Track, d = A + D_avg + 3*D_stddev, d < L/2 (https://www.rfc-editor.org/rfc/rfc9341.html, 2022-12)",
++      "RFC 9343 : 20 bits, 48 bits au total, 50 % pour 1206 flux, 1 % pour 145 flux par couple d'hôtes, 1 048 576 avec contrôleur (https://www.rfc-editor.org/rfc/rfc9343.html, 2022-12)",
++      "RFC 7872 : HBH8 39,03 à 54,12 %, DO8 10,91 à 21,33 %, mesures août 2014 et juin 2015, publiée juin 2016 (https://www.rfc-editor.org/rfc/rfc7872.html, 2016-06)",
++      "RFC 9947 : mars 2026, Experimental, Independent Submission, sans consensus IETF (https://www.rfc-editor.org/rfc/rfc9947.html, 2026-03)",
++      "RFC 9951 : avril 2026, Standards Track, IE IPFIX de délai 530-533 (https://www.rfc-editor.org/rfc/rfc9951.html, 2026-04)",
++      "draft-zhou : 4/03/2024, Huawei (Zhou, Li), expiré, non endossé, déploiements listés sans chiffre d'échelle (https://datatracker.ietf.org/doc/html/draft-zhou-srv6ops-am-deployment-status-00, 2024-03-04)"
+     ]
+   }
+ };

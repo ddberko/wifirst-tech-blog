@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-02",
+  "verdict": "PASS avec corrections",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique de l'Alternate Marking et des RFC citées (9341, 9342, 9343, 7799) est d'une grande rigueur et parfaitement conforme aux standards. La contextualisation opérationnelle et la distinction entre mesure en domaine contrôlé et bout en bout sont particulièrement pertinentes.",
+  "hallucinations": [],
+  "warnings": [
+    {"severity": "minor", "line": 22, "finding": "RFC 9341 exige la synchronisation des horloges (MUST be in sync) mais cite NTP et PTP comme exemples, sans en imposer un."},
+    {"severity": "minor", "line": 136, "finding": "RFC 9947 dit que la duplication de l'information (SRH TLV + Destination Option) est à éviter, et précise qu'elle ne nuit ni aux équipements ni aux services. 'Risque de double marquage' est un peu fort."},
+    {"severity": "minor", "line": 30, "finding": "L'en-tête du -00 indique Informational, mais le champ 'Intended RFC status' du datatracker affiche '(None)' pour le -00 bpm. Préciser la source du statut."},
+    {"severity": "minor-optional", "line": 34, "finding": "Le texte -00 définit le PN par une division arrondie à l'inférieur, ce qui correspond au correctif suggéré par le shepherd. Le write-up (21/10, version du 9/10) précède le -10 (22/10), donc on ne peut pas dire que la section 7 n'a pas été corrigée. La phrase actuelle reste prudente, donc non fausse."}
+  ],
+  "corrections": [
+    {"line": 22, "old": "La RFC exige des nœuds synchronisés, par NTP ou par PTP (Precision Time Protocol, la norme IEEE 1588).", "new": "La RFC exige des nœuds synchronisés et cite NTP et PTP (Precision Time Protocol, la norme IEEE 1588) comme exemples."},
+    {"line": 136, "old": "Elle avertit elle-même d'un risque de double marquage si on la combine avec la 9343.", "new": "Elle indique elle-même que la duplication de l'information est à éviter si on la combine avec la 9343."},
+    {"line": 30, "old": "au statut visé Informational et non Standards Track.", "new": "dont l'en-tête vise le statut Informational et non Standards Track."},
+    {"line": 34, "optional": true, "old": "Rien ne permet donc d'annoncer une RFC imminente, ni d'affirmer que la section 7 a été clarifiée.", "new": "Rien ne permet donc d'annoncer une RFC imminente. Le -00 définit le numéro de période par une division arrondie à l'entier inférieur, ce qui va dans le sens de la remarque du responsable de suivi, mais sans diff je ne peux pas dire si le -10 ippm l'avait déjà corrigé."}
+  ],
+  "validatedClaims": [
+    {"claim": "bpm-00 : 30/10/2026, expire 3/05/2027, Informational dans l'en-tête, remplace ippm, seule version, pas d'état IESG/AD/shepherd", "source": "https://datatracker.ietf.org/doc/draft-ietf-bpm-alt-mark-deployment/", "date": "2026-10-30"},
+    {"claim": "Auteurs : Fioccola, Zhu, Zhou (Huawei), Graf (Swisscom), Zhang (China Mobile)", "source": "texte -00 et datatracker", "date": "2026-10-30"},
+    {"claim": "Historique ippm : individuel 2023-07-07, WG -00 2024-01-03, -10 2026-10-22, WGLC 2026-05-07, write-up Ihlar 2026-10-21 avec nit sur le PN en section 7 et trois coquilles", "source": "https://datatracker.ietf.org/doc/draft-ietf-ippm-alt-mark-deployment/history/", "date": "2026-11-02"},
+    {"claim": "bpm : chairs Fioccola, Ihlar, Graf ; successeur de BMWG et IPPM", "source": "https://datatracker.ietf.org/wg/bpm/about/", "date": "2026-11-02"},
+    {"claim": "Citations MUST be deployed in a controlled domain, in practice this is not common, could overwhelm a router processor, work in progress, simply not considered in the measurement", "source": "texte -00", "date": "2026-10-30"},
+    {"claim": "Aucune mention IOAM, STAMP, Wi-Fi, SLA, SD-WAN ni valeur par défaut dans le -00", "source": "texte -00", "date": "2026-10-30"},
+    {"claim": "RFC 9341 : décembre 2022, Standards Track, d = A + D_avg + 3*D_stddev, d < L/2", "source": "https://www.rfc-editor.org/rfc/rfc9341.html", "date": "2022-12"},
+    {"claim": "RFC 9343 : 20 bits, 48 bits au total, 50 % pour 1206 flux, 1 % pour 145 flux par couple d'hôtes, 1 048 576 avec contrôleur", "source": "https://www.rfc-editor.org/rfc/rfc9343.html", "date": "2022-12"},
+    {"claim": "RFC 7872 : HBH8 39,03 à 54,12 %, DO8 10,91 à 21,33 %, mesures août 2014 et juin 2015, publiée juin 2016", "source": "https://www.rfc-editor.org/rfc/rfc7872.html", "date": "2016-06"},
+    {"claim": "RFC 9947 : mars 2026, Experimental, Independent Submission, sans consensus IETF", "source": "https://www.rfc-editor.org/rfc/rfc9947.html", "date": "2026-03"},
+    {"claim": "RFC 9951 : avril 2026, Standards Track, IE IPFIX de délai 530-533", "source": "https://www.rfc-editor.org/rfc/rfc9951.html", "date": "2026-04"},
+    {"claim": "draft-zhou : 4/03/2024, Huawei (Zhou, Li), expiré, non endossé, déploiements listés sans chiffre d'échelle", "source": "https://datatracker.ietf.org/doc/html/draft-zhou-srv6ops-am-deployment-status-00", "date": "2024-03-04"}
+  ],
+  "notVerifiedThisRun": "RFC 9197, 8762, 5357, 7799, 9342 (dates et chiffres repris du brief, cohérents avec mes connaissances) ; statut de l'article du 24/10 sur la télémétrie ; support matériel Wi-Fi/CPE (formulé comme non trouvé)."
+}
