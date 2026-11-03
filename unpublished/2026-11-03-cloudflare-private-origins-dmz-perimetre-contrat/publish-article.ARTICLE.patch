@@ -1,0 +1,145 @@
+diff --git a/scripts/publish-article.ts b/scripts/publish-article.ts
+index 939dc60..4b45c05 100644
+--- a/scripts/publish-article.ts
++++ b/scripts/publish-article.ts
+@@ -27,21 +27,70 @@ const LOCALES = ['en', 'es', 'de'] as const;
+ type Locale = (typeof LOCALES)[number];
+ 
+ const ARTICLE = {
+-  "slug": "wifi-7-cisco-it-migration-commencee-un-an-avant",
+-  "title": "90 000 employés en Wi-Fi 7, et la vraie migration avait eu lieu un an plus tôt",
+-  "excerpt": "Cisco IT a basculé 90 000 employés en Wi-Fi 7 sans configuration sur site. Le facteur déterminant n'était pas la borne : certificats, télémétrie et automatisation RF étaient posés douze mois plus tôt.",
++  "slug": "cloudflare-private-origins-dmz-perimetre-contrat",
++  "title": "Cloudflare Private Origins : la DMZ disparaît, le périmètre devient un contrat",
++  "excerpt": "Depuis le 30 octobre, Cloudflare peut protéger un serveur qui n'a plus aucune adresse publique. Le serveur n'est plus exposé sur Internet, mais sa sécurité repose désormais sur une option commerciale, une route de retour et un plan de contrôle que l'on ne maîtrise pas.",
+   "category": "Réseaux",
+   "tags": [
+-    "Wi-Fi 7",
+-    "WPA3",
+-    "802.11be",
+-    "Cisco",
+-    "Dell'Oro",
+-    "MLO"
++    "Cloudflare",
++    "Private Origins",
++    "DMZ",
++    "Zero Trust",
++    "IPsec",
++    "Portail captif",
++    "NIS2",
++    "Multi-sites"
+   ],
+-  "readTime": 16,
+-  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/wifi-7-cisco-it-migration-commencee-un-an-avant-cover.jpg",
++  "readTime": 17,
++  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/cloudflare-private-origins-dmz-perimetre-contrat-cover.png",
+   "contentFile": "/tmp/article-draft.md",
++  "translations": {
++    "en": {
++      "title": "Cloudflare Private Origins: The DMZ Disappears, the Perimeter Becomes a Contract",
++      "excerpt": "Since October 30, Cloudflare can protect a server that no longer has any public address. The server is no longer exposed on the Internet, but its security now rests on a commercial option, a return route and a control plane you don't control.",
++      "tags": [
++        "Cloudflare",
++        "Private Origins",
++        "DMZ",
++        "Zero Trust",
++        "IPsec",
++        "Captive portal",
++        "NIS2",
++        "Multi-site"
++      ],
++      "contentFile": "/tmp/article-en.md"
++    },
++    "es": {
++      "title": "Cloudflare Private Origins: la DMZ desaparece, el perímetro se convierte en un contrato",
++      "excerpt": "Desde el 30 de octubre, Cloudflare puede proteger un servidor que ya no tiene ninguna dirección pública. El servidor deja de estar expuesto en Internet, pero su seguridad pasa a depender de una opción comercial, una ruta de retorno y un plano de control que usted no gobierna.",
++      "tags": [
++        "Cloudflare",
++        "Private Origins",
++        "DMZ",
++        "Zero Trust",
++        "IPsec",
++        "Portal cautivo",
++        "NIS2",
++        "Multisitio"
++      ],
++      "contentFile": "/tmp/article-es.md"
++    },
++    "de": {
++      "title": "Cloudflare Private Origins: Die DMZ verschwindet, der Perimeter wird zum Vertrag",
++      "excerpt": "Seit dem 30. Oktober kann Cloudflare einen Server schützen, der keine öffentliche Adresse mehr hat. Der Server ist nicht mehr im Internet exponiert, doch seine Sicherheit hängt nun von einer kommerziellen Option, einer Rückroute und einer Control Plane ab, die Sie nicht kontrollieren.",
++      "tags": [
++        "Cloudflare",
++        "Private Origins",
++        "DMZ",
++        "Zero Trust",
++        "IPsec",
++        "Captive Portal",
++        "NIS2",
++        "Multi-Site"
++      ],
++      "contentFile": "/tmp/article-de.md"
++    }
++  },
+   "featured": true,
+   "skipNewsletter": false,
+   "analysis": {
+@@ -49,31 +98,36 @@ const ARTICLE = {
+     "editorialScore": 10,
+     "geminiFactCheckPassed": true,
+     "geminiModelVersion": "gemini-3.8-flash",
+-    "geminiComment": "L'analyse technique et contextuelle est rigoureuse, offrant une excellente distinction entre les prérequis d'infrastructure, les contraintes cryptographiques et les réalités du marché. La chronologie et les ordres de grandeur sont parfaitement cohérents avec le cadre temporel fixé.",
+-    "finalVerdict": "PASS",
+-    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Chaque chiffre est rattaché à son périmètre exact : la baisse de 40 % des incidents concerne un seul site de Cisco IT et est attribuée par Cisco à l'adoption de Meraki, pas au Wi-Fi 7 ; les 39 sites sur 44 sans étude prédictive sont une mesure d'un trimestre sur un parc corporate homogène. Ordre de grandeur Dell'Oro re-vérifié par curl direct : plus de 10 MILLIONS de points d'accès expédiés au 2T 2026 (record sectoriel), jamais milliards. Les séries 1T 2026 (Light Reading) et 2T 2026 (Dell'Oro) sont traitées comme deux trimestres distincts et l'article le dit explicitement. Dates du standard conformes : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, amendement approuvé sous la désignation 802.11be-2024 avec document final publié le 22 juillet 2025 ; aucune mention d'une Release 2 non vérifiée. Aucune citation guillemetée : les propos de Cisco et de Siân Morgan (Senior Director at Dell'Oro Group, titre confirmé par curl du communiqué) sont paraphrasés. Le rapprochement CCMP-128 / GCMP-256 et le coût caché de mise à niveau des switchs sont explicitement balisés comme lecture d'architecte de l'auteur, le billet Cisco ne traitant aucun des deux. La capture de trames Windows 11 25H2 / Intel BE200 est présentée comme un test individuel de blogueur, sans en tirer de statistique de parc. Le contexte opérateur Wi-Fi managé (hôtellerie, résidences étudiantes) est assumé comme analyse, aucune source publique ne le chiffrant. Vérifications additionnelles hors brief : CW9178I confirmé comme produit réel (Cisco Wireless 9178I), obligation WPA3 sur les liens MLO confirmée multi-sources.",
++    "geminiComment": "L'analyse technique est remarquablement rigoureuse et cohérente, respectant parfaitement l'état de l'art réseau ainsi que les spécifications des RFC et des offres concurrentes. La distinction entre faits documentés et déductions d'architecture apporte une grande valeur éditoriale sans faille factuelle.",
++    "finalVerdict": "PASS avec corrections",
++    "verdictNote": "PASS avec corrections au premier passage, zéro hallucination, zéro retry. Gemini a validé 10/10 mais n'a pas relevé un problème de périmètre NIS2 détecté en relecture : le règlement d'exécution C(2024)7151, c'est-à-dire le Règlement d'exécution (UE) 2024/2690, était présenté comme s'appliquant à toutes les entités de l'article 21, alors qu'il ne vise que certaines catégories de fournisseurs numériques (DNS, TLD, cloud, centres de données, CDN, services gérés…). La phrase a été corrigée et la source [21] ajoutée ; le périmètre a été vérifié sur sources secondaires concordantes (Advisera, Hunton, nisd2.eu), le texte EUR-Lex n'ayant pas pu être relu directement. L'affirmation de priorité « AWS a ouvert le bal » a été neutralisée (Azure Front Door Private Link est antérieur). Les chiffres sont rattachés à leur périmètre : GA Private Origins le 30/10/2026 après une beta annoncée le 10/06/2026 ; pool source 100.64.0.0/12 inclus dans la plage de destination 100.64.0.0/10 ; post-mortem du 20/02/2026 qui annonce 6 h 07 alors que ses horodatages donnent 5 h 07 (écart signalé), incident qui ne touche pas Private Origins et sert uniquement d'illustration de dépendance. Sont balisés comme analyse d'auteur : la cohabitation /10 et /12, la collision d'adressage multi-sites, le comportement à l'expiration de l'entitlement et la perte du repli DNS vers une IP publique. L'affirmation non vérifiée de Groundy sur le contournement de l'edge a été écartée.",
+     "hallucinations": [],
+-    "corrections": [],
++    "corrections": [
++      "NIS2 (l.164) : périmètre du Règlement d'exécution (UE) 2024/2690 (doc. C(2024)7151) restreint aux fournisseurs numériques listés, au lieu de toutes les entités de l'article 21",
++      "AWS (l.133) : « AWS a ouvert le bal le 20 novembre 2024 » → « AWS a lancé CloudFront VPC origins le 20 novembre 2024 » (priorité non sourcée, Azure Front Door Private Link antérieur)",
++      "Sources : ajout de [21] EUR-Lex, Règlement d'exécution (UE) 2024/2690"
++    ],
+     "residualHallucinations": [],
+     "validatedClaims": [
+-      "Cisco IT : 90 000 employés et des centaines de sites dans le monde (Cisco Blogs, 14/09/2026)",
+-      "Débits observés : 1,4 Gbit/s contre 600 Mbit/s en Wi-Fi 6E sur leurs réseaux, soit 100 % ou plus",
+-      "Cisco ISE / authentification par certificat posée comme prérequis garantissant le support WPA3 des terminaux",
+-      "Meraki Dashboard + AP en production depuis plus d'un an avant la sortie du Wi-Fi 7",
+-      "Baisse de 40 % des incidents remontés — sur UN SEUL site, attribuée à Meraki et non au Wi-Fi 7",
+-      "Catalyst Center AI RRM : 39 des 44 sites ont sauté l'étude de couverture prédictive sur un trimestre",
+-      "Splunk : vue historique de la performance sans fil sur chaque site avant bascule",
+-      "Onboarding réseau par site ramené de 2 jours à 1-2 heures via le Plug-and-Play Meraki",
+-      "Déploiement du CW9178I, démarrage au nouveau bureau d'Austin, TX ; Campus Gateway pour l'itinérance et la sécurité sur les grands campus",
+-      "Dell'Oro 2T 2026 : plus de 10 millions d'AP expédiés, record sectoriel ; Wi-Fi 7 au-delà de la moitié du marché WLAN entreprise",
+-      "Siân Morgan (Senior Director, Dell'Oro) : ASP en hausse modérée, volumes en envolée, commandes anticipées, hausse des prix attendue sur l'année du fait du coût des composants mémoire tiré par l'IA",
+-      "Dell'Oro : plus grand nombre d'AP multi-gig et 10 Gbps jamais expédié sur un trimestre",
+-      "Light Reading (04/06/2026) : croissance à deux chiffres du marché WLAN au 1T 2026 malgré la pénurie mémoire — série distincte du 2T",
+-      "IEEE 802.11be : premier draft mars 2021, approuvé sous la désignation 802.11be-2024, document final publié le 22 juillet 2025",
+-      "Wi-Fi Alliance : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, avant la publication finale du document IEEE",
+-      "Capture de trames mrn-cciew (14/01/2026) : Windows 11 25H2 / Intel BE200 en MLO 5+6 GHz sur SSID Meraki WPA3-Enterprise négocie CCMP-128-AES alors que le Wi-Fi Alliance met en avant GCMP-256 — test individuel, pas statistique de parc",
+-      "Support WPA3-Enterprise pour Wi-Fi 7 absent des postes Windows jusqu'à la version 25H2",
+-      "Lecture CCMP-128/GCMP-256 et coût de mise à niveau des switchs balisés comme analyse de l'auteur, non traités par le billet Cisco"
++      "Cloudflare Services for Private Origins en GA (blog Cloudflare, 30/10/2026, mis à jour 02/11/2026)",
++      "Closed beta annoncée le 10/06/2026 (blog Cloudflare)",
++      "Enregistrements A/AAAA proxifiés vers IP privée : WAF, bot management, rate limiting, cache, transform rules, Workers (blog GA, 30/10/2026)",
++      "Connectivité via IPsec, GRE, CNI, Cloudflare Tunnel, Mesh ou Cloudflare WAN (blog GA, 30/10/2026)",
++      "Routage privé automatique pour RFC 1918, 100.64.0.0/10 (RFC 6598) et fc00::/7 (docs Cloudflare, consultées 03/11/2026)",
++      "Route retour requise vers 100.64.0.0/12 et 2606:4700:cf1:5000::/64 ; /12 inclus dans le /10 (docs Cloudflare Private network routing, 03/11/2026)",
++      "Entitlement Private Origins via l'account team ; erreur 1002 sans entitlement ; Cloudflare One + Unified Routing requis sauf Tunnel (blog GA + docs troubleshooting)",
++      "Argo Smart Routing et Dedicated CDN Egress IPs non supportés ; health checks soumis à Load Balancing ; prix non publié (blog GA, 30/10/2026)",
++      "Privé vers privé annoncé en closed beta début 2027 (blog GA, 30/10/2026)",
++      "Docs dns/private-origins encore marquées beta au 03/11/2026",
++      "Argo Tunnel lancé le 05/04/2018 (blog Cloudflare)",
++      "Pannes Cloudflare du 18/11/2025 (11h20-17h06 UTC) et du 05/12/2025 (post-mortems Cloudflare)",
++      "Incident BYOIP du 20/02/2026 : horodatages 17:56-23:03 UTC, durée annoncée 6 h 07 (post-mortem Cloudflare)",
++      "Amazon CloudFront VPC origins lancé le 20/11/2024, sans surcoût (AWS What's New)",
++      "Azure Front Door Private Link : tier Premium, approbation manuelle, 7 200 RPS par cluster régional et par profil (Microsoft Learn)",
++      "Akamai : plages privées refusées comme origine, Site Shield en allowlist d'IP (Akamai TechDocs, MAJ 01/03/2026)",
++      "RFC 8908 Captive Portal API, septembre 2020 (IETF)",
++      "NIS2 : Directive (UE) 2022/2555, JO du 27/12/2022, article 21(2)(d) sécurité de la chaîne d'approvisionnement (EUR-Lex)",
++      "Règlement d'exécution (UE) 2024/2690 : périmètre limité à certains fournisseurs numériques (Advisera, Hunton, nisd2.eu)"
+     ]
+   }
+ };

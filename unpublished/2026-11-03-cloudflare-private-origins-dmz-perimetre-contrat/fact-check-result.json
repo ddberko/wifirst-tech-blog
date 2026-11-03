@@ -1,0 +1,28 @@
+{
+  "verdict": "PASS avec corrections",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "factCheckPassed": true,
+  "geminiModel": "gemini-3.8-flash (alias gemini-flash-latest)",
+  "geminiComment": "L'analyse technique est remarquablement rigoureuse et cohérente, respectant parfaitement l'état de l'art réseau ainsi que les spécifications des RFC et des offres concurrentes. La distinction entre faits documentés et déductions d'architecture apporte une grande valeur éditoriale sans faille factuelle.",
+  "hallucinations": [],
+  "corrections": [
+    {
+      "severity": "high (NIS2, a appliquer avant publication)",
+      "line": 164,
+      "find": "Le règlement d'exécution C(2024)7151 détaille des critères de sélection des fournisseurs et des clauses contractuelles : notification d'incident, droits d'audit, sous-traitance. L'article 21 vise les entités essentielles et importantes au sens de la directive.",
+      "replace": "L'article 21 vise les entités essentielles et importantes au sens de la directive. Le règlement d'exécution (UE) 2024/2690 (document C(2024)7151) en précise les mesures, dont des critères de sélection des fournisseurs et des clauses contractuelles, mais il ne s'applique qu'à certaines catégories de fournisseurs numériques (DNS, registres TLD, cloud, centres de données, CDN, services gérés, etc.), pas à toutes les entités NIS2."
+    },
+    {
+      "severity": "medium",
+      "line": 133,
+      "find": "AWS a ouvert le bal le 20 novembre 2024 avec CloudFront VPC origins",
+      "replace": "AWS a lancé CloudFront VPC origins le 20 novembre 2024"
+    },
+    {
+      "severity": "low (source)",
+      "line": 191,
+      "note": "Source 20 = directive seule. Ajouter le reglement d'execution (ELI data.europa.eu/eli/reg_impl/2024/2690/oj) comme source 21 et la citer dans la phrase NIS2."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+[2026-11-03 07:10:12] [STEP 0/9] STARTED — amorçage cloud (type=tech)
+  - service-account.json écrit et valide
+  - ASSISTANT vide : repo Claude-assistant absent (7b sera sautée)
+[2026-11-03 07:10:16] [STEP 0/9] DONE — SA valide, deps OK, GEMINI_API_KEY présente
+[2026-11-03 07:10:16] [STEP 1/9] STARTED — idéation sourcing type=tech
+  - Sujet retenu : Cloudflare Services for Private Origins (GA) — pattern « plus de DMZ » et dépendance fournisseur
+  - Score : 24/32 (barème researcher /32 ≈ 22/30), genre architecture-pattern
+  - Source primaire : https://blog.cloudflare.com/private-origins-public-to-private/ (2026-10-30, maj 2026-11-02)
+  - Raison : candidat recommandé, pertinence B2B opérateur max, absent de l'historique ; fraîcheur 4 j (> 48 h, aucun candidat plus frais et pertinent)
+  - Alternatives : IETF draft-xkk-rtgwg-hpc-service-intent 24/32, HPE EdgeConnect 23/32 (redondant), FCC cuivre 21/32
+[2026-11-03 07:15:00] [STEP 1/9] DONE — sujet Cloudflare Private Origins GA, 24/32, 4 candidats évalués
+[2026-11-03 07:15:00] [STEP 2/9] STARTED — brief approfondi
+  - Brief : /tmp/article-brief.md, 20 sources (17 fetchées, 3 par extrait [S])
+  - Thèse : un backend sans IP publique derrière un edge programmable supprime la DMZ mais déplace le périmètre de sécurité dans le contrat du fournisseur (entitlement, route retour, disponibilité)
+[2026-11-03 07:19:34] [STEP 2/9] DONE — brief 20 sources, 19 faits datés, 2 Mermaid, 4 prompts image
+[2026-11-03 07:19:34] [STEP 3/9] STARTED — rédaction
+  - Titre : Cloudflare Private Origins : la DMZ disparaît, le périmètre devient un contrat
+  - Slug : cloudflare-private-origins-dmz-perimetre-contrat
+  - Word count : 3360 (wc -w, ≥ 1800 OK), 2 Mermaid, 3 placeholders inline
+  - Gardes : pas de H1, 0 $ restant
+[2026-11-03 07:26:47] [STEP 3/9] DONE — draft 3360 mots, 2 Mermaid, gardes OK
+[2026-11-03 07:26:47] [STEP 4/9] STARTED — génération images 1 cover + 3 inline
+  - Cover : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/cloudflare-private-origins-dmz-perimetre-contrat-cover.png (HTTP 200)
+  - Inline 1 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/cloudflare-private-origins-dmz-perimetre-contrat-inline-1.png
+  - Inline 2 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/cloudflare-private-origins-dmz-perimetre-contrat-inline-2.png
+  - Inline 3 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/cloudflare-private-origins-dmz-perimetre-contrat-inline-3.png
+[2026-11-03 07:27:51] [STEP 4/9] DONE — 4/4 images générées (2K) et uploadées publiques, 0 retry
+[2026-11-03 07:27:51] [STEP 5/9] STARTED — fact-check (RETRY_COUNT=0, MAX_RETRIES=2)
+  - Verdict initial : PASS avec corrections (gemini-3.8-flash, tech 10/10, edito 10/10, factCheckPassed=true), 0 hallucination
+  - corrections PASS appliquées (3 items) : périmètre règlement d'exécution (UE) 2024/2690 NIS2 (l.164), « AWS a ouvert le bal » → « AWS a lancé » (l.133), source [21] ajoutée
+  - Récap : PASS avec corrections → PASS avec corrections, 0 retry, hallucinations corrigées 0 / résiduelles 0
+[2026-11-03 07:29:08] [STEP 5/9] DONE — PASS avec corrections, 3 corrections, draft final 3394 mots
+[2026-11-03 07:29:08] [STEP 6/9] STARTED — traductions en/es/de
+  - en : « Cloudflare Private Origins: The DMZ Disappears, the Perimeter Becomes a Contract », 3255 mots (96 %), contrôles OK (0 $, 0 H1, 3 images, 2 mermaid)
+  - es : « Cloudflare Private Origins: la DMZ desaparece, el perímetro se convierte en un contrato », 3567 mots (105 %), contrôles OK
+  - de : « Cloudflare Private Origins: Die DMZ verschwindet, der Perimeter wird zum Vertrag », 3203 mots (94 %), contrôles OK
+[2026-11-03 07:33:13] [STEP 6/9] DONE — 3/3 traductions OK (en/es/de), 0 relance
+[2026-11-03 07:33:13] [STEP 7/9] STARTED — publication Firestore (skipNewsletter=false, type=tech)
+  - Constante ARTICLE renseignée (slug cloudflare-private-origins-dmz-perimetre-contrat, readTime 17, skipNewsletter=false, translations en/es/de, analysis enrichie)
+  - Slug absent de Firestore avant publication (vérifié)
+[2026-11-03 07:34:06] [STEP 7/9] FAILED — exécution de publish-article.ts refusée par le classifieur de permissions du mode auto (« Real-World Transactions »). Article NON publié, aucune newsletter envoyée.
