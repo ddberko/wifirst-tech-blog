@@ -1,0 +1,40 @@
+{
+  "verdict": "PASS",
+  "date": "2026-11-04",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique et contractuelle est d'une grande rigueur, avec une excellente distinction entre faits annoncés, estimations d'analystes et avis éditoriaux. La cohérence temporelle, les ordres de grandeur du cycle Kubernetes et l'historique des litiges Broadcom/VMware sont parfaitement respectés.",
+  "hallucinations": [],
+  "suggestedCorrections": [
+    {
+      "severity": "optionnelle, non bloquante",
+      "line": 123,
+      "current": "cœur 5G dual-mode d'Ericsson (qui sert à la fois la 4G et la 5G)",
+      "corrected": "cœur 5G dual-mode d'Ericsson (qui combine un cœur 4G EPC et un cœur 5G, et sert la 4G comme la 5G, en NSA et en SA)",
+      "reason": "Le gloss actuel est exact mais simplifié. Ericsson décrit le dual-mode comme EPC + 5GC, servant aussi les accès 3G/2G."
+    }
+  ],
+  "validatedClaims": [
+    {"claim": "Telco Cloud Automation = outil d'orchestration des fonctions réseau (ligne 33)", "status": "validated", "source": "Documentation VMware TCA (NFVO + G-VNFM, cycle de vie VNF/CNF, jour 0 à jour 2), via WebSearch", "date": "2026-11-04"},
+    {"claim": "Cœur 5G dual-mode = sert 4G et 5G (ligne 123)", "status": "validated", "source": "Ericsson, dual-mode 5G Core (EPC + 5GC, NSA/SA)", "date": "2026-11-04"},
+    {"claim": "EOA du seul SKU autonome TCP le 2026-11-02 ; abonnements existants supportés ; aucune action immédiate ; route VCF au renouvellement", "status": "validated", "source": "Brief fait 1 [V] (blog Broadcom) et fait 5 (SDxCentral)", "date": "2026-11-02"},
+    {"claim": "LTS 2 ans vs ~14 mois amont (12+2), 1.37 maintenance 2027-08-28, EOL 2027-10-28 ; ~10 mois d'écart ; engagement vendor", "status": "validated", "source": "kubernetes.io/releases/patch-releases, refetché lors de ce run ; calcul 24-14=10", "date": "2026-11-04"},
+    {"claim": "ABI 10x-100x : CaaS seul, décembre 2024, jamais mesuré sur VCF Telco", "status": "validated", "source": "Brief fait 7 (ABI Research)", "date": "2024-12-23"},
+    {"claim": "TCO -40 % sur 5 ans et -38 % coûts mémoire/serveur/stockage : revendications vendor, MWC 2026", "status": "validated", "source": "Brief fait 12 (SDxCentral/Wodecki)", "date": "2026-03-02"},
+    {"claim": "AT&T : 8 600 serveurs, 75 000 VM, +1 050 % ; allégations AT&T ; licences perpétuelles ; règlement confidentiel", "status": "validated", "source": "Brief fait 8 (CIO Dive, TechTarget, The Register)", "date": "2024-10-01"},
+    {"claim": "T-Mobile : 5,28 M USD, 500 000 USD de garantie, 303 000 cœurs, 20 M USD vs 24 M USD pour six produits ; injonction jusqu'au 2026-08-03 ; licences perpétuelles", "status": "validated", "source": "Brief fait 9 (SDxCentral, The Register)", "date": "2026-07-01"},
+    {"claim": "Boost : couche CaaS remplacée par Wind River Studio Operator, annoncé en décembre 2024, motifs contestés, CTO non nommé", "status": "validated", "source": "Brief fait 6 (SDxCentral 2026-11-03 et 2026-03-02, ABI)", "date": "2026-11-03"},
+    {"claim": "DoCoMo : 10 ans, VCF et produits VMware en général, pas TCP", "status": "validated", "source": "Brief fait 10 (SDxCentral)", "date": "2026-10-20"},
+    {"claim": "Telia : élargissement nov. 2024, TCP et VCF, pluriannuel sans durée", "status": "validated", "source": "Brief fait 11 (Capacity)", "date": "2024-11-06"},
+    {"claim": "HPE/Ericsson/OpenShift : modèle validé, ProLiant Gen12, Juniper Apstra, aucun opérateur ni production, pas de lien Broadcom", "status": "validated", "source": "Brief section contre-exemple (SDxCentral/Lee)", "date": "2026-11-02"},
+    {"claim": "Ericsson validé sur VMware (avril 2022) puis OpenShift (juin 2022) ; Nokia citation de soutien TCP 9", "status": "validated", "source": "Brief faits 12 et contre-exemple (SDxCentral)", "date": "2022-06-23"},
+    {"claim": "Omdia mars 2025 : bundle VCF + Telco Cloud Automation sous marque TCP", "status": "validated", "source": "Brief fait 13 (Omdia)", "date": "2025-03"}
+  ],
+  "notes": [
+    "Les faits du brief marqués [V] n'ont pas été re-fetchés (hors Kubernetes) : validation par concordance avec le brief.",
+    "Éléments [S] du brief (nom du CTO Boost, citation 'price gouged', 150 déploiements Analysys Mason, labo HPE-Ericsson) : absents de l'article, correct.",
+    "Aucun nom de standard, RFC ou produit inventé détecté."
+  ]
+}

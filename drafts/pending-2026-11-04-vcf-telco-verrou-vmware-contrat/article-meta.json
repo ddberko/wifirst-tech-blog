@@ -1,0 +1,94 @@
+{
+  "slug": "vcf-telco-verrou-vmware-contrat",
+  "title": "VCF Telco : le verrou VMware quitte l'hyperviseur pour le contrat",
+  "excerpt": "Depuis le 2 novembre, Broadcom ne vend plus Telco Cloud Platform en licence autonome : au renouvellement, la route passe par VCF Telco. Pour un CTO, le vrai sujet n'est plus l'hyperviseur, mais les clauses qu'il signera.",
+  "category": "Infrastructure",
+  "tags": [
+    "VMware",
+    "Broadcom",
+    "VCF Telco",
+    "Kubernetes",
+    "Cloud télécom",
+    "Lock-in",
+    "Contrats IT"
+  ],
+  "readTime": 17,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/vcf-telco-verrou-vmware-contrat-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "VCF Telco: the VMware lock-in moves from the hypervisor to the contract",
+      "excerpt": "Since November 2, Broadcom no longer sells Telco Cloud Platform as a standalone license: at renewal, the road goes through VCF Telco. For a CTO, the real issue is no longer the hypervisor but the clauses they will sign.",
+      "tags": [
+        "VMware",
+        "Broadcom",
+        "VCF Telco",
+        "Kubernetes",
+        "Telecom cloud",
+        "Lock-in",
+        "IT contracts"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "VCF Telco: el candado de VMware pasa del hipervisor al contrato",
+      "excerpt": "Desde el 2 de noviembre, Broadcom ya no vende Telco Cloud Platform con licencia independiente: en la renovación, el camino pasa por VCF Telco. Para un CTO, el tema de fondo ya no es el hipervisor, sino las cláusulas que firmará.",
+      "tags": [
+        "VMware",
+        "Broadcom",
+        "VCF Telco",
+        "Kubernetes",
+        "Cloud para telecomunicaciones",
+        "Lock-in",
+        "Contratos de TI"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "VCF Telco: Der VMware-Lock-in wandert vom Hypervisor in den Vertrag",
+      "excerpt": "Seit dem 2. November verkauft Broadcom Telco Cloud Platform nicht mehr als eigenständige Lizenz: Bei der Verlängerung führt der Weg über VCF Telco. Für einen CTO geht es nicht mehr um den Hypervisor, sondern um die Klauseln, die er unterschreibt.",
+      "tags": [
+        "VMware",
+        "Broadcom",
+        "VCF Telco",
+        "Kubernetes",
+        "Telko-Cloud",
+        "Lock-in",
+        "IT-Verträge"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "featured": true,
+  "skipNewsletter": false,
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'analyse technique et contractuelle est d'une grande rigueur, avec une excellente distinction entre faits annoncés, estimations d'analystes et avis éditoriaux. La cohérence temporelle, les ordres de grandeur du cycle Kubernetes et l'historique des litiges Broadcom/VMware sont parfaitement respectés.",
+    "finalVerdict": "PASS",
+    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry ; une précision optionnelle appliquée (gloss du cœur dual-mode d'Ericsson : EPC + 5GC, NSA et SA). Source primaire Broadcom re-fetchée indépendamment par curl : EOA des SKU autonomes Telco Cloud Platform au 2 novembre 2026 et « 2-year Long-Term Support (LTS) with every minor release of Kubernetes » confirmés mot pour mot. Périmètres : seul le SKU autonome est en fin de disponibilité, les abonnements existants restent supportés jusqu'au terme ; AT&T (8 600 serveurs, 75 000 VM, +1 050 %, allégations d'AT&T, règlement confidentiel) et T-Mobile US (303 000 cœurs selon un dépôt Broadcom, 5,28 M USD, 20 M USD contre 24 M USD) sont des litiges sur le support de licences perpétuelles, présentés comme précédents de comportement contractuel et jamais comme conséquences de l'EOA ; DoCoMo (10 ans) porte sur VCF et les produits VMware en général ; Boost concerne la seule couche CaaS, remplacée par Wind River, annonce de décembre 2024, motifs contestés, CTO non nommé et aucune citation guillemetée ; ABI 10x-100x est une estimation de décembre 2024 sur la licence CaaS seule ; TCO -40 %/-38 % balisés comme revendications vendor ; HPE/Ericsson/OpenShift présenté comme modèle validé sans opérateur ni production. LTS 24 mois mis en regard des ~14 mois amont (kubernetes.io re-fetché : 1.37 EOL 2027-10-28), conditions du LTS signalées comme non publiées. Aucun prix VCF Telco affirmé. Thèse (verrou déplacé vers le contrat), checklist de clauses et transposition opérateur Wi-Fi managé balisées comme lecture éditoriale ; aucune affirmation sur l'usage interne de VMware chez Wifirst. Limite : les faits [V] du brief hors Kubernetes et source primaire ont été validés par concordance avec le brief, sans re-fetch par le fact-checker.",
+    "hallucinations": [],
+    "corrections": [
+      "Précision du gloss « dual-mode » : « qui sert à la fois la 4G et la 5G » → « qui combine un cœur 4G EPC et un cœur 5G, et sert la 4G comme la 5G, en NSA et en SA » (source Ericsson)"
+    ],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "Telco Cloud Automation = outil d'orchestration des fonctions réseau (ligne 33) (Documentation VMware TCA (NFVO + G-VNFM, cycle de vie VNF/CNF, jour 0 à jour 2), via WebSearch, 2026-11-04)",
+      "Cœur 5G dual-mode = sert 4G et 5G (ligne 123) (Ericsson, dual-mode 5G Core (EPC + 5GC, NSA/SA), 2026-11-04)",
+      "EOA du seul SKU autonome TCP le 2026-11-02 ; abonnements existants supportés ; aucune action immédiate ; route VCF au renouvellement (Brief fait 1 [V] (blog Broadcom) et fait 5 (SDxCentral), 2026-11-02)",
+      "LTS 2 ans vs ~14 mois amont (12+2), 1.37 maintenance 2027-08-28, EOL 2027-10-28 ; ~10 mois d'écart ; engagement vendor (kubernetes.io/releases/patch-releases, refetché lors de ce run ; calcul 24-14=10, 2026-11-04)",
+      "ABI 10x-100x : CaaS seul, décembre 2024, jamais mesuré sur VCF Telco (Brief fait 7 (ABI Research), 2024-12-23)",
+      "TCO -40 % sur 5 ans et -38 % coûts mémoire/serveur/stockage : revendications vendor, MWC 2026 (Brief fait 12 (SDxCentral/Wodecki), 2026-03-02)",
+      "AT&T : 8 600 serveurs, 75 000 VM, +1 050 % ; allégations AT&T ; licences perpétuelles ; règlement confidentiel (Brief fait 8 (CIO Dive, TechTarget, The Register), 2024-10-01)",
+      "T-Mobile : 5,28 M USD, 500 000 USD de garantie, 303 000 cœurs, 20 M USD vs 24 M USD pour six produits ; injonction jusqu'au 2026-08-03 ; licences perpétuelles (Brief fait 9 (SDxCentral, The Register), 2026-07-01)",
+      "Boost : couche CaaS remplacée par Wind River Studio Operator, annoncé en décembre 2024, motifs contestés, CTO non nommé (Brief fait 6 (SDxCentral 2026-11-03 et 2026-03-02, ABI), 2026-11-03)",
+      "DoCoMo : 10 ans, VCF et produits VMware en général, pas TCP (Brief fait 10 (SDxCentral), 2026-10-20)",
+      "Telia : élargissement nov. 2024, TCP et VCF, pluriannuel sans durée (Brief fait 11 (Capacity), 2024-11-06)",
+      "HPE/Ericsson/OpenShift : modèle validé, ProLiant Gen12, Juniper Apstra, aucun opérateur ni production, pas de lien Broadcom (Brief section contre-exemple (SDxCentral/Lee), 2026-11-02)",
+      "Ericsson validé sur VMware (avril 2022) puis OpenShift (juin 2022) ; Nokia citation de soutien TCP 9 (Brief faits 12 et contre-exemple (SDxCentral), 2022-06-23)",
+      "Omdia mars 2025 : bundle VCF + Telco Cloud Automation sous marque TCP (Brief fait 13 (Omdia), 2025-03)"
+    ]
+  }
+}
