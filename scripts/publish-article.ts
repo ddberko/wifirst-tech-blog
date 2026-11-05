@@ -27,21 +27,62 @@ const LOCALES = ['en', 'es', 'de'] as const;
 type Locale = (typeof LOCALES)[number];
 
 const ARTICLE = {
-  "slug": "wifi-7-cisco-it-migration-commencee-un-an-avant",
-  "title": "90 000 employés en Wi-Fi 7, et la vraie migration avait eu lieu un an plus tôt",
-  "excerpt": "Cisco IT a basculé 90 000 employés en Wi-Fi 7 sans configuration sur site. Le facteur déterminant n'était pas la borne : certificats, télémétrie et automatisation RF étaient posés douze mois plus tôt.",
+  "slug": "robots-txt-entrainement-ia-jeton-aipref",
+  "title": "Robots.txt : dire non à l'entraînement IA ne bloque personne",
+  "excerpt": "Un draft IETF individuel propose depuis le 30 octobre un jeton robots.txt pour refuser l'entraînement des IA. Google, Microsoft et Anthropic promettent de le lire, d'ici début 2027 au plus tard : il faut le publier sur chaque site hébergé, sans jamais le présenter comme une protection.",
   "category": "Réseaux",
   "tags": [
-    "Wi-Fi 7",
-    "WPA3",
-    "802.11be",
-    "Cisco",
-    "Dell'Oro",
-    "MLO"
+    "robots.txt",
+    "IETF AIPREF",
+    "Crawlers IA",
+    "Entraînement IA",
+    "WAF",
+    "Hébergement multi-tenant"
   ],
-  "readTime": 16,
-  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/wifi-7-cisco-it-migration-commencee-un-an-avant-cover.jpg",
+  "readTime": 18,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/robots-txt-entrainement-ia-jeton-aipref-cover.png",
   "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "Robots.txt: Saying No to AI Training Blocks Nobody",
+      "excerpt": "Since October 30, an individual IETF draft has proposed a robots.txt token for opting out of AI training. Google, Microsoft and Anthropic promise to read it, by early 2027 at the latest: publish it on every hosted site, and never present it as protection.",
+      "tags": [
+        "robots.txt",
+        "IETF AIPREF",
+        "AI crawlers",
+        "AI training",
+        "WAF",
+        "Multi-tenant hosting"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "Robots.txt: decir no al entrenamiento de IA no bloquea a nadie",
+      "excerpt": "Un draft individual de la IETF propone desde el 30 de octubre un token en robots.txt para rechazar el entrenamiento de las IA. Google, Microsoft y Anthropic prometen leerlo, a más tardar a principios de 2027: hay que publicarlo en cada sitio alojado, sin presentarlo nunca como una protección.",
+      "tags": [
+        "robots.txt",
+        "IETF AIPREF",
+        "Crawlers de IA",
+        "Entrenamiento de IA",
+        "WAF",
+        "Alojamiento multi-tenant"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "Robots.txt: Wer dem KI-Training widerspricht, sperrt damit niemanden aus",
+      "excerpt": "Seit dem 30. Oktober schlägt ein individueller IETF-Draft ein robots.txt-Token vor, mit dem sich das KI-Training ablehnen lässt. Google, Microsoft und Anthropic versprechen, es zu lesen, spätestens Anfang 2027: Man sollte es auf jeder gehosteten Website veröffentlichen, ohne es je als Schutz zu verkaufen.",
+      "tags": [
+        "robots.txt",
+        "IETF AIPREF",
+        "KI-Crawler",
+        "KI-Training",
+        "WAF",
+        "Multi-Tenant-Hosting"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
   "featured": true,
   "skipNewsletter": false,
   "analysis": {
@@ -49,31 +90,28 @@ const ARTICLE = {
     "editorialScore": 10,
     "geminiFactCheckPassed": true,
     "geminiModelVersion": "gemini-3.8-flash",
-    "geminiComment": "L'analyse technique et contextuelle est rigoureuse, offrant une excellente distinction entre les prérequis d'infrastructure, les contraintes cryptographiques et les réalités du marché. La chronologie et les ordres de grandeur sont parfaitement cohérents avec le cadre temporel fixé.",
-    "finalVerdict": "PASS",
-    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Chaque chiffre est rattaché à son périmètre exact : la baisse de 40 % des incidents concerne un seul site de Cisco IT et est attribuée par Cisco à l'adoption de Meraki, pas au Wi-Fi 7 ; les 39 sites sur 44 sans étude prédictive sont une mesure d'un trimestre sur un parc corporate homogène. Ordre de grandeur Dell'Oro re-vérifié par curl direct : plus de 10 MILLIONS de points d'accès expédiés au 2T 2026 (record sectoriel), jamais milliards. Les séries 1T 2026 (Light Reading) et 2T 2026 (Dell'Oro) sont traitées comme deux trimestres distincts et l'article le dit explicitement. Dates du standard conformes : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, amendement approuvé sous la désignation 802.11be-2024 avec document final publié le 22 juillet 2025 ; aucune mention d'une Release 2 non vérifiée. Aucune citation guillemetée : les propos de Cisco et de Siân Morgan (Senior Director at Dell'Oro Group, titre confirmé par curl du communiqué) sont paraphrasés. Le rapprochement CCMP-128 / GCMP-256 et le coût caché de mise à niveau des switchs sont explicitement balisés comme lecture d'architecte de l'auteur, le billet Cisco ne traitant aucun des deux. La capture de trames Windows 11 25H2 / Intel BE200 est présentée comme un test individuel de blogueur, sans en tirer de statistique de parc. Le contexte opérateur Wi-Fi managé (hôtellerie, résidences étudiantes) est assumé comme analyse, aucune source publique ne le chiffrant. Vérifications additionnelles hors brief : CW9178I confirmé comme produit réel (Cisco Wireless 9178I), obligation WPA3 sur les liens MLO confirmée multi-sources.",
+    "geminiComment": "L'analyse technique est rigoureuse et distingue parfaitement la couche déclarative (robots.txt, RFC 9309) de la couche d'application concrète (WAF, détection comportementale). La cohérence temporelle, les citations de documents de travail IETF et les nuances entre déclarations d'éditeurs sont remarquablement documentées et plausibles.",
+    "finalVerdict": "PASS avec corrections",
+    "verdictNote": "PASS avec corrections au premier passage, zéro hallucination, zéro retry. Trois corrections mineures appliquées avant traduction : (1) l'image « quatre géants derrière un même interrupteur », attribuée à la presse sans source, est reformulée en constat sur les titres de presse ; (2) la priorité des règles nommant un crawler n'est plus étendue à GPTBot, seule Anthropic l'affirme pour ClaudeBot (la page OpenAI, en 403 pour nos outils, n'a pas été lue en primaire) ; (3) Nate Hake est désigné comme fondateur de Travel Lemming, conformément à sa signature sur la liste ai-control. Statut IETF re-vérifié sur le texte du draft : soumission individuelle -00 du 30/10/2026, un seul auteur (Kevin Kelley, Anthropic), non endossée par l'IETF, rattachée à aucun groupe de travail, expire le 3/05/2027 ; Google, Microsoft et OpenAI ne figurent qu'aux remerciements, affiliations « for identification only » (le total de 46 noms vient du brief, non recompté). Calendriers vendor traités avec leur niveau de source : Microsoft/Bing lu en primaire (dates 15/12/2026, 1/02/2027, 1/03/2027, 30/09/2027) ; Google lu en primaire (« plans to », début 2027, lecture comme refus Google-Extended) ; Anthropic sans date ; OpenAI en source secondaire uniquement, sans aucune citation entre guillemets. Citations des listes IETF (Nate Hake 3/11, Alissa Cooper 4/11) vérifiées mot pour mot. Chiffres Cloudflare datés de 2025 et présentés comme tels. Le périmètre opérateur (portails captifs, sites clients hébergés) et la méthode en quatre couches sont balisés comme analyse de l'auteur, aucune source publique ne les chiffrant. Seule réserve non bloquante : la formulation sur l'échéance Bing du 1/03/2027 (NoArchive/NoCache et préférences de grounding) est cohérente avec la page Bing sans y être confirmée mot pour mot.",
     "hallucinations": [],
-    "corrections": [],
+    "corrections": [
+      "L41 : « La presse a résumé l'épisode en une image : quatre géants derrière un même interrupteur. Le document raconte une histoire plus modeste. » → « Les titres de presse ont présenté l'épisode comme un soutien unanime de quatre géants à un même mécanisme. Le document raconte une histoire plus modeste. »",
+      "L32 : « Et une règle spécifique, qui nomme `ClaudeBot` ou `GPTBot`, devrait primer sur la règle générale. » → « Et une règle spécifique devrait primer sur la règle générale : Anthropic précise que les règles qui nomment `ClaudeBot` l'emportent sur le signal. »",
+      "L47 : « Nate Hake, éditeur du site Travel Lemming » → « Nate Hake, fondateur du site Travel Lemming »"
+    ],
     "residualHallucinations": [],
     "validatedClaims": [
-      "Cisco IT : 90 000 employés et des centaines de sites dans le monde (Cisco Blogs, 14/09/2026)",
-      "Débits observés : 1,4 Gbit/s contre 600 Mbit/s en Wi-Fi 6E sur leurs réseaux, soit 100 % ou plus",
-      "Cisco ISE / authentification par certificat posée comme prérequis garantissant le support WPA3 des terminaux",
-      "Meraki Dashboard + AP en production depuis plus d'un an avant la sortie du Wi-Fi 7",
-      "Baisse de 40 % des incidents remontés — sur UN SEUL site, attribuée à Meraki et non au Wi-Fi 7",
-      "Catalyst Center AI RRM : 39 des 44 sites ont sauté l'étude de couverture prédictive sur un trimestre",
-      "Splunk : vue historique de la performance sans fil sur chaque site avant bascule",
-      "Onboarding réseau par site ramené de 2 jours à 1-2 heures via le Plug-and-Play Meraki",
-      "Déploiement du CW9178I, démarrage au nouveau bureau d'Austin, TX ; Campus Gateway pour l'itinérance et la sécurité sur les grands campus",
-      "Dell'Oro 2T 2026 : plus de 10 millions d'AP expédiés, record sectoriel ; Wi-Fi 7 au-delà de la moitié du marché WLAN entreprise",
-      "Siân Morgan (Senior Director, Dell'Oro) : ASP en hausse modérée, volumes en envolée, commandes anticipées, hausse des prix attendue sur l'année du fait du coût des composants mémoire tiré par l'IA",
-      "Dell'Oro : plus grand nombre d'AP multi-gig et 10 Gbps jamais expédié sur un trimestre",
-      "Light Reading (04/06/2026) : croissance à deux chiffres du marché WLAN au 1T 2026 malgré la pénurie mémoire — série distincte du 2T",
-      "IEEE 802.11be : premier draft mars 2021, approuvé sous la désignation 802.11be-2024, document final publié le 22 juillet 2025",
-      "Wi-Fi Alliance : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, avant la publication finale du document IEEE",
-      "Capture de trames mrn-cciew (14/01/2026) : Windows 11 25H2 / Intel BE200 en MLO 5+6 GHz sur SSID Meraki WPA3-Enterprise négocie CCMP-128-AES alors que le Wi-Fi Alliance met en avant GCMP-256 — test individuel, pas statistique de parc",
-      "Support WPA3-Enterprise pour Wi-Fi 7 absent des postes Windows jusqu'à la version 25H2",
-      "Lecture CCMP-128/GCMP-256 et coût de mise à niveau des switchs balisés comme analyse de l'auteur, non traités par le billet Cisco"
+      "Draft Kelley -00, auteur unique Kevin Kelley (Anthropic), 30/10/2026, expire 3/05/2027 (https://www.ietf.org/archive/id/draft-kelley-aipref-training-preference-signal-00.txt, 2026-10-30)",
+      "Citations « not a directive for crawling behavior », « Private agreements MAY override... », MUST NOT sur le joker, exemple Figure 1 (draft Kelley §1, §4.2, §4.4, §4.5, 2026-10-30)",
+      "Remerciements : Google 4, Microsoft 4, OpenAI 2, Anthropic 1 (confirmés ; total 46 repris du brief, non recompté) (draft Kelley, Table 1, 2026-10-30)",
+      "Charte AIPREF : jalons vocab et attach à l'IESG au 31/08/2026 ; application technique des préférences hors périmètre (https://datatracker.ietf.org/group/aipref/about/, consulté 2026-11-05)",
+      "Microsoft : 3 citations exactes ; 15/12/2026, 1/02/2027, 1/03/2027, 30/09/2027 ; auteur Krishna Madhavan (https://blogs.bing.com/search/2026/10/your-content-your-choice-clearer-preferences-for-training-and-grounding/, 2026-10-30)",
+      "Google : citation de John Mueller exacte ; refus via le jeton lu comme refus Google-Extended (intention, « plans to ») (https://developers.google.com/search/blog/2026/10/ai-training-control, 2026-10-30)",
+      "Citation Nate Hake exacte, 3/11/2026 (https://mailarchive.ietf.org/arch/msg/ai-control/A2LWviXagqaze8qg4rPvM_v5Akk/, 2026-11-03)",
+      "Citation Alissa Cooper exacte (jeton search), absence de registre ; affiliation KGI (directrice exécutive) (https://mailarchive.ietf.org/arch/msg/ai-control/qhIHBiSQsFOKcKS8Yq56Dl2nhZU/ ; https://knightfoundation.org/press/releases/alissa-cooper-appointed-inaugural-executive-director-of-knight-georgetown-institute/, 2026-11-04)",
+      "Cloudflare : entraînement 72 % (juil. 2024) puis 79 % (juil. 2025) (https://blog.cloudflare.com/crawlers-click-ai-bots-training/, 2025-08-29)",
+      "Cloudflare/Perplexity : 20-25 M et 3-6 M requêtes/jour, dizaines de milliers de domaines, retrait de la liste des bots vérifiés (https://blog.cloudflare.com/perplexity-is-using-stealth-undeclared-crawlers-to-evade-website-no-crawl-directives/, 2025-08-04)",
+      "Reste (RFC 9309, vocab-08, attach-05, Anthropic, OpenAI en source secondaire, IETF 127, GPAI 10/07/2025) : conforme au brief, niveau [P] ou [S] correctement signalé dans l'article (/tmp/article-brief.md, 2026-11-05)"
     ]
   }
 };

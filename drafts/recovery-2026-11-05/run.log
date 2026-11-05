@@ -1,0 +1,42 @@
+[2026-11-05 07:10:07] [STEP 0/9] STARTED — amorçage cloud
+  - service-account.json écrit et valide
+  - deps node OK (firebase-admin, @google-cloud/storage, tsx); ASSISTANT absent
+[2026-11-05 07:10:12] [STEP 0/9] DONE — SA valide, deps OK
+[2026-11-05 07:10:12] [STEP 1/9] STARTED — idéation sourcing type=tech
+  - sujet retenu : IETF AIPREF, jeton __usage_ai-training dans robots.txt (Google, OpenAI, Microsoft, Anthropic)
+  - score : 25/32 (≈23/30), genre standard-rfc (absent des 7 derniers articles)
+  - source primaire : https://datatracker.ietf.org/doc/html/draft-kelley-aipref-training-preference-signal (30/10/2026)
+  - raison : seul candidat non redondant ; #2 Dell'Oro, #4 Cilium et #5 NIS2 redondants, #3 Wi-Fi 8 sans source primaire
+  - warning : aucun candidat < 48h (le plus récent date du 30/10) ; 3 URLs Gemini en 404, corrigées par le researcher
+[2026-11-05 07:14:01] [STEP 1/9] DONE — AIPREF retenu, 23/30, 5 candidats évalués, 4 rejetés
+[2026-11-05 07:14:01] [STEP 2/9] STARTED — brief approfondi AIPREF
+  - brief : /tmp/article-brief.md (~5500 mots), 22 sources (8 normatives/IETF, 6 vendors, 3 Cloudflare, 1 UE, 3 analyse/presse)
+  - thèse : le jeton __usage_ai-training est une étiquette, pas un verrou ; l'opérateur le publie sur tous ses domaines hébergés et continue à mesurer et filtrer au WAF
+  - vigilance : draft individuel d'un seul auteur (Anthropic), non endossé par l'IETF ; aucun calendrier actif au 05/11 ; page OpenAI non lue en primaire (403)
+[2026-11-05 07:25:19] [STEP 2/9] DONE — brief 22 sources, 4 Mermaid, 4 prompts image
+[2026-11-05 07:25:19] [STEP 3/9] STARTED — rédaction writer
+  - titre : Robots.txt : dire non à l'entraînement IA ne bloque personne
+  - slug : robots-txt-entrainement-ia-jeton-aipref
+  - wc -w : 3419 (≥ 1800 OK) ; 2 Mermaid ; 3 placeholders inline
+  - garde anti-H1 : rien à corriger ; garde anti-$ : 0 $ restant
+[2026-11-05 07:35:16] [STEP 3/9] DONE — 3419 mots, 2 Mermaid, 0 H1, 0 $
+[2026-11-05 07:35:16] [STEP 4/9] STARTED — génération images (1 cover + 3 inline)
+  - cover : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/robots-txt-entrainement-ia-jeton-aipref-cover.png
+  - inline 1 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/robots-txt-entrainement-ia-jeton-aipref-inline-1.png
+  - inline 2 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/robots-txt-entrainement-ia-jeton-aipref-inline-2.png
+  - inline 3 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/robots-txt-entrainement-ia-jeton-aipref-inline-3.png
+  - 4/4 générées au 1er essai (gemini-3.1-flash-image, 2K), HTTP 200 vérifié
+[2026-11-05 07:36:41] [STEP 4/9] DONE — 4 images publiques, 3 placeholders remplacés
+[2026-11-05 07:36:41] [STEP 5/9] STARTED — fact-check (RETRY_COUNT=0, MAX_RETRIES=2)
+  - verdict initial : PASS avec corrections → final : PASS avec corrections, 0 retry
+  - Gemini (gemini-3.8-flash) : tech 10/10, edito 10/10, factCheckPassed=true
+  - hallucinations : 0 détectée, 0 résiduelle
+  - corrections PASS appliquées (3 items) : image presse non sourcée reformulée ; GPTBot retiré de la règle de priorité (seule Anthropic le dit) ; Nate Hake « fondateur » et non « éditeur »
+[2026-11-05 07:38:56] [STEP 5/9] DONE — PASS avec corrections, 0 retry, 3 corrections, tech 10 / edito 10
+[2026-11-05 07:38:56] [STEP 6/9] STARTED — traductions en/es/de
+  - en : « Robots.txt: Saying No to AI Training Blocks Nobody », 3302 mots (96 %), 0 $, 0 H1, 3 images, 2 mermaid — contrôles OK (libellés des sources laissés en français)
+  - es : « Robots.txt: decir no al entrenamiento de IA no bloquea a nadie », 3628 mots (105 %), 0 $, 0 H1, 3 images, 2 mermaid — contrôles OK
+  - de : « Robots.txt: Wer dem KI-Training widerspricht, sperrt damit niemanden aus », 3235 mots (94 %), 0 $, 0 H1, 3 images, 2 mermaid — contrôles OK
+[2026-11-05 07:44:07] [STEP 6/9] DONE — 3/3 langues OK (en 3302, es 3628, de 3235 mots)
+[2026-11-05 07:44:07] [STEP 7/9] STARTED — publication Firestore (skipNewsletter=false, type=tech)
+[2026-11-05 07:44:35] [STEP 7/9] [FAILED] — npx tsx scripts/publish-article.ts refusé par le classifieur de permission (Real-World Transactions) avant exécution ; aucune écriture Firestore, aucune newsletter envoyée

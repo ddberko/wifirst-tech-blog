@@ -1,0 +1,33 @@
+{
+  "verdict": "PASS avec corrections",
+  "date": "2026-11-05",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique est rigoureuse et distingue parfaitement la couche déclarative (robots.txt, RFC 9309) de la couche d'application concrète (WAF, détection comportementale). La cohérence temporelle, les citations de documents de travail IETF et les nuances entre déclarations d'éditeurs sont remarquablement documentées et plausibles.",
+  "hallucinations": [],
+  "warnings": [
+    {"severity": "minor", "line": 41, "finding": "« La presse a résumé l'épisode en une image : quatre géants derrière un même interrupteur » : image attribuée à la presse, non retrouvée dans les sources (PPC Land : « back one AI training opt-out »). Présentée comme un constat de presse non sourcé."},
+    {"severity": "minor", "line": 32, "finding": "« une règle spécifique, qui nomme ClaudeBot ou GPTBot, devrait primer » : la priorité de ClaudeBot est sourcée (page Anthropic) et le draft dit « Specific expressions SHOULD take precedence over general ones », mais rien n'établit qu'OpenAI applique cette priorité à GPTBot (page OpenAI non lue)."},
+    {"severity": "minor", "line": 47, "finding": "Nate Hake présenté comme « éditeur » de Travel Lemming : sa signature dans le mail dit « Founder, TravelLemming.com »."}
+  ],
+  "corrections": [
+    {"line": 41, "current": "La presse a résumé l'épisode en une image : quatre géants derrière un même interrupteur. Le document raconte une histoire plus modeste.", "corrected": "Les titres de presse ont présenté l'épisode comme un soutien unanime de quatre géants à un même mécanisme. Le document raconte une histoire plus modeste."},
+    {"line": 32, "current": "Et une règle spécifique, qui nomme `ClaudeBot` ou `GPTBot`, devrait primer sur la règle générale.", "corrected": "Et une règle spécifique devrait primer sur la règle générale : Anthropic précise que les règles qui nomment `ClaudeBot` l'emportent sur le signal."},
+    {"line": 47, "current": "Nate Hake, éditeur du site Travel Lemming", "corrected": "Nate Hake, fondateur du site Travel Lemming"}
+  ],
+  "validatedClaims": [
+    {"claim": "Draft Kelley -00, auteur unique Kevin Kelley (Anthropic), 30/10/2026, expire 3/05/2027", "source": "https://www.ietf.org/archive/id/draft-kelley-aipref-training-preference-signal-00.txt", "date": "2026-10-30"},
+    {"claim": "Citations « not a directive for crawling behavior », « Private agreements MAY override... », MUST NOT sur le joker, exemple Figure 1", "source": "draft Kelley §1, §4.2, §4.4, §4.5", "date": "2026-10-30"},
+    {"claim": "Remerciements : Google 4, Microsoft 4, OpenAI 2, Anthropic 1 (confirmés ; total 46 repris du brief, non recompté)", "source": "draft Kelley, Table 1", "date": "2026-10-30"},
+    {"claim": "Charte AIPREF : jalons vocab et attach à l'IESG au 31/08/2026 ; application technique des préférences hors périmètre", "source": "https://datatracker.ietf.org/group/aipref/about/", "date": "consulté 2026-11-05"},
+    {"claim": "Microsoft : 3 citations exactes ; 15/12/2026, 1/02/2027, 1/03/2027, 30/09/2027 ; auteur Krishna Madhavan", "source": "https://blogs.bing.com/search/2026/10/your-content-your-choice-clearer-preferences-for-training-and-grounding/", "date": "2026-10-30"},
+    {"claim": "Google : citation de John Mueller exacte ; refus via le jeton lu comme refus Google-Extended (intention, « plans to »)", "source": "https://developers.google.com/search/blog/2026/10/ai-training-control", "date": "2026-10-30"},
+    {"claim": "Citation Nate Hake exacte, 3/11/2026", "source": "https://mailarchive.ietf.org/arch/msg/ai-control/A2LWviXagqaze8qg4rPvM_v5Akk/", "date": "2026-11-03"},
+    {"claim": "Citation Alissa Cooper exacte (jeton search), absence de registre ; affiliation KGI (directrice exécutive)", "source": "https://mailarchive.ietf.org/arch/msg/ai-control/qhIHBiSQsFOKcKS8Yq56Dl2nhZU/ ; https://knightfoundation.org/press/releases/alissa-cooper-appointed-inaugural-executive-director-of-knight-georgetown-institute/", "date": "2026-11-04"},
+    {"claim": "Cloudflare : entraînement 72 % (juil. 2024) puis 79 % (juil. 2025)", "source": "https://blog.cloudflare.com/crawlers-click-ai-bots-training/", "date": "2025-08-29"},
+    {"claim": "Cloudflare/Perplexity : 20-25 M et 3-6 M requêtes/jour, dizaines de milliers de domaines, retrait de la liste des bots vérifiés", "source": "https://blog.cloudflare.com/perplexity-is-using-stealth-undeclared-crawlers-to-evade-website-no-crawl-directives/", "date": "2025-08-04"},
+    {"claim": "Reste (RFC 9309, vocab-08, attach-05, Anthropic, OpenAI en source secondaire, IETF 127, GPAI 10/07/2025) : conforme au brief, niveau [P] ou [S] correctement signalé dans l'article", "source": "/tmp/article-brief.md", "date": "2026-11-05"}
+  ]
+}
