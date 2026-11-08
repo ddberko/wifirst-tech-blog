@@ -1,0 +1,96 @@
+{
+  "slug": "greasing-pare-feu-ids-resolveurs-ossification",
+  "title": "Greasing : votre pare-feu laisse-t-il passer l'inconnu ?",
+  "excerpt": "Le greasing démasque les boîtiers qui refusent l'inconnu. Pare-feu, IDS et résolveurs de bordure doivent passer ce test en recette, contrat à l'appui.",
+  "category": "Réseaux",
+  "tags": [
+    "Greasing",
+    "Ossification",
+    "IETF",
+    "RFC 8701",
+    "QUIC",
+    "DNS EDNS",
+    "Pare-feu",
+    "Achats réseau"
+  ],
+  "readTime": 19,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/greasing-pare-feu-ids-resolveurs-ossification-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "Greasing: Does Your Firewall Let the Unknown Through?",
+      "excerpt": "Greasing exposes the middleboxes that reject anything they don't recognize. Firewalls, IDS and edge resolvers should have to pass this test at acceptance, backed by contract.",
+      "tags": [
+        "Greasing",
+        "Ossification",
+        "IETF",
+        "RFC 8701",
+        "QUIC",
+        "DNS EDNS",
+        "Firewall",
+        "Network procurement"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "Greasing: ¿deja pasar su firewall lo desconocido?",
+      "excerpt": "El greasing desenmascara los equipos que rechazan lo desconocido. Firewalls, IDS y resolvedores de borde deben superar esta prueba en la aceptación, con el contrato como respaldo.",
+      "tags": [
+        "Greasing",
+        "Osificación",
+        "IETF",
+        "RFC 8701",
+        "QUIC",
+        "DNS EDNS",
+        "Firewall",
+        "Compras de red"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "Greasing: Lässt Ihre Firewall das Unbekannte durch?",
+      "excerpt": "Greasing entlarvt Geräte, die Unbekanntes ablehnen. Firewalls, IDS und Edge-Resolver sollten diesen Test in der Abnahme bestehen, vertraglich abgesichert.",
+      "tags": [
+        "Greasing",
+        "Ossifikation",
+        "IETF",
+        "RFC 8701",
+        "QUIC",
+        "DNS EDNS",
+        "Firewall",
+        "Netzwerkbeschaffung"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "featured": true,
+  "skipNewsletter": false,
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'analyse technique de l'ossification et des mécanismes GREASE (RFC 8701, 9000, 9170, 9287, 9312) est d'une rigueur exemplaire et parfaitement sourcée. La transposition des concepts de normalisation en clauses concrètes de recette et d'appel d'offres réseau est particulièrement pertinente et percutante.",
+    "finalVerdict": "PASS avec corrections",
+    "verdictNote": "PASS avec corrections au premier passage, zéro hallucination, zéro retry ; une correction mineure appliquée. Le renvoi aux « considérations de déploiement » du draft IAB a été corrigé en « considérations de sécurité » : la phrase sur les équipements de sécurité qui prennent le grease pour une attaque figure en Section 4 (Security Considerations) du draft-iab-protocol-greasing-02, pas en 2.6. Statut re-vérifié sur datatracker le 2026-11-08 : Internet-Draft du flux IAB, état Active IAB Document, Informational visé, non endossé par l'IETF ; l'article ne parle jamais d'adoption ni de position officielle de l'IAB. Le draft -02 est daté du 2 novembre 2026 et remplace draft-edm-protocol-greasing. draft-ietf-dnsop-grease-03 (6 juillet 2026) est un document de WG sans consensus sur la réservation de plages, présenté comme tel. L'IETF 127 (San Francisco, 14-20 novembre 2026) est cité comme échéance de calendrier, sans affirmer que ces drafts y seront discutés. Chiffres rattachés à leur périmètre : RFC 7872 = mesures 2014-2015 sur les en-têtes d'extension IPv6 ; Cloudflare = TLS 1.3 Draft 18 fin 2017 ; Afnic = zones .fr au DNS Flag Day de février 2019. L'absence de mesure publique récente du comportement des pare-feu et IDS face au GREASE est assumée dans le texte ; la grille de huit clauses d'appel d'offres et l'angle opérateur Wi-Fi managé sont balisés comme analyse et extrapolation d'auteur, sans aucune donnée Wifirst. Aucune citation guillemetée. Limite de la vérification : les RFC n'ont pas tous été relus un par un par le fact-checker, qui s'appuie pour eux sur le brief (17 sources relues à la page) et sur Gemini.",
+    "hallucinations": [],
+    "corrections": [
+      "L.86 : « Il reconnaît aussi, dans ses considérations de déploiement, que des équipements de sécurité peuvent prendre le grease pour une attaque. » → « Il reconnaît aussi, dans ses considérations de sécurité, que des équipements de sécurité peuvent prendre le grease pour une attaque : dans ce cas le greasing échoue et les émetteurs risquent d'y renoncer. » (Le draft IAB -02 place l'affirmation sur les équipements de sécurité qui classent le grease comme attaque en Section 4 (Security Considerations), pas en 2.6 (déploiement).)"
+    ],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "draft-iab-protocol-greasing-02 : daté du 2 novembre 2026, expire le 6 mai 2027, Informational, auteurs Pardue (Cloudflare), Pauly (Apple), Thaler (ietf.org/archive, vérifié 08/11/2026)",
+      "Datatracker : flux IAB, Active IAB Document, non endossé par l'IETF, remplace draft-edm-protocol-greasing (vérifié 08/11/2026)",
+      "Le draft traite la variabilité, avec des exemples QUIC, TLS post-quantique et IPv6 (sections 3.1 à 3.3)",
+      "Le draft signale en Section 4 que des équipements de sécurité peuvent classer le grease comme attaque, ce qui fait échouer le greasing",
+      "draft-ietf-dnsop-grease-03 : 6 juillet 2026, expire le 7 janvier 2027, document de WG, pas de consensus sur les plages réservées",
+      "Cloudflare (26/12/2017) : TLS 1.3 Draft 18 à 92,3 % (Chrome/Gmail) et 96,1 % (Firefox/Cloudflare) contre 98,3 % et 97,8 % en TLS 1.2 ; Draft 22 à 98,8 % / 98,6 %",
+      "Afnic (24/01/2019) : 103 047 zones .fr (3,17 %) à 113 316 (3,49 %) affectées en mode strict du DNS Flag Day du 1er février 2019",
+      "RFC 7872 (mesures 2014-2015) : 10,91 % à 21,33 % de paquets perdus avec DO8, jusqu'à 54,12 % avec HBH8",
+      "RFC 8701 (GREASE pour TLS), RFC 9000 (QUIC, versions réservées de forme 0x?a?a?a?a), RFC 9287 (grease du bit QUIC), RFC 9170, RFC 9312, RFC 8546, RFC 9413",
+      "JA3 (Salesforce, 2017) et JA4 (FoxIO) comme empreintes TLS sensibles aux valeurs grease",
+      "IETF 127 : San Francisco, 14-20 novembre 2026 (ietf.org/meeting/127)",
+      "Grille de huit clauses fournisseur et angle opérateur Wi-Fi managé balisés comme analyse d'auteur, non exigences du draft"
+    ]
+  }
+}
