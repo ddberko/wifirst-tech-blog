@@ -1,0 +1,99 @@
+{
+  "slug": "rfc-10069-multipath-quic-ordonnanceur-non-norme",
+  "title": "RFC 10069 : le multipath QUIC est normé, son ordonnanceur ne l'est pas",
+  "excerpt": "L'IETF publie le multipath QUIC en Proposed Standard après neuf ans de travail, mais laisse aux implémentations le choix du chemin pour chaque paquet (l'ordonnancement) et la découverte d'adresses. Pour un opérateur de Wi-Fi managé, l'enjeu n'est pas la fin de l'agrégation de liens propriétaire : c'est ce qu'il faut exiger par contrat des terminaux, proxys et CDN.",
+  "category": "Réseaux",
+  "tags": [
+    "RFC 10069",
+    "Multipath QUIC",
+    "QUIC",
+    "IETF",
+    "Wi-Fi managé",
+    "SD-WAN",
+    "ATSSS",
+    "Achats réseau"
+  ],
+  "readTime": 17,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/rfc-10069-multipath-quic-ordonnanceur-non-norme-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "translations": {
+    "en": {
+      "title": "RFC 10069: multipath QUIC is standardized, its scheduler is not",
+      "excerpt": "After nine years of work, the IETF publishes multipath QUIC as a Proposed Standard, but leaves per-packet path selection (scheduling) and address discovery to implementations. For a managed Wi-Fi operator, the issue is not the end of proprietary link aggregation: it is what to demand by contract from devices, proxies and CDNs.",
+      "tags": [
+        "RFC 10069",
+        "Multipath QUIC",
+        "QUIC",
+        "IETF",
+        "Managed Wi-Fi",
+        "SD-WAN",
+        "ATSSS",
+        "Network procurement"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "RFC 10069: el multipath QUIC ya es estándar, pero su planificador no",
+      "excerpt": "El IETF publica el multipath QUIC como Proposed Standard tras nueve años de trabajo, pero deja a las implementaciones la elección de la ruta para cada paquete (la planificación) y el descubrimiento de direcciones. Para un operador de Wi-Fi gestionado, lo que está en juego no es el fin de la agregación de enlaces propietaria: es lo que hay que exigir por contrato a terminales, proxys y CDN.",
+      "tags": [
+        "RFC 10069",
+        "Multipath QUIC",
+        "QUIC",
+        "IETF",
+        "Wi-Fi gestionado",
+        "SD-WAN",
+        "ATSSS",
+        "Compras de red"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "RFC 10069: Multipath QUIC ist genormt, der Scheduler nicht",
+      "excerpt": "Die IETF veröffentlicht Multipath QUIC nach neun Jahren Arbeit als Proposed Standard, überlässt aber den Implementierungen die Wahl des Pfads für jedes Paket (das Scheduling) und die Adressermittlung. Für einen Betreiber von Managed Wi-Fi ist nicht das Ende der proprietären Link-Aggregation entscheidend, sondern das, was er von Endgeräten, Proxys und CDN vertraglich einfordern muss.",
+      "tags": [
+        "RFC 10069",
+        "Multipath QUIC",
+        "QUIC",
+        "IETF",
+        "Managed Wi-Fi",
+        "SD-WAN",
+        "ATSSS",
+        "Netzwerkbeschaffung"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "featured": true,
+  "skipNewsletter": false,
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'analyse technique de l'extension multipath de QUIC est rigoureuse, précise et parfaitement alignée avec les mécanismes réels du groupe de travail de l'IETF. La distinction entre les aspects normés par le protocole et les choix laissés aux implémentations est remarquablement explicitée.",
+    "finalVerdict": "PASS",
+    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Gemini ne connaît probablement pas la RFC 10069 (publiée le 2026-11-07, après son knowledge cutoff) : son 10/10 pèse peu, le verdict repose sur un recoupement direct avec le texte intégral de la RFC (rfc-editor.org/rfc/rfc10069.txt, citations vérifiées par grep) et les métadonnées datatracker. Approbation IESG re-vérifiée par l'orchestrateur sur l'API datatracker : 2026-03-19 04:11 UTC (« mars 2026 » conforme). La RFC ne mentionne ni HTTP/3 ni proxy ni MASQUE : l'article ne lui attribue rien de tel et présente le proxy multipath 3GPP (ATSSS/MASSS) comme une construction propre aux réseaux mobiles. Seul le client ouvre de nouveaux chemins (§1) ; l'ordonnancement est une « décision locale » (§5.5) ; la lecture selon laquelle le serveur choisit le chemin de ses propres envois est balisée comme interprétation de l'auteur. Les chiffres XLINK/Alibaba (2021, > 2,3 % médiane, > 9,4 % P95, > 19 % P99 sur le temps de complétion des requêtes) sont donnés avec leur périmètre : une entreprise, app Android Taobao, vidéo courte, protocole antérieur à la RFC. Aucun support en production n'est affirmé côté OS, navigateurs ou CDN (non documenté). La cause des 7,5 mois entre approbation et publication n'est pas avancée. Les sections agrégation de liens / WAN de secours, réglages NOC et clauses d'appel d'offres sont balisées « Analyse de l'auteur ».",
+    "hallucinations": [],
+    "corrections": [],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "RFC 10069 « Managing Multiple Paths for a QUIC Connection », Proposed Standard, 33 pages, publiée le 2026-11-07 (rfc-editor.org, datatracker)",
+      "Six auteurs ; éditeurs Y. Liu, Q. De Coninck, M. Kühlewind, avec O. Bonaventure, C. Huitema, Y. Ma (RFC 10069, nov. 2026)",
+      "Premier draft draft-deconinck-multipath-quic-00 le 2017-10-30 ; adoption WG draft-ietf-quic-multipath-00 le 2022-02-02 (datatracker)",
+      "Approbation IESG le 2026-03-19 UTC (datatracker docevent iesg_approved)",
+      "Paramètre de transport initial_max_path_id = 0x3e, annoncé par les deux pairs ; un espace de numéros de paquets par chemin ; path ID dans le nonce (RFC 10069 §2, 2026-11-07)",
+      "Trames PATH_ACK, PATH_ABANDON, PATH_STATUS_BACKUP, PATH_STATUS_AVAILABLE, PATH_NEW_CONNECTION_ID (RFC 10069 §4)",
+      "« a QUIC server does not initiate the creation of a path » (RFC 10069 §1)",
+      "Découverte d'adresses et ordonnancement hors périmètre (RFC 10069, Abstract)",
+      "« The scheduling is a local decision based on the preferences of the application and the implementation » (RFC 10069 §5.5)",
+      "Bascule Wi-Fi/mobile présentée comme « well-known multipath use case », l'usage simultané « needs more consideration than specified in this document » (RFC 10069 §1)",
+      "« an endpoint might not follow the peer's advertisements » (RFC 10069 §3.3)",
+      "Exemple RTT 100/350/600 ms (RFC 10069 §5.4, Table 1)",
+      "LIA (RFC 6356) citée comme adaptable, renvoi BCP 133 / RFC 9743 (RFC 10069)",
+      "Créer un nouveau chemin puis abandonner l'ancien « generally preferable » à la migration (RFC 10069 §5.1)",
+      "Pas de timeout d'inactivité par chemin, keep-alives non recommandés (RFC 10069 §5.9)",
+      "« keep the maximum number of paths small » et renvoi à la RFC 9312 pour l'exploitation (RFC 10069 §7)",
+      "XLINK / Alibaba : 100 000 participants, > 3 millions de lectures, 2 semaines ; > 2,3 % médiane, > 9,4 % P95, > 19 % P99 vs QUIC mono-chemin (APNIC Blog, 2021-12-08)"
+    ]
+  }
+}
