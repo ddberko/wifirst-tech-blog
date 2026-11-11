@@ -1,0 +1,102 @@
+{
+  "slug": "ingress-nginx-cinq-regles-implicites-gateway-api",
+  "title": "Ingress-NGINX : cinq règles que personne n'avait écrites",
+  "excerpt": "Sept mois après l'archivage d'Ingress-NGINX, le risque n'est plus dans la traduction des annotations, mais dans cinq comportements implicites qui transforment une migration Gateway API « correcte » en erreurs 404. La méthode : écrire le contrat, le tester, puis basculer le trafic par paliers.",
+  "category": "Infrastructure",
+  "tags": [
+    "Kubernetes",
+    "Gateway API",
+    "Ingress-NGINX",
+    "ingress2gateway",
+    "Migration",
+    "Multi-tenant",
+    "KubeCon",
+    "Cloud Native"
+  ],
+  "readTime": 16,
+  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/ingress-nginx-cinq-regles-implicites-gateway-api-cover.png",
+  "contentFile": "/tmp/article-draft.md",
+  "featured": true,
+  "skipNewsletter": false,
+  "translations": {
+    "en": {
+      "title": "Ingress-NGINX: Five Rules Nobody Ever Wrote Down",
+      "excerpt": "Seven months after Ingress-NGINX was archived, the risk is no longer in translating annotations. It's in five implicit behaviors that turn a \"correct\" Gateway API migration into 404 errors. The method: write the contract, test it, then shift traffic in steps.",
+      "tags": [
+        "Kubernetes",
+        "Gateway API",
+        "Ingress-NGINX",
+        "ingress2gateway",
+        "Migration",
+        "Multi-tenant",
+        "KubeCon",
+        "Cloud Native"
+      ],
+      "contentFile": "/tmp/article-en.md"
+    },
+    "es": {
+      "title": "Ingress-NGINX: cinco reglas que nadie había escrito",
+      "excerpt": "Siete meses después del archivado de Ingress-NGINX, el riesgo ya no está en traducir las anotaciones, sino en cinco comportamientos implícitos que convierten una migración «correcta» a Gateway API en errores 404. El método: escribir el contrato, probarlo y después cambiar el tráfico por tramos.",
+      "tags": [
+        "Kubernetes",
+        "Gateway API",
+        "Ingress-NGINX",
+        "ingress2gateway",
+        "Migración",
+        "Multi-tenant",
+        "KubeCon",
+        "Cloud Native"
+      ],
+      "contentFile": "/tmp/article-es.md"
+    },
+    "de": {
+      "title": "Ingress-NGINX: Fünf Regeln, die nie jemand aufgeschrieben hat",
+      "excerpt": "Sieben Monate nach der Archivierung von Ingress-NGINX liegt das Risiko nicht mehr in der Übersetzung der Annotations, sondern in fünf impliziten Verhaltensweisen, die aus einer „korrekten“ Gateway-API-Migration 404-Fehler machen. Die Methode: den Vertrag aufschreiben, testen, dann den Verkehr stufenweise umschalten.",
+      "tags": [
+        "Kubernetes",
+        "Gateway API",
+        "Ingress-NGINX",
+        "ingress2gateway",
+        "Migration",
+        "Multi-Tenancy",
+        "KubeCon",
+        "Cloud Native"
+      ],
+      "contentFile": "/tmp/article-de.md"
+    }
+  },
+  "analysis": {
+    "technicalScore": 10,
+    "editorialScore": 10,
+    "geminiFactCheckPassed": true,
+    "geminiModelVersion": "gemini-3.8-flash",
+    "geminiComment": "L'article fait preuve d'une excellente rigueur technique quant au cycle de vie de Kubernetes, aux mécanismes de Gateway API et aux comportements implicites d'Ingress-NGINX. La distinction méthodique entre éléments factuels sourcés et analyses d'auteur renforce considérablement la crédibilité de l'ensemble.",
+    "finalVerdict": "PASS",
+    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Dates re-vérifiées : annonce de retraite d'Ingress-NGINX le 11 novembre 2025 (maintenance best-effort jusqu'en mars 2026), dépôt GitHub archivé le 24 mars 2026, Gateway API v1.5.0 publiée le 27 février 2026 (et non le 14 mars), v1.6.0 le 30 juin 2026, ingress2gateway 1.0 le 20 mars 2026, BackendTLSPolicy Standard depuis v1.4.0 (6 octobre 2025, vérification web hors brief). InferencePool présenté comme stable depuis la v1.0.0 de l'extension, la prémisse « GA en v1.5.0 » du sourcing ayant été écartée comme contredite par la doc officielle. KubeCon NA 2026 traité uniquement comme programme de sessions (Schnyder, Rozenbaum), aucune annonce présumée ; l'annonce Istio citée date de KubeCon Europe (mars 2026). Chiffres non audités exclus volontairement : part d'environnements Datadog, comptes d'annotations de blogs tiers, CVE, benchmarks. Datadog, Google, F5, Buoyant et Isovalent balisés comme éditeurs. Quatre passages balisés comme analyse d'auteur (couplage d'équipes sur plateforme partagée, TCPRoute/UDPRoute pour un opérateur, risque de migrer deux fois, edge) ; rien n'est affirmé sur l'infrastructure de Wifirst. Une correction optionnelle de gravité faible appliquée : Google présenté comme contributeur et non mainteneur du projet.",
+    "hallucinations": [],
+    "corrections": [
+      "Ligne 89 : « Google, éditeur dont des ingénieurs maintiennent le projet » → « contribuent au projet » (rôle de mainteneur non documenté explicitement, gravité faible, correction optionnelle appliquée)"
+    ],
+    "residualHallucinations": [],
+    "validatedClaims": [
+      "Annonce de retraite d'Ingress-NGINX le 2025-11-11, citation « Best-effort maintenance... » (kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/, 2025-11-11)",
+      "Dépôt archivé en lecture seule le 24 mars 2026 (github.com/kubernetes/ingress-nginx, 2026-03-24)",
+      "Déclaration Steering/SRC: « None of the available alternatives are direct drop-in replacements », « leaves you and your users vulnerable to attack » (kubernetes.io/blog/2026/01/29/ingress-nginx-statement/, 2026-01-29)",
+      "Cinq comportements implicites (regex préfixe/casse, use-regex hôte, rewrite-target, slash final 301, normalisation RFC 3986 §6.2) et citation « a seemingly correct translation... » (kubernetes.io/blog/2026/02/27/ingress-nginx-before-you-migrate/, 2026-02-27)",
+      "ingress2gateway 1.0: 3 vers 30+ annotations, tests d'intégration, WARN/INFO, exemples (configuration-snippet, proxy-body-size, timeouts.request, regex, listener 80 + 308) (kubernetes.io/blog/2026/03/20/ingress2gateway-1-0-release, 2026-03-20)",
+      "ingress2gateway: 9 providers, 6 emitters (github.com/kubernetes-sigs/ingress2gateway (consulté par le brief), 2026-11-11)",
+      "Gateway API v1.5 (27/02/2026): ListenerSet, ReferenceGrant v1, CORS Standard, K8s 1.30+, piège TLSRoute v1alpha2/3 (kubernetes.io/blog/2026/04/21/gateway-api-v1-5/, 2026-02-27)",
+      "Gateway API v1.6 (30/06/2026): TCPRoute/UDPRoute Standard; six implémentations conformes listées (kubernetes.io/blog/2026/08/03/gateway-api-v1-6-release/, 2026-06-30)",
+      "BackendTLSPolicy dans le standard (Standard depuis v1.4.0, GA) (gateway-api.sigs.k8s.io/api-types/backendtlspolicy (WebSearch de vérification), 2025-10-06)",
+      "API Ingress gelée (feature-frozen), Gateway API 'Ingress 2.0', trois rôles (opensource.googleblog.com (2026/02), 2026-02-12)",
+      "ReferenceGrant obligatoire entre namespaces, ResolvedRefs: False; guide Datadog en 7 étapes sans chiffre mesuré (datadoghq.com/blog/migrate-to-gateway-api, 2026-04-08)",
+      "Gardener: migration vers API natives Istio, authz externe manquante, issue #13448 (gardener.cloud/blog/2026/04/04-29-..., 2026-04-29)",
+      "Cilium 1.20 ExternalAuth fondé sur GEP-1494 encore expérimental en amont (isovalent.com/blog/post/cilium-1-20/, 2026-07-30)",
+      "InferencePool stable depuis v1.0.0 de l'extension (correction de prémisse du brief respectée) (gateway-api-inference-extension.sigs.k8s.io/api-types/inferencepool/, n/a)",
+      "Istio: support bêta Inference Extension annoncé à KubeCon EU (cncf.io/announcements/2026/03/25/..., 2026-03-25)",
+      "KubeCon NA 2026 Salt Lake City; sessions Schnyder et Rozenbaum présentées comme programme, sans annonce inventée (Sessionize + TechTimes, 2026-11-09)",
+      "Buoyant: viser le Service plutôt que les pods avec un mesh (buoyant.io/blog/community-ingress-nginx-retired-how-to-plan-your-migration, 2026-07-27)",
+      "Dates calculées: 'un an jour pour jour' (11/11/2025 vers 11/11/2026), 'sept mois et demi' après le 24/03/2026 (calcul interne, 2026-11-11)"
+    ]
+  }
+}
