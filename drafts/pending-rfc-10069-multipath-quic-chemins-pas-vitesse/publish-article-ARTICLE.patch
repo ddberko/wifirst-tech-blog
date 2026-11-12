@@ -1,0 +1,141 @@
+diff --git a/scripts/publish-article.ts b/scripts/publish-article.ts
+index 939dc60..85e5eb5 100644
+--- a/scripts/publish-article.ts
++++ b/scripts/publish-article.ts
+@@ -27,21 +27,70 @@ const LOCALES = ['en', 'es', 'de'] as const;
+ type Locale = (typeof LOCALES)[number];
+ 
+ const ARTICLE = {
+-  "slug": "wifi-7-cisco-it-migration-commencee-un-an-avant",
+-  "title": "90 000 employés en Wi-Fi 7, et la vraie migration avait eu lieu un an plus tôt",
+-  "excerpt": "Cisco IT a basculé 90 000 employés en Wi-Fi 7 sans configuration sur site. Le facteur déterminant n'était pas la borne : certificats, télémétrie et automatisation RF étaient posés douze mois plus tôt.",
++  "slug": "rfc-10069-multipath-quic-chemins-pas-vitesse",
++  "title": "RFC 10069 : le multipath QUIC normalise les chemins, pas la vitesse",
++  "excerpt": "Publié le 7 novembre 2026, le RFC 10069 standardise la gestion de plusieurs chemins pour une connexion QUIC, mais laisse explicitement hors champ l'ordonnancement du trafic et la découverte d'adresses. Ce que dit vraiment le texte, ce que montrent les seuls chiffres publiés (Alibaba) et ce que cela implique pour un réseau Wi-Fi qui ne voit qu'un des chemins.",
+   "category": "Réseaux",
+   "tags": [
+-    "Wi-Fi 7",
+-    "WPA3",
+-    "802.11be",
+-    "Cisco",
+-    "Dell'Oro",
+-    "MLO"
++    "QUIC",
++    "Multipath QUIC",
++    "RFC 10069",
++    "IETF",
++    "MPTCP",
++    "Wi-Fi",
++    "UDP",
++    "Protocoles de transport"
+   ],
+-  "readTime": 16,
+-  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/wifi-7-cisco-it-migration-commencee-un-an-avant-cover.jpg",
++  "readTime": 19,
++  "coverImage": "https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/rfc-10069-multipath-quic-chemins-pas-vitesse-cover.png",
+   "contentFile": "/tmp/article-draft.md",
++  "translations": {
++    "en": {
++      "title": "RFC 10069: Multipath QUIC standardizes paths, not speed",
++      "excerpt": "Published on November 7, 2026, RFC 10069 standardizes how a QUIC connection manages multiple paths, but explicitly leaves traffic scheduling and address discovery out of scope. Here is what the text really says, what the only published numbers (Alibaba) show, and what it means for a Wi-Fi network that sees only one of the paths.",
++      "tags": [
++        "QUIC",
++        "Multipath QUIC",
++        "RFC 10069",
++        "IETF",
++        "MPTCP",
++        "Wi-Fi",
++        "UDP",
++        "Transport protocols"
++      ],
++      "contentFile": "/tmp/article-en.md"
++    },
++    "es": {
++      "title": "RFC 10069: Multipath QUIC normaliza los caminos, no la velocidad",
++      "excerpt": "Publicado el 7 de noviembre de 2026, el RFC 10069 estandariza la gestión de varios caminos para una conexión QUIC, pero deja explícitamente fuera la planificación del tráfico y el descubrimiento de direcciones. Qué dice realmente el texto, qué muestran las únicas cifras publicadas (Alibaba) y qué implica todo ello para una red Wi-Fi que solo ve uno de los caminos.",
++      "tags": [
++        "QUIC",
++        "Multipath QUIC",
++        "RFC 10069",
++        "IETF",
++        "MPTCP",
++        "Wi-Fi",
++        "UDP",
++        "Protocolos de transporte"
++      ],
++      "contentFile": "/tmp/article-es.md"
++    },
++    "de": {
++      "title": "RFC 10069: Multipath QUIC normiert die Pfade, nicht die Geschwindigkeit",
++      "excerpt": "Der am 7. November 2026 veröffentlichte RFC 10069 standardisiert die Verwaltung mehrerer Pfade für eine QUIC-Verbindung, lässt Traffic-Scheduling und Adressentdeckung aber ausdrücklich außen vor. Was der Text wirklich sagt, was die einzigen veröffentlichten Zahlen (Alibaba) zeigen und was das für ein Wi-Fi-Netz bedeutet, das nur einen der Pfade sieht.",
++      "tags": [
++        "QUIC",
++        "Multipath QUIC",
++        "RFC 10069",
++        "IETF",
++        "MPTCP",
++        "Wi-Fi",
++        "UDP",
++        "Transportprotokolle"
++      ],
++      "contentFile": "/tmp/article-de.md"
++    }
++  },
+   "featured": true,
+   "skipNewsletter": false,
+   "analysis": {
+@@ -49,31 +98,33 @@ const ARTICLE = {
+     "editorialScore": 10,
+     "geminiFactCheckPassed": true,
+     "geminiModelVersion": "gemini-3.8-flash",
+-    "geminiComment": "L'analyse technique et contextuelle est rigoureuse, offrant une excellente distinction entre les prérequis d'infrastructure, les contraintes cryptographiques et les réalités du marché. La chronologie et les ordres de grandeur sont parfaitement cohérents avec le cadre temporel fixé.",
++    "geminiComment": "L'analyse technique de l'extension multipath pour QUIC est d'une grande rigueur et parfaitement cohérente avec les travaux de normalisation de l'IETF. L'angle opérationnel et la distinction entre spécification protocolaire et logique d'ordonnancement sont particulièrement bien documentés et pertinents.",
+     "finalVerdict": "PASS",
+-    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Chaque chiffre est rattaché à son périmètre exact : la baisse de 40 % des incidents concerne un seul site de Cisco IT et est attribuée par Cisco à l'adoption de Meraki, pas au Wi-Fi 7 ; les 39 sites sur 44 sans étude prédictive sont une mesure d'un trimestre sur un parc corporate homogène. Ordre de grandeur Dell'Oro re-vérifié par curl direct : plus de 10 MILLIONS de points d'accès expédiés au 2T 2026 (record sectoriel), jamais milliards. Les séries 1T 2026 (Light Reading) et 2T 2026 (Dell'Oro) sont traitées comme deux trimestres distincts et l'article le dit explicitement. Dates du standard conformes : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, amendement approuvé sous la désignation 802.11be-2024 avec document final publié le 22 juillet 2025 ; aucune mention d'une Release 2 non vérifiée. Aucune citation guillemetée : les propos de Cisco et de Siân Morgan (Senior Director at Dell'Oro Group, titre confirmé par curl du communiqué) sont paraphrasés. Le rapprochement CCMP-128 / GCMP-256 et le coût caché de mise à niveau des switchs sont explicitement balisés comme lecture d'architecte de l'auteur, le billet Cisco ne traitant aucun des deux. La capture de trames Windows 11 25H2 / Intel BE200 est présentée comme un test individuel de blogueur, sans en tirer de statistique de parc. Le contexte opérateur Wi-Fi managé (hôtellerie, résidences étudiantes) est assumé comme analyse, aucune source publique ne le chiffrant. Vérifications additionnelles hors brief : CW9178I confirmé comme produit réel (Cisco Wireless 9178I), obligation WPA3 sur les liens MLO confirmée multi-sources.",
++    "verdictNote": "PASS au premier passage, zéro hallucination, zéro retry. Le RFC 10069 étant publié le 7 novembre 2026 (après le cutoff probable de Gemini), chaque affirmation a été re-vérifiée directement sur le texte brut rfc-editor.org/rfc/rfc10069.txt et sur le datatracker. Table IANA des trames et paramètre initial_max_path_id (0x3e) conformes ; le code d'erreur PATH_UNSTABLE_OR_POOR (0x3e76) n'est pas confondu avec la trame de même numéro. Les 13 citations anglaises du RFC sont littérales. Statut formulé avec précision : « Standards Track » dans le texte du RFC, « Proposed Standard » selon le datatracker. Calendrier vérifié : -00 le 2022-02-02, approbation IESG le 2026-03-18, publication le 2026-11-07. Les comptages (jitter, throughput, cellular, 5G = 0 occurrence ; Wi-Fi = 1) fondent la thèse : le RFC ne revendique aucun gain de débit, de gigue ou de latence. Les chiffres XLINK sont attribués à Alibaba, co-auteur du RFC, avec son ordonnanceur propriétaire, et contrebalancés par le résultat APNIC (min-RTT par défaut 28 % plus lent au P99). La comparaison avec MPTCP (RFC 8684), l'inférence sur les load balancers, la question du WAN 5G et la section opérateur Wi-Fi sont balisées comme analyse d'auteur ; le support OS/navigateur est dit non vérifié et la piste 3GPP présentée comme telle. Chiffres XLINK et write-up du shepherd repris du brief sans re-vérification à la source par le fact-checker. Source 10 corrigée : miroir github.imc.re remplacé par l'URL officielle github.com/quicwg/multipath.",
+     "hallucinations": [],
+-    "corrections": [],
++    "corrections": [
++      "Source 10 : URL miroir github.imc.re remplacée par https://github.com/quicwg/multipath/wiki/QUIC-Implementations-with-multipath-support (correction éditoriale pré-fact-check)"
++    ],
+     "residualHallucinations": [],
+     "validatedClaims": [
+-      "Cisco IT : 90 000 employés et des centaines de sites dans le monde (Cisco Blogs, 14/09/2026)",
+-      "Débits observés : 1,4 Gbit/s contre 600 Mbit/s en Wi-Fi 6E sur leurs réseaux, soit 100 % ou plus",
+-      "Cisco ISE / authentification par certificat posée comme prérequis garantissant le support WPA3 des terminaux",
+-      "Meraki Dashboard + AP en production depuis plus d'un an avant la sortie du Wi-Fi 7",
+-      "Baisse de 40 % des incidents remontés — sur UN SEUL site, attribuée à Meraki et non au Wi-Fi 7",
+-      "Catalyst Center AI RRM : 39 des 44 sites ont sauté l'étude de couverture prédictive sur un trimestre",
+-      "Splunk : vue historique de la performance sans fil sur chaque site avant bascule",
+-      "Onboarding réseau par site ramené de 2 jours à 1-2 heures via le Plug-and-Play Meraki",
+-      "Déploiement du CW9178I, démarrage au nouveau bureau d'Austin, TX ; Campus Gateway pour l'itinérance et la sécurité sur les grands campus",
+-      "Dell'Oro 2T 2026 : plus de 10 millions d'AP expédiés, record sectoriel ; Wi-Fi 7 au-delà de la moitié du marché WLAN entreprise",
+-      "Siân Morgan (Senior Director, Dell'Oro) : ASP en hausse modérée, volumes en envolée, commandes anticipées, hausse des prix attendue sur l'année du fait du coût des composants mémoire tiré par l'IA",
+-      "Dell'Oro : plus grand nombre d'AP multi-gig et 10 Gbps jamais expédié sur un trimestre",
+-      "Light Reading (04/06/2026) : croissance à deux chiffres du marché WLAN au 1T 2026 malgré la pénurie mémoire — série distincte du 2T",
+-      "IEEE 802.11be : premier draft mars 2021, approuvé sous la désignation 802.11be-2024, document final publié le 22 juillet 2025",
+-      "Wi-Fi Alliance : programme Wi-Fi CERTIFIED 7 lancé le 8 janvier 2024, avant la publication finale du document IEEE",
+-      "Capture de trames mrn-cciew (14/01/2026) : Windows 11 25H2 / Intel BE200 en MLO 5+6 GHz sur SSID Meraki WPA3-Enterprise négocie CCMP-128-AES alors que le Wi-Fi Alliance met en avant GCMP-256 — test individuel, pas statistique de parc",
+-      "Support WPA3-Enterprise pour Wi-Fi 7 absent des postes Windows jusqu'à la version 25H2",
+-      "Lecture CCMP-128/GCMP-256 et coût de mise à niveau des switchs balisés comme analyse de l'auteur, non traités par le billet Cisco"
++      "RFC 10069 « Managing Multiple Paths for a QUIC Connection », Standards Track, novembre 2026 (rfc-editor.org, vérifié 2026-11-12)",
++      "Statut Proposed Standard et publication le 2026-11-07 (datatracker IETF, consulté 2026-11-12)",
++      "Historique draft-ietf-quic-multipath : -00 le 2022-02-02, -21 le 2026-03-17, approbation IESG le 2026-03-18, file RFC Editor le 2026-03-19 (datatracker)",
++      "Six auteurs : Alibaba, Harvey AI, UMONS, UCLouvain, Private Octopus, Ericsson (RFC 10069)",
++      "Paramètre de transport initial_max_path_id, code 0x3e (RFC 10069, IANA)",
++      "Trames PATH_ACK 0x3e-0x3f, PATH_ABANDON 0x3e75, PATH_STATUS_BACKUP 0x3e76, PATH_STATUS_AVAILABLE 0x3e77, PATH_NEW_CONNECTION_ID 0x3e78, PATH_RETIRE_CONNECTION_ID 0x3e79, MAX_PATH_ID 0x3e7a, PATHS_BLOCKED 0x3e7b, PATH_CIDS_BLOCKED 0x3e7c (RFC 10069, table IANA)",
++      "Code d'erreur PATH_UNSTABLE_OR_POOR 0x3e76, distinct de la trame de même numéro (RFC 10069)",
++      "Le RFC ne spécifie pas la découverte d'adresses et ne permet qu'au client d'ouvrir un nouveau chemin (RFC 10069)",
++      "Aucune spécification IETF ne définit d'algorithme d'ordonnancement multipath (RFC 10069)",
++      "Exemple RTT : 50 ms terrestre / 300 ms satellite par sens → RTT mesuré 100, 350 ou 600 ms (RFC 10069, Table 1)",
++      "Comptages dans le RFC : jitter, throughput, cellular, 5G = 0 occurrence ; Wi-Fi = 1 (texte brut RFC 10069)",
++      "Contrôle de congestion couplé : référence à LIA (RFC 6356) / OLIA, seule mention de MPTCP dans le RFC 10069",
++      "draft-ietf-quic-address-discovery -01 (trame OBSERVED_ADDRESS) daté du 2026-08-15, toujours à l'état de draft (datatracker)",
++      "RFC 9312 (manageabilité QUIC, septembre 2022) : risque de black-holing au changement d'adresse et paramètres non observables par le réseau",
++      "RFC 8684 (MPTCP v1, mars 2020) : ADD_ADDR/REMOVE_ADDR dans la norme, aucune occurrence de « scheduler »",
++      "APNIC blog Alibaba (2021-12-08) : ordonnanceur min-RTT par défaut 28 % plus lent au P99, 100k participants, plus de 3 millions de lectures sur deux semaines",
++      "XLINK (SIGCOMM 2021, Alibaba) : gains publiés obtenus avec un ordonnanceur propriétaire sur vidéo mobile (repris du brief)",
++      "Shepherd write-up : déploiement principalement en self-interop, intérêt du 3GPP (repris du brief)"
+     ]
+   }
+ };

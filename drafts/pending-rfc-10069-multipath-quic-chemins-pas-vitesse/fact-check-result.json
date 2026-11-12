@@ -1,0 +1,10 @@
+{
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "factCheckPassed": true,
+  "geminiModel": "gemini-3.8-flash",
+  "comment": "L'analyse technique de l'extension multipath pour QUIC est d'une grande rigueur et parfaitement cohérente avec les travaux de normalisation de l'IETF. L'angle opérationnel et la distinction entre spécification protocolaire et logique d'ordonnancement sont particulièrement bien documentés et pertinents.",
+  "verdict": "PASS",
+  "hallucinations": [],
+  "verifiedAgainst": ["rfc-editor.org rfc10069.txt", "datatracker history multipath", "datatracker history address-discovery", "rfc9312.txt", "rfc8684.txt", "APNIC blog"]
+}
