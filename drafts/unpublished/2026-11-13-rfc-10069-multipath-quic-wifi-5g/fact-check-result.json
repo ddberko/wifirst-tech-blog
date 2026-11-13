@@ -1,0 +1,49 @@
+{
+  "verdict": "PASS avec corrections",
+  "date": "2026-11-13",
+  "technicalScore": 10,
+  "editorialScore": 10,
+  "geminiFactCheckPassed": true,
+  "geminiModelVersion": "gemini-3.8-flash",
+  "geminiComment": "L'analyse technique de Multipath QUIC et de ses interactions avec les couches réseau (NAT, DSCP, middleboxes) est remarquablement rigoureuse et fidèle aux travaux de l'IETF. La distinction entre les spécifications normatives et les recommandations opérationnelles pour les gestionnaires d'infrastructure Wi-Fi est parfaitement maintenue.",
+  "hallucinations": [],
+  "warnings": [
+    {"severity": "medium", "line": 95, "finding": "Zscaler: la doc recommande historiquement de bloquer QUIC (repli TCP), mais Zscaler propose désormais l'inspection native QUIC/HTTP/3. 'Multipath QUIC n'existera tout simplement pas' derrière ces pare-feux est trop absolu. Aucune URL Zscaler dans les sources."},
+    {"severity": "medium", "line": 124, "finding": "Hackathon IETF 117: 'cinq implémentations' absent des slides [17] (ils disent seulement 'hackathon's ones were mostly simple cases'). Le chiffre vient de la présentation des résultats du hackathon (23 juillet 2023). Les minutes de la session nuancent: interop 'not quite there', tests surtout quic-go/quicly."},
+    {"severity": "low", "line": 73, "finding": "3GPP: TS 24.193 V19.6.0 (2026-09) confirme MPQUIC-UDP/IP/E en Rel-19 et que 'MPQUIC-UDP' s'appelait 'MPQUIC' dans les releases précédentes. L'introduction en Rel-18 n'est attestée que par des sources secondaires (blog de formation, CR Samsung/CMCC). Formulation 'D'après les spécifications du 3GPP' un peu forte."},
+    {"severity": "low", "line": 108, "finding": "Apple MPTCP iOS 7 / 2013: la RFC 8041 (informationnelle, 2017) l'atteste directement (Siri uniquement à l'époque). 'Sources secondaires' sous-estime la source."},
+    {"severity": "low", "line": 110, "finding": "APNIC liste Siri, Music, Maps, Wi-Fi Assist. 'Plans' = Maps en français, mais ambigu; Wi-Fi Assist omis."}
+  ],
+  "corrections": [
+    {"line": 95, "before": "Zscaler décrit le même repli. Derrière ces pare-feux, Multipath QUIC n'existera tout simplement pas.", "after": "Zscaler a longtemps recommandé le même repli, même s'il propose désormais une inspection native de QUIC. Derrière un pare-feu configuré pour bloquer QUIC, Multipath QUIC n'existera tout simplement pas.", "sourceToAdd": "https://help.zscaler.com/zia/managing-quic-protocol (à ajouter à [16])", "required": true},
+    {"line": 124, "before": "avec un test réussi entre cinq implémentations au hackathon de l'IETF 117 en juillet 2023, mais sur des scénarios surtout simples d'après les supports présentés [17].", "after": "avec, selon la présentation des résultats du hackathon de l'IETF 117 (juillet 2023), des tests menés sur cinq implémentations. Les supports du groupe de travail jugent toutefois ces tests surtout limités à des cas simples, et les minutes de la session décrivent une interopérabilité encore en consolidation [17].", "sourceToAdd": "https://ekr.github.io/auto-minutes/minutes/ietf117/hackathon-results-presentations.txt ; https://datatracker.ietf.org/meeting/117/materials/minutes-117-quic-00 (à ajouter à [17])", "required": true},
+    {"line": 73, "before": "D'après les spécifications du 3GPP (l'organisme qui normalise les réseaux mobiles), la Release 18 a introduit un pilotage de trafic fondé sur Multipath QUIC dans ATSSS, le mécanisme qui répartit le trafic entre l'accès mobile et les accès dits non-3GPP, dont le Wi-Fi. La Release 19 l'étend au trafic IP et Ethernet [14].", "after": "Selon la TS 24.193 du 3GPP (l'organisme qui normalise les réseaux mobiles) et des contributions associées, ATSSS, le mécanisme qui répartit le trafic entre l'accès mobile et les accès dits non-3GPP dont le Wi-Fi, pilote le trafic via Multipath QUIC depuis la Release 18 pour l'UDP. La Release 19 y ajoute les variantes IP et Ethernet [14].", "required": true},
+    {"line": 108, "before": "selon plusieurs sources secondaires [18]", "after": "selon la RFC 8041 (informationnelle, 2017) et la presse de l'époque [18]", "required": false},
+    {"line": 110, "before": "pour Siri, Plans et Musique [8]", "after": "pour Siri, Musique, Plans (Maps) et Wi-Fi Assist [8]", "required": false}
+  ],
+  "validatedClaims": [
+    {"claim": "RFC 10069 existe, Standards Track (Proposed Standard), novembre 2026, 33 pages, publiée 2026-11-07", "source": "https://www.rfc-editor.org/rfc/rfc10069.txt ; https://datatracker.ietf.org/api/v1/doc/document/rfc10069/ (pages 33, time 2026-11-07T20:12:49Z)", "date": "2026-11-07"},
+    {"claim": "Auteurs et affiliations dont Y. Ma (Harvey AI)", "source": "RFC 10069 en-tête (re-fetch direct)", "date": "2026-11"},
+    {"claim": "Citation 'There are currently no IETF specifications that define scheduling algorithms for simultaneously using multiple paths' mot pour mot (§1, l.178-179 du .txt, retour à la ligne après 'for'); failover Wi-Fi/mobile 'temporarily uses two paths'; 'does not cover address discovery and management'", "source": "https://www.rfc-editor.org/rfc/rfc10069.txt lu via curl", "date": "2026-11"},
+    {"claim": "§5.2 même 4-tuple avec marquages DiffServ différents; §5.9 pas de recommandation de keep-alive, sondage avant bascule; initial_max_path_id = 0x3e; mot 'captive' absent de la RFC", "source": "RFC 10069 texte brut", "date": "2026-11"},
+    {"claim": "Chronologie: draft individuel 2021-10-25, -00 WG 2022-02-02, approbation IESG 2026-03-18 (rev -21), RFC Ed queue 2026-03-19, publication 2026-11-07", "source": "https://datatracker.ietf.org/doc/draft-ietf-quic-multipath/history/", "date": "2026-11-07"},
+    {"claim": "Shepherd write-up: controverses packet spaces/CID-path ID, tests d'interop réguliers, déploiement Alibaba 'primarily a self-interop deployment'", "source": "https://datatracker.ietf.org/doc/draft-ietf-quic-multipath/shepherdwriteup/", "date": "2026"},
+    {"claim": "XLINK: 100k participants, >3M lectures vidéo, deux semaines; >2,3 % médiane, >9,4 % p95, >19 % p99; scheduler min-RTT 'could be 28% slower at the 99th percentile' que le meilleur chemin seul; Wi-Fi et cellulaire; auteur Y. Ma, 2021-12-08", "source": "https://blog.apnic.net/2021/12/08/efficient-multipath-transport-with-quic-video-services/ (note: APNIC présente le 28 % comme résultat du scheduler par défaut, hors A/B test)", "date": "2021-12-08"},
+    {"claim": "RFC 9312: §4.2 timeout NAT >= 2 min; §4.5 repli TCP encouragé; §4.6 per-flow policing plutôt que per-packet; §4.8 QoS par flux, 5-tuple change traité différemment; §3.1, §3.4, §4.1, §3.8.2", "source": "https://www.rfc-editor.org/rfc/rfc9312.html et .txt", "date": "2022-09"},
+    {"claim": "Palo Alto recommande de bloquer UDP/80 et UDP/443 (QUIC) pour forcer le repli TLS et permettre le déchiffrement", "source": "URL [16] re-fetchée: 'Blocking QUIC forces the browser to fall back to TLS and enables the firewall to decrypt the traffic.'", "date": "doc vendor"},
+    {"claim": "3GPP TS 24.193 V19.6.0 (2026-09), Release 19: MPQUIC-UDP, MPQUIC-IP, MPQUIC-E", "source": "PDF 3GPP décodé avec pdftotext", "date": "2026-09"},
+    {"claim": "Hackathon IETF 117 (23 juillet 2023): interop MPQUIC annoncée avec cinq implémentations; slides: 'mostly simple cases'", "source": "slides-117-quic-multipath-quic-00 (pdftotext) + résultats hackathon (recherche)", "date": "2023-07"},
+    {"claim": "Wiki WG: AppleQUIC testing MPQUIC client (0xbabf), quiche WIP PR/fork draft-12, xquic draft-09/10, Rask draft-11, aioquic Ericsson, picoquic", "source": "https://github.com/quicwg/multipath/wiki/QUIC-Implementations-with-multipath-support (raw)", "date": "non daté"},
+    {"claim": "quic-go issue #3343 ouverte 2022-03-10, ouverte, 'massive undertaking', aucune PR, dernier commentaire 2025-12-09", "source": "https://github.com/quic-go/quic-go/issues/3343", "date": "2025-12-09"},
+    {"claim": "RFC 8684 mars 2020, auteurs dont C. Paasch (Apple) et O. Bonaventure", "source": "https://www.rfc-editor.org/rfc/rfc8684.html", "date": "2020-03"},
+    {"claim": "APNIC 2022: Apple seule organisation supportant activement MPTCPv1 fin 2021; Linux >= 5.6", "source": "https://blog.apnic.net/2022/08/23/analyzing-mptcp-adoption-in-the-internet/", "date": "2022-08-23"},
+    {"claim": "RFC 8910: DHCPv4 114, DHCPv6 103, RA type 37, API RFC 8908, septembre 2020", "source": "https://www.rfc-editor.org/rfc/rfc8910.html", "date": "2020-09"},
+    {"claim": "Apple MPTCP depuis iOS 7 (sept. 2013), Siri", "source": "RFC 8041 via recherche", "date": "2013-09"}
+  ],
+  "notes": [
+    "Gemini a rendu 10/10 sans s'opposer à la RFC 10069 (pas de faux négatif temporel).",
+    "Gemini est trop indulgent: il n'a pas relevé la nuance Zscaler ni la source du chiffre hackathon. Le verdict repose sur la vérification manuelle.",
+    "Aucun identifiant RFC, produit, frame ou citation inventé détecté.",
+    "Le wiki d'implémentations est non daté: l'article le dit correctement."
+  ]
+}

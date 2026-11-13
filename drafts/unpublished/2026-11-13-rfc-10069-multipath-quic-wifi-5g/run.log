@@ -1,0 +1,37 @@
+[2026-11-13 07:08:31] [STEP 0/9] STARTED — amorçage cloud (type=tech)
+  - service-account.json écrit et valide
+  - ASSISTANT=[absent]
+[2026-11-13 07:08:38] [STEP 0/9] DONE — SA valide, deps ok, GEMINI_API_KEY présent, Claude-assistant absent
+[2026-11-13 07:08:38] [STEP 1/9] STARTED — idéation sourcing tech
+  - sujet retenu : RFC 10069 Multipath QUIC passe en Proposed Standard (genre standard-rfc)
+  - score : 25/32 (~23/30) après rescoring (Gemini : 30/32)
+  - source primaire : https://www.rfc-editor.org/rfc/rfc10069.html (vérifiée)
+  - raison : seul candidat à source primaire vérifiée, frais (<7j), sans doublon 60j ; plan B Arcep 22/32 ; Cisco Cloud Control 22/32 et Verizon/Nokia 19/32 sources non vérifiées ; Wi-Fi 8 Cisco rejeté (redondance)
+[2026-11-13 07:12:24] [STEP 1/9] DONE — RFC 10069 Multipath QUIC, 25/32, 5 candidats Gemini, 1 rejet redondance
+[2026-11-13 07:12:24] [STEP 2/9] STARTED — brief approfondi
+  - brief : /tmp/article-brief.md (4021 mots), 17 sources retenues + 2 secondaires, 1 rejetée (blog non sourcé MPQUIC/iCloud Private Relay)
+  - thèse : MPQUIC est standard mais c'est le client qui décide d'agréger ; pour un opérateur Wi-Fi managé, la RFC 10069 ne crée pas un service à vendre, elle change le contrat de qualité (performance relative + transparence UDP/QUIC)
+  - vigilance : frames PATH_ACK/PATH_STATUS_* (pas ACK_MP), usage simultané non normalisé, Apple MPQUIC « testé » seulement
+[2026-11-13 07:18:13] [STEP 2/9] DONE — brief 17 sources, thèse contrat de qualité
+[2026-11-13 07:18:13] [STEP 3/9] STARTED — rédaction writer
+  - titre : RFC 10069 : avec Multipath QUIC, le téléphone choisit et le Wi-Fi est jugé
+  - slug : rfc-10069-multipath-quic-wifi-5g
+  - 3811 mots (wc -w), 2 Mermaid, 3 placeholders inline, 0 H1, 0 $, 0 Cover
+[2026-11-13 07:26:20] [STEP 3/9] DONE — 3811 mots, 2 Mermaid, gardes H1/$ OK
+[2026-11-13 07:26:20] [STEP 4/9] STARTED — génération images
+  - cover : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/covers/rfc-10069-multipath-quic-wifi-5g-cover.png
+  - inline 1-3 : https://storage.googleapis.com/wifirst-tech-blog.firebasestorage.app/images/rfc-10069-multipath-quic-wifi-5g-inline-{1,2,3}.png (HTTP 200 x4)
+[2026-11-13 07:27:21] [STEP 4/9] DONE — 4 images générées 2K et uploadées publiques, 3 placeholders remplacés
+[2026-11-13 07:27:21] [STEP 5/9] STARTED — fact-check (RETRY_COUNT=0, MAX=2)
+  - verdict initial : PASS avec corrections → final : PASS avec corrections (0 retry)
+  - Gemini gemini-3.8-flash : tech 10/10, edito 10/10, factCheckPassed=true
+  - hallucinations : 0 détectée, 0 résiduelle
+  - corrections PASS appliquées (5 items + 2 sources ajoutées) : Zscaler (inspection QUIC native), hackathon IETF 117 nuancé, 3GPP TS 24.193 reformulé, RFC 8041 nommée, apps Apple MPTCP complétées
+[2026-11-13 07:30:59] [STEP 5/9] DONE — PASS avec corrections, 0 retry, tech 10/10 edito 10/10, 5 corrections appliquées
+[2026-11-13 07:30:59] [STEP 6/9] STARTED — traductions en/es/de
+  - en : « RFC 10069: With Multipath QUIC, the Phone Chooses and Wi-Fi Gets Judged » — 3690 mots (95 %), 0 $, 0 H1, 3 img, 2 mermaid — OK
+  - es : « RFC 10069: con Multipath QUIC, el teléfono decide y el Wi-Fi queda a examen » — 3997 mots (103 %), 0 $, 0 H1, 3 img, 2 mermaid — OK
+  - de : « RFC 10069: Mit Multipath QUIC entscheidet das Smartphone, und das Wi-Fi steht auf dem Prüfstand » — 3663 mots, 0 $, 0 H1, 3 img, 2 mermaid
+[2026-11-13 07:36:25] [STEP 6/9] DONE — 3/3 traductions OK (en 95 %, es 103 %, de 95 %)
+[2026-11-13 07:36:25] [STEP 7/9] STARTED — publication Firestore (skipNewsletter=false)
+[2026-11-13 07:37:06] [STEP 7/9] FAILED — exécution de publish-article.ts refusée par le classifieur de permissions de la session (motif : Real-World Transactions). Article NON publié, aucune écriture Firestore, aucun envoi newsletter.
